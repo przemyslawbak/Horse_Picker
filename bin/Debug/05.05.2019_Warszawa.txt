@@ -1,0 +1,111 @@
+Race day: 05.05.2019
+City: Warszawa
+
+Race number: 1
+Race distance: 2400
+Race category: sulki
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Furtif Du Levant;;0;0;0,000;0,000;0,000;Horse not found
+Fortuna Buroise;;0;0;0,000;0,000;0,000;Horse not found
+Fulham;Repeat Love;4;9;1,643;1,643;9,102;Score = 1,643 - I
+Galaxy Turgot;;0;0;0,000;0,000;0,000;Horse not found
+Geronimo Cash;;0;0;0,000;0,000;0,000;Horse not found
+Eternity De Ginai;Rolling d'Heripre;5;10;0,000;NaN;8,263;Score = NaN
+Furnika;Jeanbat du Vivier;4;1;0,000;NaN;18,667;Score = NaN
+Everest Cheneviere;Thorens Vedaquais;5;6;0,000;NaN;7,486;Score = NaN
+
+
+Race number: 2
+Race distance: 1600
+Race category: II
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Elwino;;0;0;0,000;0,000;0,000;Horse not found
+Nasha;;0;0;0,000;0,000;0,000;Horse not found
+Pelin;;0;0;0,000;0,000;0,000;Horse not found
+Euchary;;0;0;0,000;0,000;0,000;Horse not found
+Orkis Jr;;0;0;0,000;0,000;0,000;Horse not found
+Hamal;;0;0;0,000;0,000;0,000;Horse not found
+Atilla;;0;0;0,000;0,000;0,000;Horse not found
+
+
+Race number: 3
+Race distance: 1800
+Race category: III
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Dark Blue;Golden Tirol;3;1;0,000;1,225;4,667;
+Green Diams;Diamond Green;3;3;1,008;0,682;3,381;Score = 1,008
+Vent D'est;Battle of Marengo;3;2;0,000;2,520;3,667;
+Blizbor;Power;3;4;1,029;1,149;4,503;Score = 1,029
+Amazing Nalah;Battle of Marengo;3;2;2,520;2,520;1,886;Score = 2,520 - I
+Be My Winner;Age of Jape;3;2;0,000;1,032;5,196;Score = 1,032
+Arunas;Rock of Gibraltar;3;2;1,848;2,498;3,524;Score = 1,848 - II
+Wallenrod;Star Poker;3;4;0,149;1,082;2,643;Score = 0,149
+Devilinthedetail;American Devil;3;2;0,000;NaN;5,400;
+
+
+Race number: 4
+Race distance: 1600
+Race category: III
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Malandi;Alandi;3;0;0,000;1,208;1,000;SI 5; dz 32/269=0,119
+Sunrise Tequila;San Moritz;3;0;0,000;1,521;1,000;SI 4; dz 6/108=0,056
+Iron Man;Planteur;3;0;0,000;5,568;1,000;SI 1; dz 63/280=0,225 - I
+Jack The Wolf;;0;0;0,000;0,000;0,000;dz 0,222 - II
+Szarratu;Mukhadram;3;0;0,000;3,726;1,000;SI 2; dz  0,112
+Liaqura;Le Havre;3;0;0,000;2,249;1,000;SI 3; dz 0,111
+Polonia Lady;;0;0;0,000;0,000;0,000;dz 0,079
+
+
+Race number: 5
+Race distance: 1600
+Race category: B
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Ophelia's Aidan;Camacho;3;3;11,333;6,643;2,381;Score = 11,333 - I
+Gancegal;Born To Sea;3;6;2,821;2,821;3,018;Score = 2,821
+Un Beso;Rajsaman;3;6;4,547;4,547;3,040;Score = 4,547
+Emiliano Zapata;Graswood;3;2;2,328;2,328;3,589;Score = 2,328
+Alex Dream;Zebedee;3;3;1,504;1,082;3,179;Score = 1,504
+Plantea;Planteur;3;4;7,799;5,568;2,304;Score = 7,799 - II
+Neptune;Alandi;3;3;4,141;1,208;5,314;Score = 4,141
+
+
+Race number: 6
+Race distance: 1600
+Race category: III
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Gaucho;Riyal;4;3;0,000;1,688;3,083;Score = 1,688
+Huerta;Von;4;2;0,000;1,752;4,022;
+Elgin Jr;Ontario HF;4;6;0,000;1,811;3,299;
+Selrima Jr;Akbars;4;7;0,528;1,511;3,099;Score = 0,528
+Gabonn;General;4;6;1,580;3,929;3,740;Score = 1,580 - II
+Zadatok;Dostatok;4;6;0,000;2,260;4,705;
+Oman;Ontario HF;4;8;1,599;1,811;2,366;Score = 1,599 - III
+Mohanned Al Khalediah;Mahabb;6;2;0,000;0,962;1,773;
+Sugar;Riyal;4;5;1,373;1,688;3,783;Score = 1,373
+Amani;Dahess;4;6;1,672;2,360;5,637;Score = 1,672 - I
+Niard Tersk;Dubai Heros;4;5;0,756;2,577;2,429;Score = 0,756
+Kariym;Vasyli Kossack;4;5;1,956;1,451;3,573;Score = 1,956
+
+
+Race number: 7
+Race distance: 1800
+Race category: III
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Silver Grey;Kendargent;3;2;0,000;NaN;5,571;Score = NaN - II
+Integracja;Tempelwächter;3;3;0,000;0,979;3,916;Score = 0,979
+El Nancy;Golden Tirol;3;2;0,000;1,225;4,446;Score = 1,225
+Vadis;Battle of Marengo;3;2;0,000;2,520;4,071;Score = 2,520
+Ornella;Grand Presidium;3;3;0,000;0,722;6,848;Score = 0,722 - I
+Dragon Fire;Silver Whistle;3;2;0,000;0,269;4,714;Score = 0,269
+Brave Joanna;Camacho;3;2;0,000;6,508;4,333;Score = 6,508
+Fleur Des Dunes;Kendargent;3;3;0,000;NaN;4,250;Score = NaN
+Langrin;Germes;3;2;0,000;NaN;4,091;Score = NaN
+Hornet;Ecosse;3;2;0,000;2,199;4,500;Score = 2,199
+Isolin;Exciting Life;3;2;0,000;2,013;3,643;Score = 2,013

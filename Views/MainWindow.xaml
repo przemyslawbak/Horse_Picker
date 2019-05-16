@@ -1,0 +1,434 @@
+﻿<Window x:Class="Horse_Picker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:vm="clr-namespace:Horse_Picker.ViewModels"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+        mc:Ignorable="d"
+        Title="HorsePicker"
+        MinHeight="650" MinWidth="1000" Height="650" Width="920"
+        WindowStartupLocation="CenterScreen"
+        Background="Green">
+    <Window.Resources>
+        <!--for autocompletebox better performance-->
+        <Style x:Key="AutoCompleteBoxStyle" TargetType="{x:Type toolkit:AutoCompleteBox}">
+            <Style.Resources>
+                <Style TargetType="{x:Type ListBox}">
+                    <Setter Property="MaxHeight" Value="200" />
+                </Style>
+            </Style.Resources>
+            <Setter Property="Margin" Value="5,0,0,0"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="IsEnabled" Value="{Binding DataContext.AllControlsEnabled, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        </Style>
+        <Style x:Key="appbtn" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#a1c883"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="racetb" TargetType="TextBox">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style x:Key="racecb" TargetType="ComboBox">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style x:Key="racetblk" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style x:Key="tableHeaderItem" TargetType="TextBlock">
+            <Setter Property="Margin" Value="5,0,0,0"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="FontWeight" Value="600"/>
+        </Style>
+        <Style x:Key="tableItem" TargetType="TextBox">
+            <Setter Property="Margin" Value="5,0,0,0"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="IsEnabled" Value="{Binding DataContext.AllControlsEnabled, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <TextBlock
+            Margin="10"
+            Foreground="White"
+            FontSize="50"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            VerticalAlignment="Bottom">
+                <Bold Foreground="Red">Horse</Bold>Picker
+        </TextBlock>
+
+        <!--Race data-->
+        <TextBlock Grid.Column="1"
+                   Grid.Row="0"
+                   Style="{StaticResource racetblk}">
+            Race day
+        </TextBlock>
+        <DatePicker
+            Grid.Column="1" Grid.Row="1"
+            FontSize="15"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            Text="{Binding Race.RaceDate,
+            Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged,
+            StringFormat=dd-MM-yyyy,
+            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+            ToolTip="Enter race date"
+            Margin="5"
+            BorderThickness="0"
+            Validation.ErrorTemplate="{x:Null}"
+                IsEnabled="{Binding AllControlsEnabled}"/>
+
+        <TextBlock Grid.Column="2"
+                   Grid.Row="0"
+                   Style="{StaticResource racetblk}">
+            Race no.
+        </TextBlock>
+        <TextBox Grid.Column="2" Grid.Row="1"
+                 Text="{Binding Race.RaceNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource racetb}"
+                IsEnabled="{Binding AllControlsEnabled}"/>
+
+        <TextBlock Grid.Column="3"
+                   Grid.Row="0"
+                   Style="{StaticResource racetblk}">
+            City
+        </TextBlock>
+        <TextBox Grid.Column="3" Grid.Row="1"
+                 Text="{Binding Race.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource racetb}"
+                IsEnabled="{Binding AllControlsEnabled}"/>
+
+        <TextBlock Grid.Column="4"
+                   Grid.Row="0"
+                   Style="{StaticResource racetblk}">
+            Race distance
+        </TextBlock>
+        <TextBox Grid.Column="4" Grid.Row="1"
+                 Text="{Binding Race.Distance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource racetb}"
+                IsEnabled="{Binding AllControlsEnabled}"/>
+
+        <TextBlock Grid.Column="5"
+                   Grid.Row="0"
+                   Style="{StaticResource racetblk}">
+            Race category
+        </TextBlock>
+        <ComboBox Grid.Column="5" Grid.Row="1"
+                  Style="{StaticResource racecb}"
+                  ItemsSource="{Binding CategoryFactorDict}"
+                  SelectedValuePath="Key"
+                  DisplayMemberPath="Key"
+                  SelectedValue="{Binding Race.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                IsEnabled="{Binding AllControlsEnabled}"/>
+
+        <!--Horse data-->
+        <ListBox x:Name="lbHorseList"
+                 Margin="5,20,5,5"
+                 ItemsSource="{Binding HorseList, Mode=TwoWay}"
+				 Grid.Column="0"
+                 Grid.ColumnSpan="6"
+				 Grid.Row="2"
+                 Background="SaddleBrown">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="30"/>
+                            <RowDefinition Height ="30"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--Row 0-->
+                        <TextBlock Grid.Column="0"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Horses name
+                        </TextBlock>
+                        <TextBlock Grid.Column="1"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Age
+                        </TextBlock>
+                        <TextBlock Grid.Column="2"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Horses father
+                        </TextBlock>
+                        <TextBlock Grid.Column="3"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Jockey
+                        </TextBlock>
+                        <TextBlock Grid.Column="4"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Total Races
+                        </TextBlock>
+                        <TextBlock Grid.Column="5"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Win index
+                        </TextBlock>
+                        <TextBlock Grid.Column="6"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Joc Index
+                        </TextBlock>
+                        <TextBlock Grid.Column="7"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Sib index
+                        </TextBlock>
+                        <TextBlock Grid.Column="8"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Cat Index
+                        </TextBlock>
+                        <TextBlock Grid.Column="9"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Comments
+                        </TextBlock>
+
+                        <!--Row 1-->
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="1"
+                                    Grid.Column="0">
+
+                            <toolkit:AutoCompleteBox
+                                IsTextCompletionEnabled="False"
+                                ItemsSource="{Binding DataContext.LoadedHorses, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                Text="{Binding Path=HorseName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                Height="20"
+                                Width="130"
+                                Style="{StaticResource AutoCompleteBoxStyle}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                                        <i:InvokeCommandAction Command="{Binding DataContext.PickHorseDataCommand,
+                                            RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                               CommandParameter="{Binding .}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </toolkit:AutoCompleteBox>
+
+                            <Button Width="50"
+                                    Height="20"
+                                    Style="{StaticResource appbtn}"
+                                    Content="Find"
+                                    Command="{Binding DataContext.PickHorseDataCommand,
+                                RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                    CommandParameter="{Binding .}"
+                                    IsEnabled="{Binding DataContext.IsNewHorseEnabled,
+                                            RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>
+                        </StackPanel>
+                        <TextBox Text="{Binding Path=Age, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                 Grid.Row="1"
+                                 Grid.Column="1"
+                                 Style="{StaticResource tableItem}"
+                                 Height="20"
+                                 Width="40"/>
+                        <TextBox Text="{Binding Path=Father, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                 Grid.Row="1"
+                                 Grid.Column="2"
+                                 Style="{StaticResource tableItem}"
+                                 Height="20"
+                                 Width="130"/>
+                        <toolkit:AutoCompleteBox
+                                 Grid.Row="1"
+                                 Grid.Column="3"
+                                IsTextCompletionEnabled="False"
+                                ItemsSource="{Binding DataContext.LoadedJockeys, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                Text="{Binding Path=Jockey, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                Height="20"
+                                Width="130"
+                                Style="{StaticResource AutoCompleteBoxStyle}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonUp">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.PickHorseDataCommand,
+                                            RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                               CommandParameter="{Binding .}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </toolkit:AutoCompleteBox>
+                        <TextBox Text="{Binding Path=TotalRaces, Mode=OneWay, UpdateSourceTrigger=LostFocus}"
+                                 Grid.Row="1"
+                                 Grid.Column="4"
+                                 Style="{StaticResource tableItem}"
+                                 Height="20"
+                                 Width="40"/>
+                        <TextBox Text="{Binding Path=WinIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                                 Grid.Row="1"
+                                 Grid.Column="5"
+                                 Style="{StaticResource tableItem}"
+                                 Height="20"
+                                 Width="40"/>
+                        <TextBox Text="{Binding Path=JockeyIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                                 Grid.Row="1"
+                                 Grid.Column="6"
+                                 Style="{StaticResource tableItem}"
+                                 Height="20"
+                                 Width="40"/>
+                        <TextBox Text="{Binding Path=SiblingsIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                                 Grid.Row="1"
+                                 Grid.Column="7"
+                                 Style="{StaticResource tableItem}"
+                                 Height="20"
+                                 Width="40"/>
+                        <TextBox Text="{Binding Path=CategoryIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                                 Grid.Row="1"
+                                 Grid.Column="8"
+                                 Style="{StaticResource tableItem}"
+                                 Height="20"
+                                 Width="40"/>
+                        <TextBox Text="{Binding Path=Comments, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                                 Grid.Row="1"
+                                 Grid.Column="9"
+                                 Style="{StaticResource tableItem}"
+                                 Height="20"
+                                 Width="130"/>
+                    </Grid>
+
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Control.Margin" Value="3" />
+                    <Setter Property="Control.BorderBrush" Value="LightGray" />
+                    <Setter Property="Control.BorderThickness" Value="1" />
+                    <Setter Property="Control.Background" Value="#566573" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="4"
+                    HorizontalAlignment="Right">
+
+            <Button
+            x:Name="btnSaveRace"
+            Content="Save race"
+            HorizontalAlignment="Center"
+            Height="40"
+            Width="100"
+            RenderTransformOrigin="0.5,0.5"
+            Style="{StaticResource appbtn}"
+            Command="{Binding SaveToFileCommand}"
+            IsEnabled="{Binding IsSaveEnabled}">
+            </Button>
+            <Button
+            x:Name="btnClearData"
+            Content="Clear race"
+            HorizontalAlignment="Center"
+            Height="40"
+            Width="100"
+            Style="{StaticResource appbtn}"
+            Command="{Binding ClearDataCommand}"
+                IsEnabled="{Binding AllControlsEnabled}">
+            </Button>
+            <Button
+            x:Name="btnTestResults"
+            Content="Test results"
+            HorizontalAlignment="Center"
+            Height="40"
+            Width="100"
+            Style="{StaticResource appbtn}"
+            Command="{Binding TestResultsCommand}"
+                IsEnabled="{Binding AllControlsEnabled}">
+            </Button>
+            <Button
+            x:Name="btnUpdateHorses"
+            Content="Update data"
+            HorizontalAlignment="Center"
+            Height="40"
+            Width="100"
+            RenderTransformOrigin="0.5,0.5"
+            Style="{StaticResource appbtn}"
+            Command="{Binding UpdateDataCommand}"
+                IsEnabled="{Binding AllControlsEnabled}">
+            </Button>
+        </StackPanel>
+        <Button
+            Grid.Row="3"
+            Grid.Column="0"
+            x:Name="buttonAddHorse"
+            Content="Add new horse (+)"
+            HorizontalAlignment="Left"
+            Height="40"
+            Width="200"
+            Command="{Binding NewHorseCommand}"
+            IsEnabled="{Binding IsNewHorseEnabled}"
+            Style="{StaticResource appbtn}">
+        </Button>
+        <Grid
+                     Grid.Row="3"
+                     Grid.Column="1"
+                     Visibility="{Binding VisibilityStatusBar}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Grid.Row="0"
+                Text="{Binding Path=WorkStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                Foreground="White"/>
+            <ProgressBar Minimum="0"
+                         Maximum="100"
+                         Value="{Binding UpdateStatusBar, UpdateSourceTrigger=PropertyChanged}"
+                         Height="20"
+                         Grid.Row="1"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Top"/>
+            <TextBlock
+                Grid.Row="1"
+                Text="{Binding Path=ProgressDisplay}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                />
+        </Grid>
+    </Grid>
+</Window>

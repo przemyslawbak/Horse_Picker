@@ -1,0 +1,1387 @@
+---new race---
+Mosanto|2,646|1,811|3,522|1,811
+Dominer|1,280|1,280|1,742|1,280
+Hipster|0,526|0,594|0,932|0,594
+Gardemarin|3,858|2,044|2,171|2,044
+Exciter|0,000|1,851|2,847|1,851
+Hot Wing|0,000|NaN|2,500|NaN
+Circle Centuria|1,616|2,155|2,783|2,155
+
+
+---new race---
+Albar|2,815|2,815|2,210|2,815
+Rajwan Al Khalediah|0,000|3,336|1,000|3,336
+Boy Mugatin|2,690|2,853|5,629|2,853
+Wunderfitz Von Südbaden|1,532|1,293|2,611|1,293
+Hadir|1,204|1,841|3,460|1,841
+Wasilew|1,584|1,972|4,042|1,972
+Himera Jr|1,433|1,654|3,097|1,654
+Marsat|1,297|0,827|5,835|0,827
+Ilay Fleur De Lys|0,000|NaN|1,000|NaN
+
+
+---new race---
+Subiectum|2,144|1,128|2,556|1,128
+Shalkar|0,612|1,538|1,738|1,538
+Danot|0,000|1,626|1,000|1,626
+Indigo Ocean|1,078|1,078|2,734|1,078
+Sumidero|1,520|0,711|1,760|0,711
+Trojka|0,000|1,467|1,000|1,467
+Sinfonia Varsovia|0,000|NaN|1,000|NaN
+Dystans|1,196|2,172|2,253|2,172
+Miss Kossakówna|0,891|0,487|3,330|0,487
+Dilong|1,440|1,467|2,583|1,467
+
+
+---new race---
+Salasaman|0,000|2,170|1,000|2,170
+Caresser|0,000|11,968|1,000|11,968
+Muminek|0,000|4,476|1,000|4,476
+One Way Ticket|0,000|0,521|1,000|0,521
+Torrent|0,000|NaN|1,000|NaN
+Carla Cola|0,000|NaN|1,000|NaN
+Zvezdan|0,000|NaN|1,000|NaN
+Royal Helen|0,000|NaN|1,000|NaN
+
+
+---new race---
+Dżabir|0,000|1,211|1,000|1,211
+Belloren|0,000|1,400|1,000|1,400
+Peleng|0,000|NaN|1,000|NaN
+Etna|0,000|0,384|1,000|0,384
+Paramus|0,000|NaN|1,000|NaN
+Monarcha|0,000|NaN|1,000|NaN
+Wostok|0,000|NaN|1,000|NaN
+
+
+---new race---
+Talkonya|0,000|2,247|1,000|2,247
+Rebel|0,000|NaN|1,000|NaN
+Mimosa|0,000|2,247|1,000|2,247
+Langrin|0,000|NaN|1,000|NaN
+Ramiro|0,000|NaN|1,000|NaN
+Doker|0,000|2,247|1,000|2,247
+Bocca|0,000|NaN|1,000|NaN
+Vi Verdi Caro|0,000|1,796|1,000|1,796
+Torys|0,000|NaN|1,000|NaN
+San Marino|0,000|NaN|1,000|NaN
+Karyntia|0,000|1,644|1,000|1,644
+
+
+---new race---
+Fortune Teller|1,846|2,417|2,454|2,417
+Masai Princess|0,000|0,370|2,710|0,370
+Turion|0,000|1,305|3,476|1,305
+Octobermen|0,000|1,113|5,196|1,113
+Król Dżungli|0,000|0,899|4,952|0,899
+Peregrino|0,059|0,059|1,028|0,059
+Ugoda|0,686|0,899|3,399|0,899
+
+
+---new race---
+Camal Galib|0,000|0,898|1,000|0,898
+Evimia|0,000|NaN|1,000|NaN
+H Embition H|0,000|NaN|1,000|NaN
+Elgiana|0,000|1,584|1,000|1,584
+Aluta|0,000|NaN|1,000|NaN
+
+
+---new race---
+Hermes|0,000|NaN|1,000|NaN
+Sorglos Von Südbaden|0,000|3,351|1,000|3,351
+H Patricia H|0,000|NaN|1,000|NaN
+Escada South|0,000|NaN|1,000|NaN
+Sachem|0,000|NaN|1,000|NaN
+Asirah|0,000|2,815|1,000|2,815
+Zadatok|0,000|NaN|1,000|NaN
+Elgin Jr|0,000|1,972|1,000|1,972
+
+
+---new race---
+Sileroy|1,188|2,156|1,646|2,156
+Party Animal|1,544|1,544|3,378|1,544
+Atman|4,213|4,213|2,306|4,213
+Salinger|0,000|0,314|3,000|0,314
+Ujoor|0,000|3,765|1,000|3,765
+Pianissima|0,000|2,250|4,085|2,250
+Fuengirola|0,205|0,714|3,583|0,714
+Wild Lily|3,738|2,297|0,951|2,297
+Jarl|0,832|0,806|2,617|0,806
+Komandor|0,451|1,066|1,355|1,066
+Miss Mazovia|0,000|0,806|5,736|0,806
+Sini|0,000|1,139|1,000|1,139
+
+
+---new race---
+Rammas Al Khalediah|5,014|6,729|3,175|6,729
+Salam Al Khalediah|0,000|5,319|1,000|5,319
+Nesma Al Mels|4,140|3,751|5,092|3,751
+Top Medina|5,184|3,712|0,667|3,712
+Aktyw|3,404|2,353|2,935|2,353
+Anood Al Khalediah|0,000|3,216|1,000|3,216
+Arash|4,174|3,272|9,366|3,272
+Ajiba Al Mels|1,135|3,361|2,811|3,361
+Almiza|6,876|3,361|1,334|3,361
+Zahaab|1,029|1,029|6,089|1,029
+Jafeel Athbah|1,312|2,895|0,963|2,895
+Letus Jr|1,762|1,762|2,967|1,762
+
+
+---new race---
+Harlem|1,764|1,061|3,267|1,061
+Calmir|2,139|2,139|4,906|2,139
+Kaszi|0,377|0,286|1,157|0,286
+Blue Connoisseur|1,998|1,998|4,112|1,998
+Tribunal|1,515|2,373|2,644|2,373
+Dazeekha|0,000|NaN|1,000|NaN
+Magical Path|0,000|1,650|1,000|1,650
+Gared|1,142|0,641|2,079|0,641
+Vilnele|2,746|2,746|5,295|2,746
+Pipasol|0,940|1,415|0,990|1,415
+
+
+---new race---
+Majkel|0,000|NaN|1,000|NaN
+Lady Konstancin|0,000|NaN|1,000|NaN
+Adorator|0,000|4,471|1,000|4,471
+King Royal|0,000|1,137|1,000|1,137
+Isolin|0,000|4,471|1,000|4,471
+Syron|0,000|1,319|1,000|1,319
+Carlito|0,000|1,651|1,000|1,651
+Devilinthedetail|0,000|NaN|1,000|NaN
+Doc Davis|0,000|NaN|1,000|NaN
+Hornet|0,000|2,172|1,000|2,172
+
+
+---new race---
+Tebidoro|0,000|2,188|1,000|2,188
+Showmeyourheaven|0,685|0,987|2,478|0,987
+Lanaphor|0,000|1,865|3,714|1,865
+Tahir|0,000|1,344|1,000|1,344
+Sweet As Sugar|0,897|0,897|0,533|0,897
+Fruit Night|0,000|11,401|3,375|11,401
+Magister|0,000|1,293|1,000|1,293
+Augusta|0,361|0,998|0,866|0,998
+Izis|0,337|0,986|14,030|0,986
+
+
+---new race---
+Ragane|0,846|2,883|1,944|2,883
+Guarda|0,345|0,345|0,428|0,345
+Sorbet|0,000|0,316|1,333|0,316
+Invincible Gunner|2,817|2,778|3,963|2,778
+Monte Luppo|0,135|0,917|1,407|0,917
+Clouds Blue|2,068|1,211|8,682|1,211
+Classical Intikhab|0,000|3,415|2,637|3,415
+Bergen|0,000|0,774|5,750|0,774
+
+
+---new race---
+Street Bird|0,000|NaN|1,000|NaN
+Phoenix|0,000|2,136|1,000|2,136
+Sypnij Groszem|0,000|3,909|1,000|3,909
+Integracja|0,000|0,949|1,000|0,949
+Burkina Faso|0,000|1,683|1,000|1,683
+Jiffy|0,000|NaN|1,000|NaN
+Naomi|0,000|0,481|1,000|0,481
+
+
+---new race---
+Boy Mugatin|2,723|2,890|5,629|2,890
+Marsat|1,291|0,826|5,835|0,826
+Etorio|1,600|2,002|3,778|2,002
+Wadi Kahil|1,524|1,838|3,712|1,838
+Makayla|2,078|3,712|1,807|3,712
+Malala|0,000|2,789|4,810|2,789
+
+
+---new race---
+Montero|1,968|1,186|2,083|1,186
+Sea The Sky|0,984|2,095|2,449|2,095
+Tebinio|2,453|2,178|8,367|2,178
+Tahir|0,000|1,312|1,000|1,312
+Dargo|0,000|1,248|4,500|1,248
+Classical Intikhab|0,000|3,293|2,637|3,293
+Kolada|0,146|0,469|2,222|0,469
+Jam Romana|0,000|NaN|2,167|NaN
+
+
+---new race---
+Incognito|4,136|2,873|3,563|2,873
+Dacosse|1,583|2,191|7,977|2,191
+Alfea|6,204|1,839|1,679|1,839
+Sweet City|3,064|3,090|4,254|3,090
+Polski Lord|0,092|2,976|14,160|2,976
+Ame Sublime|3,230|5,503|2,400|5,503
+Baahy|0,809|1,861|1,829|1,861
+Saldana|0,000|0,774|5,112|0,774
+Indira|0,000|0,483|3,516|0,483
+
+
+---new race---
+Un Beso|0,000|NaN|1,000|NaN
+Gancegal|0,000|NaN|1,000|NaN
+Emiliano Zapata|0,000|NaN|1,000|NaN
+Blizbor|0,000|0,888|1,000|0,888
+Time of Change|0,000|1,467|1,000|1,467
+Kontusz|0,000|0,487|1,000|0,487
+Storius|0,000|1,440|1,000|1,440
+
+
+---new race---
+Pilecki|3,565|2,246|2,052|2,246
+Calmir|2,147|2,147|4,906|2,147
+Danot|0,000|1,626|1,000|1,626
+Masai Princess|0,000|0,387|2,710|0,387
+Diego|0,000|2,283|2,258|2,283
+Angara|0,000|NaN|1,000|NaN
+The Auld Hoose|0,000|1,626|1,000|1,626
+Mexican Moon|1,027|0,773|4,516|0,773
+
+
+---new race---
+Light Feather|0,000|0,644|1,000|0,644
+Torretta|0,000|NaN|1,000|NaN
+River Cash|0,000|0,658|1,000|0,658
+Tutti Frutti|0,000|0,501|1,000|0,501
+Isleen|0,000|4,471|1,000|4,471
+Ornella|0,000|0,644|1,000|0,644
+
+
+---new race---
+Pustynna Palma|0,000|1,554|1,000|1,554
+Tatra|0,000|NaN|1,000|NaN
+Balladyn Z|0,000|NaN|1,000|NaN
+Forla|0,000|1,554|1,000|1,554
+Eskariolla|0,000|1,230|1,000|1,230
+
+
+---new race---
+Nemezis|0,000|0,833|1,000|0,833
+Country Girl|0,000|1,732|1,000|1,732
+Bob The Lion|0,000|0,568|1,000|0,568
+Wallenrod|0,000|NaN|1,000|NaN
+Dżeser|0,000|1,732|1,000|1,732
+Be My Winner|0,000|NaN|1,000|NaN
+In Polonia|0,000|NaN|1,000|NaN
+
+
+---new race---
+Alkora|0,000|2,292|1,000|2,292
+Selrima Jr|0,000|1,622|1,000|1,622
+Narita|0,000|1,932|1,000|1,932
+Huerta|0,000|1,702|1,000|1,702
+Sugar|0,000|0,924|1,000|0,924
+Fire Fly|0,000|1,948|1,000|1,948
+Ninoczka|0,000|NaN|1,000|NaN
+
+
+---new race---
+Just Gold|0,501|1,151|0,701|1,151
+Dystans|1,199|2,190|2,253|2,190
+Lion Cut|0,543|0,543|1,040|0,543
+Novitor|0,878|0,980|3,400|0,980
+Theskyisnolimit|0,568|0,568|6,292|0,568
+Gardemarin|4,242|2,247|2,171|2,247
+Time of Glory|0,935|0,655|2,317|0,655
+
+
+---new race---
+Victory Kossack|0,000|2,974|1,000|2,974
+Fikats De Bozouls|0,000|2,352|1,000|2,352
+Athea|0,000|0,924|1,000|0,924
+Zolix|0,000|2,469|1,000|2,469
+Salm Andex|0,000|5,319|1,000|5,319
+Gabonn|0,000|NaN|1,000|NaN
+Echmeda|0,000|2,002|1,000|2,002
+Wildar Bs|0,000|2,002|1,000|2,002
+Amani|0,000|2,353|1,000|2,353
+
+
+---new race---
+Trenta|2,012|1,702|2,429|1,702
+Silver De Cerisy|1,869|1,869|2,357|1,869
+Nuweliya|0,000|0,485|2,168|0,485
+Elusive Star|0,000|0,655|4,905|0,655
+Speedy Szumawa|0,062|1,027|1,782|1,027
+Komandor|0,451|1,066|1,355|1,066
+Synastria|0,000|0,558|1,000|0,558
+Amoreena|0,275|0,645|2,045|0,645
+
+
+---new race---
+Purhib|3,598|3,712|2,572|3,712
+Amifa|1,890|1,890|4,376|1,890
+Aktyw|3,404|2,353|2,935|2,353
+Sheblat Al Khalediah|3,375|3,216|6,233|3,216
+Dar Duni|1,472|1,607|3,719|1,607
+Wilton|2,056|2,264|3,779|2,264
+Salman Al Khalediah|2,849|4,146|4,439|4,146
+Prospero|2,989|1,838|4,813|1,838
+
+
+---new race---
+Sabella|0,000|0,882|1,000|0,882
+Gmared|0,000|NaN|1,000|NaN
+Pontarion|0,000|1,992|1,000|1,992
+Akwantario|0,000|1,992|1,000|1,992
+Faiga De Bozouls|0,000|2,256|1,000|2,256
+Sadyba|0,000|NaN|1,000|NaN
+Khayyaam|0,000|1,372|1,000|1,372
+
+
+---new race---
+Interview|0,000|1,550|1,000|1,550
+Green Diams|0,000|0,742|1,000|0,742
+Vadis|0,000|NaN|1,000|NaN
+Koryo|0,000|NaN|1,000|NaN
+Legionista|0,000|1,552|1,000|1,552
+Nossferatu|0,000|NaN|1,000|NaN
+
+
+---new race---
+Zahrina|0,000|NaN|1,000|NaN
+Awantura|0,000|NaN|1,000|NaN
+Oktava Jr|0,000|1,622|1,000|1,622
+Elegantka|0,000|2,292|1,000|2,292
+Winnica|0,000|NaN|1,000|NaN
+Husila Jr|0,000|1,622|1,000|1,622
+Orange|0,000|NaN|1,000|NaN
+
+
+---new race---
+Basalah Al Khalediah|0,000|3,235|1,000|3,235
+Albar|2,755|2,755|2,210|2,755
+Himera Jr|1,435|1,622|3,097|1,622
+Sunny Amber Krf|0,559|1,042|1,380|1,042
+Wunderfitz Von Südbaden|1,521|1,273|2,611|1,273
+Addis|1,268|1,932|3,337|1,932
+Muszkiet|1,288|0,880|3,619|0,880
+
+
+---new race---
+Kaszi|0,375|0,283|1,157|0,283
+Calmir|2,093|2,093|4,906|2,093
+Ujoor|0,000|3,643|1,000|3,643
+Easy Go|0,745|0,704|5,383|0,704
+Urugwajka|1,292|0,883|0,457|0,883
+Vilnele|2,687|2,687|5,295|2,687
+Freddyisready|0,392|0,392|3,073|0,392
+French Flair|1,848|1,383|1,857|1,383
+
+
+---new race---
+Hadir|1,232|1,861|3,460|1,861
+Monther Al Khalediah|2,578|3,216|5,984|3,216
+Severina|3,270|2,238|4,457|2,238
+Letus Jr|1,762|1,762|2,967|1,762
+Najat Von Südbaden|1,372|1,372|3,952|1,372
+Pio|1,666|1,838|6,796|1,838
+Mina Maia|4,520|4,520|3,237|4,520
+
+
+---new race---
+Emperrato|0,000|4,685|1,000|4,685
+Black Sail|0,000|NaN|1,000|NaN
+Ramiro|0,000|NaN|1,000|NaN
+Nickie|0,000|0,702|1,000|0,702
+Isolin|0,000|4,467|1,000|4,467
+El Nancy|0,000|1,469|1,000|1,469
+Karyntia|0,000|1,683|1,000|1,683
+
+
+---new race---
+Magister|0,000|1,293|1,000|1,293
+Król Dżungli|0,000|0,888|4,952|0,888
+Speedy Szumawa|0,062|1,093|1,782|1,093
+Moon Star|0,000|0,641|1,000|0,641
+Sen O Warszawie|0,000|0,477|1,000|0,477
+Vologda|0,000|2,145|4,250|2,145
+Wall Street|0,000|0,760|1,000|0,760
+Dekret|0,000|3,958|1,000|3,958
+Nico|0,000|0,477|1,996|0,477
+
+
+---new race---
+Grossier|0,000|NaN|1,000|NaN
+Bint Marshal|0,000|1,948|1,000|1,948
+Alex Dream|0,000|1,626|1,000|1,626
+In Time|0,000|4,471|1,000|4,471
+La Belle De Mai|0,000|NaN|1,000|NaN
+Pharrell|0,000|NaN|1,000|NaN
+Zvezdan|0,000|NaN|1,000|NaN
+
+
+---new race---
+Emmea|0,000|1,823|1,000|1,823
+Etna|0,000|0,384|1,000|0,384
+Daggara|0,000|1,548|1,000|1,548
+Cerodena|0,000|NaN|1,000|NaN
+Escala|0,000|1,400|1,000|1,400
+
+
+---new race---
+Monarcha|0,000|NaN|1,000|NaN
+Camal Galib|0,000|0,899|1,000|0,899
+H Embition H|0,000|NaN|1,000|NaN
+Złota Ola|0,000|1,554|1,000|1,554
+Pop Art|0,000|NaN|1,000|NaN
+Pasawa|0,000|NaN|1,000|NaN
+Elgiana|0,000|1,620|1,000|1,620
+Wiktora|0,000|1,230|1,000|1,230
+
+
+---new race---
+Om Marakesh|0,000|2,008|1,000|2,008
+Sorglos Von Südbaden|0,000|3,403|1,000|3,403
+H Patricia H|0,000|NaN|1,000|NaN
+Asirah|0,000|2,729|1,000|2,729
+Makalfa Mk|0,000|2,023|1,000|2,023
+
+
+---new race---
+Subiectum|2,148|1,115|2,556|1,115
+Party Animal|1,538|1,538|3,378|1,538
+Salinger|0,000|0,313|3,000|0,313
+Fuengirola|0,207|0,715|3,583|0,715
+Elusive Star|0,000|0,648|4,905|0,648
+Wild Lily|3,780|2,298|0,951|2,298
+Fastwayout|0,739|1,341|2,600|1,341
+Sopran Tamo|1,202|0,545|6,892|0,545
+
+
+---new race---
+Lanaphor|0,000|1,907|3,714|1,907
+Sumidero|1,456|0,684|1,760|0,684
+Sorbet|0,000|0,316|1,333|0,316
+Izis|0,345|0,984|14,030|0,984
+Ukraina|0,345|1,347|1,652|1,347
+Time of Glory|0,944|0,650|2,317|0,650
+Felix|0,161|1,440|2,107|1,440
+Miss Kossakówna|0,855|0,483|3,330|0,483
+
+
+---new race---
+Lady Laila|0,000|NaN|1,000|NaN
+Street Bird|0,000|NaN|1,000|NaN
+Burkina Faso|0,000|1,644|1,000|1,644
+Mimosa|0,000|2,247|1,000|2,247
+Talkonya|0,000|2,247|1,000|2,247
+Tirsa|0,000|NaN|1,000|NaN
+Integracja|0,000|0,929|1,000|0,929
+Bocca|0,000|NaN|1,000|NaN
+Ode To Angel|0,000|2,049|1,000|2,049
+Travilla|0,000|NaN|1,000|NaN
+
+
+---new race---
+Penang|0,000|1,370|1,000|1,370
+Dżabir|0,000|1,194|1,000|1,194
+Belloren|0,000|1,366|1,000|1,366
+Paramus|0,000|NaN|1,000|NaN
+Peleng|0,000|NaN|1,000|NaN
+Abakus|0,000|0,239|1,000|0,239
+Wostok|0,000|NaN|1,000|NaN
+
+
+---new race---
+Mukhadar|0,000|NaN|1,000|NaN
+Chad|0,000|NaN|1,000|NaN
+Vent D'est|0,000|NaN|1,000|NaN
+Brave Joanna|0,000|2,153|1,000|2,153
+Syron|0,000|1,313|1,000|1,313
+Meherbaan|0,000|1,139|1,000|1,139
+Dark Blue|0,000|1,474|1,000|1,474
+Magic Life|0,000|4,476|1,000|4,476
+Taraka|0,000|1,702|1,000|1,702
+
+
+---new race---
+Mazovia Queen|2,817|3,835|8,014|3,835
+Fortune Teller|1,886|2,419|2,454|2,419
+Pianissima|0,000|2,246|4,085|2,246
+Javorka|0,295|1,066|2,361|1,066
+Mexican Moon|1,006|0,763|4,516|0,763
+Tartaria|1,376|2,247|2,433|2,247
+Księżna Anna|0,000|0,486|6,000|0,486
+
+
+---new race---
+Jouri Al Kharrat|0,000|NaN|1,000|NaN
+Sonella Jr|0,000|1,674|1,000|1,674
+Boy Mugatin|2,723|2,890|5,629|2,890
+Wadi Kahil|1,524|1,838|3,712|1,838
+Haneczka|0,891|1,801|2,379|1,801
+Tornado|0,000|1,176|1,906|1,176
+
+
+---new race---
+Rainbow Rakti|0,000|1,019|1,000|1,019
+King Artur|0,744|1,149|0,125|1,149
+Celadon|0,000|NaN|1,000|NaN
+Mimir|0,423|0,423|0,328|0,423
+Fangoria|0,558|1,149|9,456|1,149
+Zinedine|0,454|1,008|2,516|1,008
+
+
+---new race---
+Rakisz|0,109|0,724|0,925|0,724
+Tebinio|2,395|2,155|8,367|2,155
+Diora|0,000|0,862|1,000|0,862
+Zryw|0,423|0,658|0,678|0,658
+Semla|0,000|0,294|6,000|0,294
+Tanatos|0,655|0,730|2,881|0,730
+Symetria|0,246|0,981|0,981|0,981
+Calgary|0,000|0,294|5,025|0,294
+Infantidzi|0,403|0,981|1,787|0,981
+
+
+---new race---
+Haad Rin|0,109|0,641|1,217|0,641
+Dallina|0,255|0,381|2,270|0,381
+Idol|0,267|0,823|0,875|0,823
+Hey Calming|0,000|0,601|1,000|0,601
+Nagroda|0,532|0,381|1,577|0,381
+
+
+---new race---
+Kazal|0,498|0,498|1,500|0,498
+Remus|0,381|0,260|0,682|0,260
+Zew|0,602|0,600|2,115|0,600
+Kolada|0,131|0,426|2,222|0,426
+Vabank|0,000|NaN|1,150|NaN
+Dabadiyan|0,000|2,629|1,000|2,629
+Saldana|0,000|0,673|5,112|0,673
+
+
+---new race---
+Linovsky|0,984|1,140|2,405|1,140
+Indira|0,000|0,434|3,516|0,434
+Nebo|2,368|0,803|1,750|0,803
+Sorreno|0,000|1,140|6,361|1,140
+Bailando|1,344|0,685|1,795|0,685
+Sygryd|0,000|1,140|5,250|1,140
+Muza Degasa|0,000|1,891|2,577|1,891
+
+
+---new race---
+Larry Strikes|0,000|1,058|1,000|1,058
+Una Emocion|0,000|0,360|1,000|0,360
+Story of Spirit|0,000|0,789|1,000|0,789
+Mr Kossak|0,000|0,486|1,000|0,486
+Neapol|0,000|0,980|1,000|0,980
+Frozen Bronze|0,000|NaN|1,000|NaN
+Top Safety|0,000|0,504|1,000|0,504
+
+
+---new race---
+Tagra|3,450|2,012|2,812|2,012
+Big Mago|0,000|0,795|0,625|0,795
+Nider|0,632|0,847|2,912|0,847
+Arizona Ranger|0,000|NaN|1,000|NaN
+Key To Life|0,919|1,226|1,621|1,226
+
+
+---new race---
+Pagani|0,000|1,682|1,000|1,682
+Oman|0,000|1,972|1,000|1,972
+Forla|0,000|1,554|1,000|1,554
+Sukcesja|0,000|0,987|1,000|0,987
+Efina|0,000|NaN|1,000|NaN
+Kopra|0,000|0,899|1,000|0,899
+Zorilla|0,000|1,620|1,000|1,620
+
+
+---new race---
+Ordonka|0,000|NaN|1,000|NaN
+Garry|0,000|1,207|1,000|1,207
+Evimia|0,000|NaN|1,000|NaN
+Okinawa|0,000|1,735|1,000|1,735
+Wyżlica|0,000|NaN|1,000|NaN
+Girella|0,000|1,565|1,000|1,565
+
+
+---new race---
+Hipster|0,555|0,625|0,932|0,625
+Zarra|2,017|0,893|5,069|0,893
+Jam Romana|0,000|NaN|2,167|NaN
+Incognito|4,086|2,839|3,563|2,839
+Calgary|0,000|0,312|5,025|0,312
+Rex|0,000|NaN|3,000|NaN
+
+
+---new race---
+Khayyaam|0,000|1,372|1,000|1,372
+Doris Race|0,000|NaN|1,000|NaN
+Daggara|0,000|1,512|1,000|1,512
+Makalfa Mk|0,000|2,019|1,000|2,019
+Indianka|0,000|1,716|1,000|1,716
+Escala|0,000|1,375|1,000|1,375
+
+
+---new race---
+Tutti Frutti|0,000|0,501|1,000|0,501
+King Age of Jape|0,000|NaN|1,000|NaN
+Ranger|0,000|1,137|1,000|1,137
+In Polonia|0,000|NaN|1,000|NaN
+Diablo|0,000|1,539|1,000|1,539
+Uwertura|0,000|0,709|1,000|0,709
+
+
+---new race---
+Danot|0,000|1,626|1,000|1,626
+Jam Babinicz|0,429|0,908|1,595|0,908
+Syberia|0,000|0,444|6,242|0,444
+Tessa|0,000|1,488|1,043|1,488
+Agatek|0,510|0,324|1,617|0,324
+Dorrado|0,000|NaN|1,000|NaN
+Javari|0,000|1,137|6,000|1,137
+
+
+---new race---
+Phia|0,000|1,143|1,000|1,143
+Wentisca|0,000|1,412|1,000|1,412
+Mahira|0,000|1,366|1,000|1,366
+Widlica|0,000|NaN|1,000|NaN
+Gh Warisa|0,000|0,983|1,000|0,983
+El Yasmin|0,000|NaN|1,000|NaN
+Zirgina|0,000|1,932|1,000|1,932
+
+
+---new race---
+Aktyw|3,386|2,336|2,935|2,336
+Sekretarka|1,803|2,925|2,214|2,925
+Ussam De Carrere|2,835|4,496|9,065|4,496
+Amifa|1,850|1,850|4,376|1,850
+Guerro|3,000|1,782|3,254|1,782
+Salman Al Khalediah|2,832|4,076|4,439|4,076
+
+
+---new race---
+Blue Connoisseur|1,985|1,985|4,112|1,985
+Dilong|1,440|1,467|2,583|1,467
+Alfea|6,468|1,908|1,679|1,908
+Jalapena|2,815|1,083|1,656|1,083
+Shalkar|0,612|1,538|1,738|1,538
+The Auld Hoose|0,000|1,626|1,000|1,626
+Varese|0,000|1,234|1,943|1,234
+Atman|4,167|4,167|2,306|4,167
+Dazeekha|0,000|NaN|1,000|NaN
+Saldana|0,000|0,804|5,112|0,804
+
+
+---new race---
+Wildar Bs|0,000|2,002|1,000|2,002
+Hermes|0,000|NaN|1,000|NaN
+Elgin Jr|0,000|2,002|1,000|2,002
+Selrima Jr|0,000|1,674|1,000|1,674
+Ming|0,000|NaN|1,000|NaN
+Zejdar Bs|0,000|2,002|1,000|2,002
+Ghazantario|0,000|2,002|1,000|2,002
+Awantura|0,000|NaN|1,000|NaN
+Mister Mergis|0,000|NaN|1,000|NaN
+Narita|0,000|2,002|1,000|2,002
+Escada South|0,000|NaN|1,000|NaN
+Zadatok|0,000|NaN|1,000|NaN
+
+
+---new race---
+Xawery|11,968|11,968|3,992|11,968
+Time of Dream|3,930|1,977|2,032|1,977
+Nikus|3,748|2,177|2,902|2,177
+Umberto Caro|6,732|2,336|2,514|2,336
+Kokshe|8,276|6,220|7,592|6,220
+Pipasol|0,935|1,402|0,990|1,402
+Kenyatta|2,670|2,670|2,185|2,670
+
+
+---new race---
+Gared|1,153|0,645|2,079|0,645
+Indigo Ocean|1,085|1,085|2,734|1,085
+Ujoor|0,000|3,765|1,000|3,765
+Trojka|0,000|1,474|1,000|1,474
+Lafayett|1,063|0,658|0,937|0,658
+Nider|0,746|1,066|2,912|1,066
+Dystans|1,189|2,156|2,253|2,156
+Naos|0,000|0,907|5,390|0,907
+
+
+---new race---
+Salam Al Khalediah|0,000|5,270|1,000|5,270
+Almiza|6,778|3,336|1,334|3,336
+Lazom Al Khalediah|0,000|3,336|1,000|3,336
+Mohacz|4,389|4,128|5,242|4,128
+Zahaab|1,017|1,017|6,089|1,017
+
+
+---new race---
+Torrent|0,000|NaN|1,000|NaN
+Rebel|0,000|NaN|1,000|NaN
+Legionista|0,000|1,565|1,000|1,565
+Bocca|0,000|NaN|1,000|NaN
+Jiffy|0,000|NaN|1,000|NaN
+Silver Grey|0,000|NaN|1,000|NaN
+Oceanika|0,000|1,281|1,000|1,281
+
+
+---new race---
+Octobermen|0,000|1,113|5,196|1,113
+Big Red|0,000|0,899|2,602|0,899
+San Escobar|0,000|11,644|1,000|11,644
+Koniak|0,583|0,483|1,528|0,483
+Peregrino|0,059|0,059|1,028|0,059
+Jansen|0,377|0,984|2,102|0,984
+Zawieja|0,000|1,305|1,000|1,305
+Bergen|0,000|0,774|5,750|0,774
+
+
+---new race---
+Etorio|1,595|2,008|3,778|2,008
+Malala|0,000|2,729|4,810|2,729
+Boy Mugatin|2,748|2,898|5,629|2,898
+Dar Duni|1,472|1,592|3,719|1,592
+Hadir|1,260|1,854|3,460|1,854
+Marsat|1,263|0,813|5,835|0,813
+Pharma|0,000|NaN|1,000|NaN
+
+
+---new race---
+Mosanto|2,840|1,838|3,522|1,838
+Hipster|0,561|0,632|0,932|0,632
+Thorn|1,024|2,776|3,515|2,776
+Percy|1,481|2,191|3,818|2,191
+Turion|0,000|1,305|3,476|1,305
+Circle Centuria|1,689|2,191|2,783|2,191
+Masai Princess|0,000|0,370|2,710|0,370
+Lion Cut|0,540|0,540|1,040|0,540
+Deklaracja|0,000|0,483|4,489|0,483
+Javorka|0,290|1,057|2,361|1,057
+
+
+---new race---
+Classical Intikhab|0,000|3,474|2,637|3,474
+Tahir|0,000|1,408|1,000|1,408
+Augusta|0,378|1,040|0,866|1,040
+Sinfonia Varsovia|0,000|NaN|1,000|NaN
+Clouds Blue|2,112|1,222|8,682|1,222
+Dance With Molly|0,000|2,247|4,330|2,247
+Celtic Song|1,032|1,903|2,528|1,903
+Król Dżungli|0,000|0,909|4,952|0,909
+Dakard|0,550|0,538|2,387|0,538
+Rex|0,000|NaN|3,000|NaN
+Commodus|0,000|2,190|1,000|2,190
+
+
+---new race---
+Sweet Dream|4,601|3,552|3,410|3,552
+Shahad Athbah|5,800|2,907|6,263|2,907
+Rammas Al Khalediah|4,844|6,672|3,175|6,672
+Sahm Al Khalediah|0,000|3,031|1,000|3,031
+Saudi Al Khalediah|3,886|6,672|4,917|6,672
+Nesma Al Mels|4,073|3,725|5,092|3,725
+Burkan Al Khalediah|5,059|4,503|5,706|4,503
+
+
+---new race---
+Targa|0,213|1,046|1,739|1,046
+Naf|0,828|0,776|3,227|0,776
+Elusive Star|0,000|0,634|4,905|0,634
+Guarda|0,349|0,349|0,428|0,349
+Miss Mazovia|0,000|0,800|5,736|0,800
+Razyana|1,460|1,926|9,029|1,926
+Syberia|0,000|0,434|6,242|0,434
+Turnera|0,230|1,046|2,250|1,046
+
+
+---new race---
+Plontier|0,000|11,873|1,000|11,873
+Adorator|0,000|4,467|1,000|4,467
+Nickie|0,000|0,702|1,000|0,702
+Burkina Faso|0,000|1,683|1,000|1,683
+Dragon Fire|0,000|0,313|1,000|0,313
+Torys|0,000|NaN|1,000|NaN
+Diarado|0,000|1,308|1,000|1,308
+
+
+---new race---
+Step To Hope|3,864|4,416|0,857|4,416
+Moon Star|0,000|0,650|1,000|0,650
+Silver De Cerisy|1,806|1,806|2,357|1,806
+Sen O Warszawie|0,000|0,483|1,000|0,483
+Speedy Szumawa|0,063|1,082|1,782|1,082
+Iwillbefamous|1,008|2,196|3,304|2,196
+Monte Luppo|0,135|0,917|1,407|0,917
+
+
+---new race---
+Grants Black|0,000|5,758|1,000|5,758
+Mój Słodki|0,000|0,966|1,000|0,966
+Hornet|0,000|2,172|1,000|2,172
+Fleur Des Dunes|0,000|NaN|1,000|NaN
+King Royal|0,000|1,137|1,000|1,137
+Szafirka|0,000|1,319|1,000|1,319
+
+
+---new race---
+Cerodena|0,000|NaN|1,000|NaN
+Pustynna Palma|0,000|1,528|1,000|1,528
+Monarcha|0,000|NaN|1,000|NaN
+Elgiana|0,000|1,512|1,000|1,512
+Tatra|0,000|NaN|1,000|NaN
+Aluta|0,000|NaN|1,000|NaN
+Amarillo|0,000|NaN|1,000|NaN
+
+
+---new race---
+Rakija|3,975|4,467|1,583|4,467
+Danot|0,000|1,650|1,000|1,650
+Party Animal|1,538|1,538|3,378|1,538
+Subiectum|2,148|1,115|2,556|1,115
+Freddyisready|0,400|0,400|3,073|0,400
+Lord Speaker|0,000|0,641|1,000|0,641
+Sumidero|1,528|0,715|1,760|0,715
+Diego|0,000|2,298|2,258|2,298
+Zaya|2,400|2,400|8,475|2,400
+Big Red|0,000|0,903|2,602|0,903
+Dunayka|0,350|0,949|1,863|0,949
+
+
+---new race---
+Montero|2,064|1,211|2,083|1,211
+Ragane|0,846|2,883|1,944|2,883
+Dargo|0,000|1,302|4,500|1,302
+Percy|1,481|2,191|3,818|2,191
+Trenta|1,978|1,693|2,429|1,693
+Mexican Moon|0,984|0,751|4,516|0,751
+Tartaria|1,344|2,196|2,433|2,196
+Time of Glory|0,944|0,650|2,317|0,650
+
+
+---new race---
+Amaya|0,000|2,789|1,000|2,789
+Sadyba|0,000|NaN|1,000|NaN
+Zolix|0,000|2,469|1,000|2,469
+Kuwaiy|0,000|1,176|1,000|1,176
+Staccato|0,000|2,353|1,000|2,353
+Echmeda|0,000|2,002|1,000|2,002
+Bejrut|0,000|NaN|1,000|NaN
+Amani|0,000|2,353|1,000|2,353
+Bergamo|0,000|1,193|1,000|1,193
+
+
+---new race---
+Gancegal|0,000|NaN|1,000|NaN
+Silver Fog|0,000|0,360|1,000|0,360
+Wallenrod|0,000|NaN|1,000|NaN
+Sugar Daddy|0,000|1,139|1,000|1,139
+Meherbaan|0,000|1,139|1,000|1,139
+Green Diams|0,000|0,745|1,000|0,745
+Brave Joanna|0,000|2,153|1,000|2,153
+
+
+---new race---
+Vrom Kossack|3,102|3,685|4,558|3,685
+Monther Al Khalediah|2,615|3,176|5,984|3,176
+Najat Von Südbaden|1,400|1,400|3,952|1,400
+Prospero|3,008|1,823|4,813|1,823
+Letus Jr|1,764|1,764|2,967|1,764
+Purhib|3,619|3,685|2,572|3,685
+Grand Amour|3,610|1,804|3,820|1,804
+Haneczka|0,894|1,804|2,379|1,804
+
+
+---new race---
+Arkano|0,000|NaN|1,000|NaN
+Noble Eagle|0,000|1,130|1,000|1,130
+Un Beso|0,000|NaN|1,000|NaN
+Salasaman|0,000|2,118|1,000|2,118
+Kontusz|0,000|0,486|1,000|0,486
+Sicario|0,000|2,304|1,000|2,304
+Toghun|0,000|NaN|1,000|NaN
+One Way Ticket|0,000|0,539|1,000|0,539
+
+
+---new race---
+Bellerofont|1,952|2,191|2,477|2,191
+Magical Path|0,000|1,590|1,000|1,590
+Tribunal|1,509|2,402|2,644|2,402
+Dacosse|1,583|2,190|7,977|2,190
+Dakar|4,617|4,411|2,095|4,411
+Baahy|0,826|1,903|1,829|1,903
+Exciter|0,000|2,025|2,847|2,025
+
+
+---new race---
+Saragossa|0,000|1,712|5,255|1,712
+Nuweliya|0,000|0,487|2,168|0,487
+Step To Hope|4,032|4,608|0,857|4,608
+Jarl|0,823|0,804|2,617|0,804
+Miss Mazovia|0,000|0,804|5,736|0,804
+Fuengirola|0,203|0,711|3,583|0,711
+Dance With Molly|0,000|2,283|4,330|2,283
+
+
+---new race---
+Jouri Al Kharrat|0,000|NaN|1,000|NaN
+Wunderfitz Von Südbaden|1,532|1,293|2,611|1,293
+Etorio|1,574|1,972|3,778|1,972
+Sonella Jr|0,000|1,654|1,000|1,654
+Boy Mugatin|2,690|2,853|5,629|2,853
+Mohanned Al Khalediah|0,000|1,017|1,000|1,017
+Himera Jr|1,433|1,654|3,097|1,654
+Adding|1,251|1,320|3,446|1,320
+Midas Jr|1,188|1,654|3,680|1,654
+Marsat|1,297|0,827|5,835|0,827
+Wasilew|1,584|1,972|4,042|1,972
+
+
+---new race---
+Height of Beauty|3,078|1,010|9,712|1,010
+Omer|0,140|1,978|0,974|1,978
+Sea The Sky|0,864|1,841|2,449|1,841
+Medrock|4,203|2,780|6,326|2,780
+Ines D'ecosse|0,000|1,978|1,500|1,978
+Jam Romana|0,000|NaN|2,167|NaN
+Hot Wing|0,000|NaN|2,500|NaN
+
+
+---new race---
+Fara De Faust|0,000|NaN|1,000|NaN
+Sugar|0,000|0,924|1,000|0,924
+Alkora|0,000|2,353|1,000|2,353
+Zahrina|0,000|NaN|1,000|NaN
+Escada South|0,000|NaN|1,000|NaN
+Power Lady|0,000|NaN|1,000|NaN
+Zlatoyara Tersk|0,000|NaN|1,000|NaN
+Mahra|0,000|2,789|1,000|2,789
+Elegantka|0,000|2,353|1,000|2,353
+Huerta|0,000|1,739|1,000|1,739
+Mutta Jr|0,000|1,674|1,000|1,674
+Orange|0,000|NaN|1,000|NaN
+Fire Fly|0,000|2,011|1,000|2,011
+
+
+---new race---
+Plantea|0,000|11,995|1,000|11,995
+Sixte|0,000|1,890|1,000|1,890
+Imsexyandiknowit|0,000|NaN|1,000|NaN
+Haveyoueverseen|0,000|NaN|1,000|NaN
+Plejada|0,000|NaN|1,000|NaN
+Dreamline|0,000|NaN|1,000|NaN
+
+
+---new race---
+Arash|4,252|3,274|9,366|3,274
+Lazom Al Khalediah|0,000|3,366|1,000|3,366
+Sheblat Al Khalediah|3,300|3,176|6,233|3,176
+Ajiba Al Mels|1,109|3,366|2,811|3,366
+Wilton|2,100|2,260|3,779|2,260
+Jafeel Athbah|1,296|2,916|0,963|2,916
+Ouzbeks Du Panjshir|2,707|3,661|1,724|3,661
+Adash|1,310|0,804|2,092|0,804
+Velt Tersk|0,000|NaN|1,000|NaN
+
+
+---new race---
+Blizbor|0,000|0,908|1,000|0,908
+Arunas|0,000|3,355|1,000|3,355
+Country Girl|0,000|1,732|1,000|1,732
+Light Feather|0,000|0,641|1,000|0,641
+Syron|0,000|1,329|1,000|1,329
+Vadis|0,000|NaN|1,000|NaN
+Black Celebration|0,000|5,630|1,000|5,630
+
+
+---new race---
+Sweet City|2,996|3,021|4,254|3,021
+Gardemarin|4,050|2,145|2,171|2,145
+Tebidoro|0,000|2,188|1,000|2,188
+Invincible Gunner|2,777|2,723|3,963|2,723
+Fruit Night|0,000|11,401|3,375|11,401
+Tahir|0,000|1,344|1,000|1,344
+Novitor|0,873|0,986|3,400|0,986
+Tudemon|1,575|2,809|5,967|2,809
+Felix|0,161|1,438|2,107|1,438
+
+
+---new race---
+Dominer|1,344|1,344|1,742|1,344
+Alfea|6,072|1,803|1,679|1,803
+Showmeyourheaven|0,685|0,987|2,478|0,987
+Polski Lord|0,090|2,981|14,160|2,981
+Ame Sublime|3,154|5,376|2,400|5,376
+Just Gold|0,482|1,171|0,701|1,171
+Naf|0,883|0,812|3,227|0,812
+
+
+---new race---
+Fastwayout|0,731|1,344|2,600|1,344
+Trenta|2,012|1,702|2,429|1,702
+Saragossa|0,000|1,702|5,255|1,702
+Silver De Cerisy|1,869|1,869|2,357|1,869
+Miss Mazovia|0,000|0,806|5,736|0,806
+Nibella|0,000|0,958|4,944|0,958
+
+
+---new race---
+Dietmar|0,000|NaN|1,000|NaN
+Juria|0,000|1,486|1,000|1,486
+Nero|0,000|NaN|1,000|NaN
+Drabant|1,056|1,544|4,319|1,544
+Doviss|0,000|NaN|1,000|NaN
+Beskid|0,000|1,056|1,000|1,056
+Hajduk|0,000|1,056|1,000|1,056
+Dragon|0,000|2,353|1,000|2,353
+Will Be A Star|0,000|NaN|1,000|NaN
+Elwar|0,000|NaN|1,000|NaN
+Wanilia|0,000|NaN|1,000|NaN
+Fado|0,000|NaN|1,000|NaN
+
+
+---new race---
+Athea|0,000|0,945|1,000|0,945
+Sorglos Von Südbaden|0,000|3,351|1,000|3,351
+Oktava Jr|0,000|1,654|1,000|1,654
+Niard Tersk|0,000|NaN|1,000|NaN
+Zejdar Bs|0,000|1,972|1,000|1,972
+Alexandrit Tersk|0,000|NaN|1,000|NaN
+H Patricia H|0,000|NaN|1,000|NaN
+
+
+---new race---
+Alex Dream|0,000|1,629|1,000|1,629
+Interview|0,000|1,536|1,000|1,536
+Lady Laila|0,000|NaN|1,000|NaN
+Mój Słodki|0,000|0,929|1,000|0,929
+Dżeser|0,000|1,644|1,000|1,644
+Bocca|0,000|NaN|1,000|NaN
+Travilla|0,000|NaN|1,000|NaN
+Tirsa|0,000|NaN|1,000|NaN
+
+
+---new race---
+Free Spirit|0,000|NaN|1,000|NaN
+Sabella|0,000|0,945|1,000|0,945
+Wokalia|0,000|NaN|1,000|NaN
+Sagdiana Tersk|0,000|NaN|1,000|NaN
+Fikats De Bozouls|0,000|2,400|1,000|2,400
+Hydra|0,000|1,841|1,000|1,841
+Emmea|0,000|1,840|1,000|1,840
+Samima|0,000|2,815|1,000|2,815
+Etna|0,000|0,367|1,000|0,367
+Namona Mk|0,000|1,972|1,000|1,972
+
+
+---new race---
+Yamas Szumawa|0,000|NaN|1,000|NaN
+Bob The Lion|0,000|0,573|1,000|0,573
+Nemezis|0,000|0,807|1,000|0,807
+Tryton|0,000|1,424|1,000|1,424
+War Command|0,000|1,139|1,000|1,139
+Integracja|0,000|0,958|1,000|0,958
+Dizara|0,000|1,474|1,000|1,474
+Via Vitae|0,000|NaN|1,000|NaN
+
+
+---new race---
+Namibia|0,000|NaN|1,000|NaN
+Faiga De Bozouls|0,000|2,304|1,000|2,304
+Aj Evio|0,000|0,898|1,000|0,898
+Elniza|0,000|NaN|1,000|NaN
+Hockey Tersk|0,000|NaN|1,000|NaN
+Złoty Opal|0,000|1,400|1,000|1,400
+
+
+---new race---
+Pilecki|3,565|2,246|2,052|2,246
+Angara|0,000|NaN|1,000|NaN
+Lanaphor|0,000|1,948|3,714|1,948
+Zaya|2,352|2,352|8,475|2,352
+The Auld Hoose|0,000|1,626|1,000|1,626
+Pianissima|0,000|2,257|4,085|2,257
+Sileroy|1,200|2,172|1,646|2,172
+
+
+---new race---
+Urugwajka|1,292|0,883|0,457|0,883
+Targa|0,213|1,046|1,739|1,046
+Fuengirola|0,204|0,714|3,583|0,714
+Turnera|0,230|1,046|2,250|1,046
+Peregrino|0,056|0,056|1,028|0,056
+Dekret|0,000|3,734|1,000|3,734
+Insignia|0,000|1,291|2,279|1,291
+
+
+---new race---
+Theskyisnolimit|0,558|0,558|6,292|0,558
+Mazovia Queen|2,753|3,822|8,014|3,822
+Miss Kossakówna|0,855|0,483|3,330|0,483
+Masai Princess|0,000|0,370|2,710|0,370
+Fortune Teller|1,846|2,417|2,454|2,417
+Ukraina|0,345|1,347|1,652|1,347
+Full of Promise|0,000|NaN|1,000|NaN
+
+
+---new race---
+Bint Marshal|0,000|1,938|1,000|1,938
+Amazing Nalah|0,000|NaN|1,000|NaN
+Mimosa|0,000|2,298|1,000|2,298
+Nickie|0,000|0,702|1,000|0,702
+Isleen|0,000|4,467|1,000|4,467
+River Cash|0,000|0,648|1,000|0,648
+Karyntia|0,000|1,683|1,000|1,683
+Talkonya|0,000|2,298|1,000|2,298
+Ornella|0,000|0,641|1,000|0,641
+Ecco La|0,000|NaN|1,000|NaN
+
+
+---new race---
+Deklaracja|0,000|0,469|4,489|0,469
+Magister|0,000|1,275|1,000|1,275
+Sinfonia Varsovia|0,000|NaN|1,000|NaN
+San Escobar|0,000|11,158|1,000|11,158
+Vologda|0,000|2,095|4,250|2,095
+Księżna Anna|0,000|0,469|6,000|0,469
+Moon Star|0,000|0,628|1,000|0,628
+Sorbet|0,000|0,301|1,333|0,301
+
+
+---new race---
+Pride of Nelson|0,000|NaN|1,000|NaN
+Makfire|0,000|4,656|1,000|4,656
+Royal Helen|0,000|NaN|1,000|NaN
+Carla Cola|0,000|NaN|1,000|NaN
+Caresser|0,000|11,968|1,000|11,968
+Zvezdan|0,000|NaN|1,000|NaN
+
+
+---new race---
+Vallenrod|0,000|NaN|1,000|NaN
+Pregoła|0,000|1,194|1,000|1,194
+Tatra|0,000|NaN|1,000|NaN
+Złota Ola|0,000|1,544|1,000|1,544
+Pasawa|0,000|NaN|1,000|NaN
+Elgiana|0,000|1,548|1,000|1,548
+Editoria|0,000|1,400|1,000|1,400
+Wiktora|0,000|1,194|1,000|1,194
+
+
+---new race---
+Emiliano Zapata|0,000|NaN|1,000|NaN
+Phoenix|0,000|2,156|1,000|2,156
+Bullet Boy|0,000|1,782|1,000|1,782
+Taraka|0,000|1,702|1,000|1,702
+El Nancy|0,000|1,474|1,000|1,474
+Magic Life|0,000|4,476|1,000|4,476
+Be My Winner|0,000|NaN|1,000|NaN
+Langrin|0,000|NaN|1,000|NaN
+
+
+---new race---
+Amifa|1,890|1,890|4,376|1,890
+Severina|3,270|2,238|4,457|2,238
+Brasilia|0,840|2,238|6,386|2,238
+Makayla|2,078|3,712|1,807|3,712
+Albar|2,789|2,789|2,210|2,789
+Wadi Kahil|1,524|1,838|3,712|1,838
+Salman Al Khalediah|2,849|4,146|4,439|4,146
+
+
+---new race---
+Kaszi|0,372|0,286|1,157|0,286
+Gared|1,159|0,644|2,079|0,644
+Calmir|2,147|2,147|4,906|2,147
+Easy Go|0,756|0,717|5,383|0,717
+Black Beauty|0,600|2,172|1,346|2,172
+Dacosse|1,556|2,172|7,977|2,172
+Stella|0,648|0,966|1,096|0,966
+Mourtajez|1,571|4,755|6,048|4,755
+Fabulous Angel|3,111|5,453|1,590|5,453
+
+
+---new race---
+Dakar|4,617|4,411|2,095|4,411
+Gardemarin|4,242|2,247|2,171|2,247
+Trojka|0,000|1,442|1,000|1,442
+Król Dżungli|0,000|0,909|4,952|0,909
+Dilong|1,410|1,442|2,583|1,442
+Varese|0,000|1,222|1,943|1,222
+Wall Street|0,000|0,789|1,000|0,789
+
+
+---new race---
+Staccato|0,000|2,292|1,000|2,292
+Hermes|0,000|NaN|1,000|NaN
+Om Marakesh|0,000|1,932|1,000|1,932
+Ghazantario|0,000|1,932|1,000|1,932
+Ming|0,000|NaN|1,000|NaN
+Magnesia Mk|0,000|1,932|1,000|1,932
+Escada South|0,000|NaN|1,000|NaN
+Asirah|0,000|2,755|1,000|2,755
+Wielka Dąbrowa|0,000|1,932|1,000|1,932
+Zadatok|0,000|NaN|1,000|NaN
+Wildar Bs|0,000|1,932|1,000|1,932
+Winnica|0,000|NaN|1,000|NaN
+Clarion|0,000|1,948|1,000|1,948
+Porywacz|0,000|NaN|1,000|NaN
+Awantura|0,000|NaN|1,000|NaN
+Sukcesja|0,000|0,966|1,000|0,966
+Orange|0,000|NaN|1,000|NaN
+
+
+---new race---
+Gmared|0,000|NaN|1,000|NaN
+Faysalanne De Bozouls|0,000|2,304|1,000|2,304
+Salm Andex|0,000|5,271|1,000|5,271
+Gabonn|0,000|NaN|1,000|NaN
+Feysal Du Vallois|0,000|NaN|1,000|NaN
+Vykhodec Tersk|0,000|NaN|1,000|NaN
+Belloren|0,000|1,400|1,000|1,400
+
+
+---new race---
+Noble Eagle|0,000|1,137|1,000|1,137
+Toghun|0,000|NaN|1,000|NaN
+Neptune|0,000|2,283|1,000|2,283
+Kontusz|0,000|0,487|1,000|0,487
+Sombor|0,000|2,283|1,000|2,283
+Storius|0,000|1,440|1,000|1,440
+Say Szumawa|0,000|0,747|1,000|0,747
+Chad|0,000|NaN|1,000|NaN
+Time of Change|0,000|1,467|1,000|1,467
+
+
+---new race---
+Vrom Kossack|3,168|3,712|4,558|3,712
+Najat Von Südbaden|1,372|1,372|3,952|1,372
+Hadir|1,232|1,861|3,460|1,861
+Adding|1,266|1,329|3,446|1,329
+Sonella Jr|0,000|1,674|1,000|1,674
+Empresso|1,867|2,002|7,391|2,002
+Midas Jr|1,215|1,674|3,680|1,674
+Malala|0,000|2,789|4,810|2,789
+Haneczka|0,891|1,801|2,379|1,801
+Arga Bs|0,000|2,002|1,000|2,002
+Letus Jr|1,762|1,762|2,967|1,762
+Ilay Fleur De Lys|0,000|NaN|1,000|NaN
+Marsat|1,291|0,826|5,835|0,826
+
+
+---new race---
+Ujoor|0,000|3,724|1,000|3,724
+Atman|4,232|4,232|2,306|4,232
+French Flair|1,890|1,415|1,857|1,415
+Celtic Song|1,080|1,892|2,528|1,892
+Wild Lily|3,780|2,298|0,951|2,298
+Saragossa|0,000|1,683|5,255|1,683
+Tanaita|0,000|NaN|4,708|NaN
+Miss Mazovia|0,000|0,808|5,736|0,808
+Biancavilla|0,000|0,808|3,275|0,808
+
+
+---new race---
+Shannon Queen|12,120|3,292|3,558|3,292
+Burkan Al Khalediah|4,839|4,310|5,706|4,310
+Nesma Al Mels|3,891|3,559|5,092|3,559
+Bandolero|4,769|2,087|4,811|2,087
+Salam Al Khalediah|0,000|4,898|1,000|4,898
+Celebryta|2,856|1,654|3,519|1,654
+
+
+---new race---
+Lafayett|1,063|0,658|0,937|0,658
+Subiectum|2,151|1,123|2,556|1,123
+Sumidero|1,531|0,714|1,760|0,714
+Black Beauty|0,594|2,156|1,346|2,156
+Sopran Tamo|1,213|0,549|6,892|0,549
+Javorka|0,293|1,066|2,361|1,066
+Fuengirola|0,205|0,714|3,583|0,714
+
+
+---new race---
+Wostok|0,000|NaN|1,000|NaN
+Pustynna Palma|0,000|1,550|1,000|1,550
+Camal Galib|0,000|0,898|1,000|0,898
+Monarcha|0,000|NaN|1,000|NaN
+H Embition H|0,000|NaN|1,000|NaN
+Serbia|0,000|1,215|1,000|1,215
+Balladyn Z|0,000|NaN|1,000|NaN
+
+
+---new race---
+Time of Dream|3,935|1,973|2,032|1,973
+Harlem|1,800|1,068|3,267|1,068
+Magical Path|0,000|1,626|1,000|1,626
+Dazeekha|0,000|NaN|1,000|NaN
+Jalapena|2,815|1,083|1,656|1,083
+Vilnele|2,746|2,746|5,295|2,746
+Shalkar|0,612|1,538|1,738|1,538
+Fighterka|0,000|NaN|1,000|NaN
+Exciter|0,000|1,982|2,847|1,982
+Lion Cut|0,532|0,532|1,040|0,532
+Indigo Ocean|1,078|1,078|2,734|1,078
+Da Milano|0,000|NaN|1,000|NaN
+Captain Aragorn|2,568|1,461|1,291|1,461
+
+
+---new race---
+Super Star|1,325|2,925|2,617|2,925
+Aktyw|3,386|2,336|2,935|2,336
+Ouzbeks Du Panjshir|2,829|3,661|1,724|3,661
+Rajwan Al Khalediah|0,000|3,336|1,000|3,336
+Etorio|1,574|1,972|3,778|1,972
+Wunderfitz Von Südbaden|1,532|1,293|2,611|1,293
+Dirhem|2,205|1,103|2,987|1,103
+Mohanned Al Khalediah|0,000|1,017|1,000|1,017
+
+
+---new race---
+Bergen|0,000|0,789|5,750|0,789
+Step To Hope|3,948|4,512|0,857|4,512
+Octobermen|0,000|1,130|5,196|1,130
+Nuweliya|0,000|0,486|2,168|0,486
+Dance With Molly|0,000|2,247|4,330|2,247
+Chibichibi|0,000|2,190|4,000|2,190
+Naos|0,000|0,909|5,390|0,909
+Muza Degasa|0,000|2,247|2,577|2,247
+
+
+---new race---
+Top Medina|5,076|3,685|0,667|3,685
+Arash|4,252|3,274|9,366|3,274
+Sekretarka|1,839|2,989|2,214|2,989
+Dhafar Al Khalediah|0,000|6,788|1,000|6,788
+Jafeel Athbah|1,296|2,916|0,963|2,916
+Guerro|3,047|1,804|3,254|1,804
+Ussam De Carrere|2,967|4,673|9,065|4,673
+Almiza|6,922|3,366|1,334|3,366
+Dar Duni|1,472|1,592|3,719|1,592
+
+
+---new race---
+Muminek|0,000|4,471|1,000|4,471
+Lady Konstancin|0,000|NaN|1,000|NaN
+Majkel|0,000|NaN|1,000|NaN
+Adorator|0,000|4,471|1,000|4,471
+King Royal|0,000|1,137|1,000|1,137
+Ukka|0,000|1,319|1,000|1,319
+
+
+---new race---
+Han Bersael|0,000|6,771|1,000|6,771
+Dragon|0,000|2,310|1,000|2,310
+Akwantario|0,000|1,992|1,000|1,992
+Dżabir|0,000|1,189|1,000|1,189
+Elgazonn|0,000|1,789|1,000|1,789
+
+
+---new race---
+Blue Connoisseur|1,953|1,953|4,112|1,953
+Dystans|1,199|2,190|2,253|2,190
+Thorn|1,027|2,726|3,515|2,726
+Bellerofont|1,952|2,191|2,477|2,191
+Augusta|0,378|1,040|0,866|1,040
+Spasski|1,350|1,350|2,660|1,350
+Circle Centuria|1,682|2,190|2,783|2,190
+
+

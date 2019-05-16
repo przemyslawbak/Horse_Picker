@@ -1,0 +1,334 @@
+﻿get { return _horse.SiblingsIndex; } -> trafione 6
+
+---new race---5
+Mosanto|0,380
+Dominer|0,274
+Hipster|0,234
+Gardemarin|0,513
+Exciter|0,912
+Hot Wing|NaN
+Circle Centuria|0,601
+
+
+---new race---2
+Albar|0,683
+Rajwan Al Khalediah|1,056
+Boy Mugatin|0,882
+Wunderfitz Von Südbaden|0,255
+Hadir|0,448
+Wasilew|0,462
+Himera Jr|0,326
+Marsat|0,124
+Ilay Fleur De Lys|NaN
+
+
+---new race---6
+Subiectum|0,241
+Shalkar|0,465
+Danot|0,305
+Indigo Ocean|0,273
+Sumidero|0,196
+Trojka|0,518
+Sinfonia Varsovia|NaN
+Dystans|0,618
+Miss Kossakówna|0,154
+Dilong|0,518
+
+
+---new race---2
+Salasaman|0,643
+Caresser|5,343
+Muminek|2,082
+One Way Ticket|0,123
+Torrent|NaN
+Carla Cola|NaN
+Zvezdan|NaN
+Royal Helen|NaN
+
+
+---new race---1
+Dżabir|0,306
+Belloren|0,297
+Peleng|NaN
+Etna|0,040
+Paramus|NaN
+Monarcha|NaN
+Wostok|NaN
+
+
+---new race---1
+Talkonya|0,583
+Rebel|NaN
+Mimosa|0,583
+Langrin|NaN
+Ramiro|NaN
+Doker|0,583
+Bocca|NaN
+Vi Verdi Caro|0,399
+Torys|NaN
+San Marino|NaN
+Karyntia|0,288
+
+
+---new race---1
+Fortune Teller|0,474
+Masai Princess|0,116
+Turion|0,318
+Octobermen|0,340
+Król Dżungli|0,279
+Peregrino|0,038
+Ugoda|0,279
+
+
+---new race---4
+Camal Galib|0,155
+Evimia|NaN
+H Embition H|NaN
+Elgiana|0,305
+Aluta|NaN
+
+
+---new race---1
+Hermes|NaN
+Sorglos Von Südbaden|1,097
+H Patricia H|NaN
+Escada South|NaN
+Sachem|NaN
+Asirah|0,683
+Zadatok|NaN
+Elgin Jr|0,462
+
+
+---new race---3
+Sileroy|0,614
+Party Animal|0,403
+Atman|0,986
+Salinger|0,174
+Ujoor|0,780
+Pianissima|0,541
+Fuengirola|0,197
+Wild Lily|0,598
+Jarl|0,273
+Komandor|0,284
+Miss Mazovia|0,273
+Sini|0,346
+
+
+---new race---2
+Rammas Al Khalediah|2,665
+Salam Al Khalediah|4,457
+Nesma Al Mels|0,717
+Top Medina|1,249
+Aktyw|0,524
+Anood Al Khalediah|0,757
+Arash|0,629
+Ajiba Al Mels|1,060
+Almiza|1,060
+Zahaab|0,173
+Jafeel Athbah|0,932
+Letus Jr|0,360
+
+
+---new race---4
+Harlem|0,282
+Calmir|0,369
+Kaszi|0,203
+Blue Connoisseur|0,681
+Tribunal|0,718
+Dazeekha|NaN
+Magical Path|0,310
+Gared|0,246
+Vilnele|0,524
+Pipasol|0,436
+
+
+---new race---3
+Majkel|NaN
+Lady Konstancin|NaN
+Adorator|2,074
+King Royal|0,347
+Isolin|2,074
+Syron|0,459
+Carlito|0,441
+Devilinthedetail|NaN
+Doc Davis|NaN
+Hornet|0,618
+
+
+---new race---6
+Tebidoro|0,617
+Showmeyourheaven|0,235
+Lanaphor|0,660
+Tahir|0,292
+Sweet As Sugar|0,459
+Fruit Night|5,068
+Magister|0,314
+Augusta|0,330
+Izis|0,223
+
+
+---new race---7
+Ragane|1,076
+Guarda|0,249
+Sorbet|0,177
+Invincible Gunner|0,378
+Monte Luppo|0,280
+Clouds Blue|0,456
+Classical Intikhab|1,221
+Bergen|0,271
+
+
+---new race---3
+Street Bird|NaN
+Phoenix|0,608
+Sypnij Groszem|0,692
+Integracja|0,215
+Burkina Faso|0,296
+Jiffy|NaN
+Naomi|0,151
+
+
+---new race---5
+Boy Mugatin|0,894
+Marsat|0,124
+Etorio|0,469
+Wadi Kahil|0,545
+Makayla|1,249
+Malala|0,676
+
+
+---new race---6
+Montero|0,458
+Sea The Sky|0,530
+Tebinio|0,610
+Tahir|0,283
+Dargo|0,436
+Classical Intikhab|1,236
+Kolada|0,150
+Jam Romana|NaN
+
+
+---new race---6
+Incognito|0,535
+Dacosse|0,621
+Alfea|1,132
+Sweet City|0,778
+Polski Lord|0,454
+Ame Sublime|1,350
+Baahy|0,482
+Saldana|0,271
+Indira|0,154
+
+
+---new race---5
+Un Beso|NaN
+Gancegal|NaN
+Emiliano Zapata|NaN
+Blizbor|0,450
+Time of Change|0,518
+Kontusz|0,154
+Storius|0,320
+
+
+---new race---5
+Pilecki|0,541
+Calmir|0,370
+Danot|0,305
+Masai Princess|0,123
+Diego|0,593
+Angara|NaN
+The Auld Hoose|0,305
+Mexican Moon|0,220
+
+
+---new race---5
+Light Feather|0,249
+Torretta|NaN
+River Cash|0,215
+Tutti Frutti|0,153
+Isleen|2,074
+Ornella|0,249
+
+
+---new race---5
+Pustynna Palma|0,292
+Tatra|NaN
+Balladyn Z|NaN
+Forla|0,292
+Eskariolla|0,290
+
+
+---new race---1
+Nemezis|0,342
+Country Girl|0,307
+Bob The Lion|0,223
+Wallenrod|NaN
+Dżeser|0,307
+Be My Winner|NaN
+In Polonia|NaN
+
+
+---new race---1
+Alkora|0,510
+Selrima Jr|0,319
+Narita|0,451
+Huerta|0,401
+Sugar|0,107
+Fire Fly|0,340
+Ninoczka|NaN
+
+
+---new race---2
+Just Gold|0,255
+Dystans|0,622
+Lion Cut|0,275
+Novitor|0,222
+Theskyisnolimit|0,223
+Gardemarin|0,580
+Time of Glory|0,215
+
+
+---new race---5
+Victory Kossack|0,797
+Fikats De Bozouls|0,839
+Athea|0,107
+Zolix|0,664
+Salm Andex|4,457
+Gabonn|NaN
+Echmeda|0,469
+Wildar Bs|0,469
+Amani|0,524
+
+
+---new race---2
+Trenta|0,301
+Silver De Cerisy|0,374
+Nuweliya|0,153
+Elusive Star|0,214
+Speedy Szumawa|0,307
+Komandor|0,284
+Synastria|0,208
+Amoreena|0,248
+
+
+---new race---7
+Purhib|1,249
+Amifa|0,446
+Aktyw|0,524
+Sheblat Al Khalediah|0,757
+Dar Duni|0,438
+Wilton|0,508
+Salman Al Khalediah|3,402
+Prospero|0,545
+
+
+---new race---5
+Sabella|0,100
+Gmared|NaN
+Pontarion|0,463
+Akwantario|0,463
+Faiga De Bozouls|0,805
+Sadyba|NaN
+Khayyaam|0,211
+
+

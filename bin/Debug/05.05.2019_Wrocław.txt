@@ -1,0 +1,136 @@
+﻿Race day: 05.05.2019
+City: Wrocław
+
+Race number: 1
+Race distance: 1400
+Race category: II
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Echra;Dostatok;0;0;0,000;2,221;0,000;SI 2; dż I 16/163=0,098;D 4 - III
+Elfais;Vasyli Kossack;0;0;0,000;1,426;0,000;Horse found by father
+Faysal;Fedain;0;0;0,000;1,880;0,000;SI 3; dż I 4/15=0,267; D 1 - II
+Tracjaa;Ontario Hf;0;0;0,000;1,779;0,000;SI 5; dż I 18/118=0,152; D 4 
+Guarf De Bozouls;Muguet De Pascade;0;0;0,000;2,935;0,000;SI 1; dż I 16/69=0,232 D 2 - I
+Kayal Al Khalediah;Hyyaf Al Khalediah;0;0;0,000;1,821;0,000;SI 4; dż I 16/67=0,239 D 2 - III
+Guarni De Bozouls;Muguet De Pascade;0;0;0,000;2,935;0,000;SI 1; dż I 0/14=0
+Gh Amber;Df Kahil;0;0;0,000;0,000;0,000;Horse not found
+Witalia;Vitorio To;0;0;0,000;1,254;0,000;Horse found by father
+
+
+Race number: 2
+Race distance: 3200
+Race category: płoty
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Le Grand;Grand Presidium;8;21;6,112;1,205;9,809;Score = 6,112 I
+Banja Luka;Sorbie Tower;5;19;0,077;1,408;1,662;Score = 0,077
+Golden Devil;Pop Rock;0;0;0,000;0,530;0,000;Horse found by father
+Sorreno;Estejo;4;12;0,173;0,969;4,914;Score = 0,173
+Trim;Belenus;7;18;4,608;1,740;5,255;Score = 4,608 II
+Neo;Ecosse;6;21;1,374;2,228;9,614;Score = 1,374
+Tagra;Soldier of Fortune;5;14;3,648;1,975;4,330;Score = 3,648 III
+
+
+Race number: 3
+Race distance: 1907
+Race category: III
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Travilla;Star Poker;3;2;0,000;1,068;5,352;Score = 1,068
+One Way Ticket;Glavalcour;3;3;1,139;0,951;11,000;Score = 1,139
+In Polonia;Pop Rock;3;4;0,000;0,561;3,917;Score = 0,561
+Tutti Frutti;Safety Wire;3;4;1,725;0,674;3,095;Score = 1,725 II
+Diablo;San Moritz;3;3;0,000;1,487;5,667;Score = 1,487
+See You;Da Xian;3;0;0,000;2,011;1,000;Score = 2,011
+Una Emocion;Dżulietto;3;1;3,651;1,523;1,714;Score = 3,651 I
+Ruler In Pink;Rulership;0;0;0,000;0,000;0,000;Horse not found
+Ranger;October;3;2;0,000;1,611;4,000;Score = 1,611 III
+
+
+Race number: 4
+Race distance: 4200
+Race category: płoty
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Icarium;Medicean;0;0;0,000;10,035;0,000;Horse found by father dż ?
+Celadon;Sin Kiang;10;5;3,780;3,780;10,688;Score = 3,780 5 dż 0/5
+Linngar;Linngari;0;0;0,000;0,000;0,000;Horse not found dż 5/18=0,27
+Hayley;Needham's Fort;7;2;0,000;0,637;16,962;Score = 0,637
+Espoir De L`Oasis;;0;0;0,000;0,000;0,000;Horse not found
+Arizona Ranger;Stowaway;6;3;0,000;NaN;16,833;Score = NaN
+Mimir;Star Fury;9;9;5,927;5,927;8,309;Score = 5,927 2 dż 2/8=0,25 I
+Lancaster Rose;Windsor Knot;5;0;0,000;3,838;1,000;Score = 3,838 4 dż 0/21
+Starbuck;Tiger Cafe;10;10;6,355;6,158;9,643;Score = 6,355 1 dż 0/2
+Netto;Kornel;8;34;4,335;1,087;10,929;Score = 4,335 3 dż 0/11
+Palazzo Corsini;Galileo (IRE, 1998);5;1;0,000;1,000;17,500;Score = 1,000
+Hubal;Safety Wire;7;2;0,000;0,505;2,625;Score = 0,505
+
+
+Race number: 5
+Race distance: 1600
+Race category: III
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Urugwajka;Needham's Fort;5;14;0,510;0,456;4,348;Score = 0,510
+Baahy;Arcano;6;23;0,903;1,692;2,058;Score = 0,903 - dż 2/6=0,33 - I
+Moon;Dżulietto;4;4;0,540;1,573;1,211;Score = 0,540
+Tudemon;Suteki Shinsukekun;5;17;0,888;1,611;3,225;Score = 0,888 - dż 4/31=0,129 - III
+Tessa;Sexman;8;8;0,000;1,471;0,937;
+Stefanka;Viritim;4;7;0,383;0,383;1,559;Score = 0,383
+Naos;Needham's Fort;4;13;0,142;0,456;2,877;Score = 0,142
+Nider;Nowogródek;5;26;0,583;1,072;2,301;Score = 0,583
+Sygryd;Estejo;4;6;0,350;0,658;1,946;Score = 0,350
+Essea;Mr. Alkohol;8;42;0,861;0,462;2,198;Score = 0,861 - dż 5/35=0,143 - II
+Sini;October;4;5;0,300;1,651;1,487;Score = 0,300
+
+
+Race number: 6
+Race distance: 3400
+Race category: płoty
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Speeder;;0;0;0,000;0,000;0,000;Horse not found
+Fringant De Chanay;;0;0;0,000;0,000;0,000;Horse not found
+Calgary;Silver Whistle;4;10;0,166;0,222;2,818;Score = 0,166
+Cosmic Magic;;0;0;0,000;0,000;0,000;Horse not found
+Octobermen;October;4;10;0,119;1,354;1,570;Score = 0,119
+Motiv;;0;0;0,000;0,000;0,000;Horse not found
+Trenta;Camill;4;16;0,596;0,488;1,422;Score = 0,596 - II
+Tanatos;Calming Influence;4;11;0,260;1,669;3,409;Score = 0,260 - III
+Nevado;Fly To The Stars;4;0;0,000;1,047;1,000;
+Nebo;Needham's Fort;4;10;4,033;0,701;2,475;Score = 4,033 - I
+
+
+Race number: 7
+Race distance: 1600
+Race category: III
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Jarabina;Star Poker;3;0;0,000;1,107;1,000;Score = 1,107
+Flame Proof;Pour Moi;3;0;0,000;3,287;1,000;SI 2; dż 16/67=0,239 - II
+Mobecq;Rajsaman;3;0;0,000;4,547;1,000;SI 1; dż 4/15=0,267 - I
+Astra Aspera;Canford Cliffs;3;0;0,000;2,587;1,000;SI 3; dż 16/163=0,098
+Zjawa;Indy Champ;3;0;0,000;0,666;1,000;Score = 0,666
+Kacossa;Ecosse;3;0;0,000;2,196;1,000;SI 3; dż 5/35=0,143 - III
+Enzo;Lions Call;3;0;0,000;NaN;1,000;Score = NaN
+
+
+
+
+
+Race number: 7
+Race distance: 1800
+Race category: dd
+
+Horse name;Father;Age;Total races;Win index;Siblings index;Category index;Comments
+Silver Grey;Kendargent;3;2;0,000;NaN;5,571;Score = NaN - II
+Integracja;Tempelwächter;3;3;0,000;0,979;3,916;Score = 0,979
+El Nancy;Golden Tirol;3;2;0,000;1,225;4,446;Score = 1,225
+Vadis;Battle of Marengo;3;2;0,000;2,520;4,071;Score = 2,520
+Ornella;Grand Presidium;3;3;0,000;0,722;6,848;Score = 0,722 - I
+Dragon Fire;Silver Whistle;3;2;0,000;0,269;4,714;Score = 0,269
+Brave Joanna;Camacho;3;2;0,000;6,508;4,333;Score = 6,508
+Fleur Des Dunes;Kendargent;3;3;0,000;NaN;4,250;Score = NaN
+Langrin;Germes;3;2;0,000;NaN;4,091;Score = NaN
+Hornet;Ecosse;3;2;0,000;2,199;4,500;Score = 2,199
+Isolin;Exciting Life;3;2;0,000;2,013;3,643;Score = 2,013

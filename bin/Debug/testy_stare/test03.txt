@@ -1,0 +1,334 @@
+﻿get { return _horse.CatRaces; } -> ?? x 14, trafionych 5
+
+---new race---1
+Mosanto|0,675
+Dominer|0,817
+Hipster|0,930
+Gardemarin|0,832
+Exciter|1,091
+Hot Wing|2,167
+Circle Centuria|0,907
+
+
+---new race---3
+Albar|0,847
+Rajwan Al Khalediah|1,000
+Boy Mugatin|0,756
+Wunderfitz Von Südbaden|1,150
+Hadir|1,326
+Wasilew|0,996
+Himera Jr|1,187
+Marsat|1,414
+Ilay Fleur De Lys|1,000
+
+
+---new race---1
+Subiectum|0,935
+Shalkar|1,033
+Danot|1,000
+Indigo Ocean|1,204
+Sumidero|0,714
+Trojka|1,000
+Sinfonia Varsovia|1,000
+Dystans|1,040
+Miss Kossakówna|1,150
+Dilong|0,692
+
+
+---new race---??
+Salasaman|1,000
+Caresser|1,000
+Muminek|1,000
+One Way Ticket|1,000
+Torrent|1,000
+Carla Cola|1,000
+Zvezdan|1,000
+Royal Helen|1,000
+
+
+---new race---??
+Dżabir|1,000
+Belloren|1,000
+Peleng|1,000
+Etna|1,000
+Paramus|1,000
+Monarcha|1,000
+Wostok|1,000
+
+
+---new race---??
+Talkonya|1,000
+Rebel|1,000
+Mimosa|1,000
+Langrin|1,000
+Ramiro|1,000
+Doker|1,000
+Bocca|1,000
+Vi Verdi Caro|1,000
+Torys|1,000
+San Marino|1,000
+Karyntia|1,000
+
+
+---new race---1
+Fortune Teller|0,721
+Masai Princess|0,862
+Turion|1,411
+Octobermen|1,992
+Król Dżungli|1,898
+Peregrino|1,567
+Ugoda|1,502
+
+
+---new race---??
+Camal Galib|1,000
+Evimia|1,000
+H Embition H|1,000
+Elgiana|1,000
+Aluta|1,000
+
+
+---new race---??
+Hermes|1,000
+Sorglos Von Südbaden|1,000
+H Patricia H|1,000
+Escada South|1,000
+Sachem|1,000
+Asirah|1,000
+Zadatok|1,000
+Elgin Jr|1,000
+
+
+---new race---8
+Sileroy|0,768
+Party Animal|1,020
+Atman|0,753
+Salinger|1,150
+Ujoor|1,000
+Pianissima|1,566
+Fuengirola|1,726
+Wild Lily|0,452
+Jarl|1,127
+Komandor|1,490
+Miss Mazovia|2,199
+Sini|1,000
+
+
+---new race---4
+Rammas Al Khalediah|0,466
+Salam Al Khalediah|1,000
+Nesma Al Mels|0,620
+Top Medina|0,256
+Aktyw|0,758
+Anood Al Khalediah|1,000
+Arash|0,668
+Ajiba Al Mels|1,078
+Almiza|0,385
+Zahaab|1,052
+Jafeel Athbah|0,696
+Letus Jr|0,874
+
+
+---new race---4
+Harlem|0,907
+Calmir|0,888
+Kaszi|0,888
+Blue Connoisseur|0,697
+Tribunal|0,856
+Dazeekha|1,000
+Magical Path|1,000
+Gared|0,978
+Vilnele|0,898
+Pipasol|0,967
+
+
+---new race---??
+Majkel|1,000
+Lady Konstancin|1,000
+Adorator|1,000
+King Royal|1,000
+Isolin|1,000
+Syron|1,000
+Carlito|1,000
+Devilinthedetail|1,000
+Doc Davis|1,000
+Hornet|1,000
+
+
+---new race---5
+Tebidoro|1,000
+Showmeyourheaven|1,240
+Lanaphor|1,424
+Tahir|1,000
+Sweet As Sugar|0,937
+Fruit Night|1,294
+Magister|1,000
+Augusta|1,170
+Izis|0,964
+
+
+---new race---3
+Ragane|0,745
+Guarda|1,241
+Sorbet|0,717
+Invincible Gunner|0,836
+Monte Luppo|1,767
+Clouds Blue|0,759
+Classical Intikhab|1,011
+Bergen|2,204
+
+
+---new race---??
+Street Bird|1,000
+Phoenix|1,000
+Sypnij Groszem|1,000
+Integracja|1,000
+Burkina Faso|1,000
+Jiffy|1,000
+Naomi|1,000
+
+
+---new race---5
+Boy Mugatin|0,756
+Marsat|1,414
+Etorio|0,966
+Wadi Kahil|1,239
+Makayla|0,693
+Malala|1,844
+
+
+---new race---1
+Montero|0,799
+Sea The Sky|1,023
+Tebinio|1,212
+Tahir|1,000
+Dargo|1,725
+Classical Intikhab|1,011
+Kolada|1,404
+Jam Romana|0,831
+
+
+---new race---3
+Incognito|0,631
+Dacosse|0,879
+Alfea|0,306
+Sweet City|0,903
+Polski Lord|0,935
+Ame Sublime|0,920
+Baahy|0,809
+Saldana|1,960
+Indira|1,348
+
+
+---new race---??
+Un Beso|1,000
+Gancegal|1,000
+Emiliano Zapata|1,000
+Blizbor|1,000
+Time of Change|1,000
+Kontusz|1,000
+Storius|1,000
+
+
+---new race---1
+Pilecki|0,640
+Calmir|0,888
+Danot|1,000
+Masai Princess|0,862
+Diego|0,968
+Angara|1,000
+The Auld Hoose|1,000
+Mexican Moon|0,995
+
+
+---new race---??
+Light Feather|1,000
+Torretta|1,000
+River Cash|1,000
+Tutti Frutti|1,000
+Isleen|1,000
+Ornella|1,000
+
+
+---new race---??
+Pustynna Palma|1,000
+Tatra|1,000
+Balladyn Z|1,000
+Forla|1,000
+Eskariolla|1,000
+
+
+---new race---??
+Nemezis|1,000
+Country Girl|1,000
+Bob The Lion|1,000
+Wallenrod|1,000
+Dżeser|1,000
+Be My Winner|1,000
+In Polonia|1,000
+
+
+---new race---??
+Alkora|1,000
+Selrima Jr|1,000
+Narita|1,000
+Huerta|1,000
+Sugar|1,000
+Fire Fly|1,000
+Ninoczka|1,000
+
+
+---new race---6
+Just Gold|1,146
+Dystans|1,040
+Lion Cut|1,149
+Novitor|1,031
+Theskyisnolimit|0,956
+Gardemarin|0,832
+Time of Glory|0,881
+
+
+---new race---??
+Victory Kossack|1,000
+Fikats De Bozouls|1,000
+Athea|1,000
+Zolix|1,000
+Salm Andex|1,000
+Gabonn|1,000
+Echmeda|1,000
+Wildar Bs|1,000
+Amani|1,000
+
+
+---new race---2
+Trenta|0,931
+Silver De Cerisy|0,904
+Nuweliya|0,960
+Elusive Star|1,880
+Speedy Szumawa|1,576
+Komandor|1,490
+Synastria|1,000
+Amoreena|1,550
+
+
+---new race---4
+Purhib|0,746
+Amifa|0,873
+Aktyw|0,758
+Sheblat Al Khalediah|0,727
+Dar Duni|0,992
+Wilton|0,778
+Salman Al Khalediah|0,849
+Prospero|0,723
+
+
+---new race---??
+Sabella|1,000
+Gmared|1,000
+Pontarion|1,000
+Akwantario|1,000
+Faiga De Bozouls|1,000
+Sadyba|1,000
+Khayyaam|1,000
+
+
