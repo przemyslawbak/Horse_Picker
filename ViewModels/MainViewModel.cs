@@ -1114,6 +1114,10 @@ namespace Horse_Picker.ViewModels
 
             for (int i = startIndex; i < stopIndex; i++)
             {
+                if (TaskCancellation == true)
+                {
+                    break;
+                }
                 int j = i;
                 LoadedHistoricalRace race = new LoadedHistoricalRace();
 
@@ -1174,6 +1178,10 @@ namespace Horse_Picker.ViewModels
 
             for (int i = startIndex; i < stopIndex; i++)
             {
+                if (TaskCancellation == true)
+                {
+                    break;
+                }
                 int j = i;
                 LoadedJockey jockey = new LoadedJockey();
 
@@ -1258,6 +1266,10 @@ namespace Horse_Picker.ViewModels
 
             for (int i = startIndex; i < stopIndex; i++)
             {
+                if (TaskCancellation == true)
+                {
+                    break;
+                }
                 int j = i;
                 LoadedHorse horse = new LoadedHorse();
 
