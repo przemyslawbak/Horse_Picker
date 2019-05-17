@@ -115,7 +115,7 @@
             Race no.
         </TextBlock>
         <TextBox Grid.Column="2" Grid.Row="1"
-                 Text="{Binding Race.RaceNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Text="{Binding RaceNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Style="{StaticResource racetb}"
                 IsEnabled="{Binding AllControlsEnabled}"/>
 
@@ -125,7 +125,7 @@
             City
         </TextBlock>
         <TextBox Grid.Column="3" Grid.Row="1"
-                 Text="{Binding Race.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Style="{StaticResource racetb}"
                 IsEnabled="{Binding AllControlsEnabled}"/>
 
@@ -135,7 +135,7 @@
             Race distance
         </TextBlock>
         <TextBox Grid.Column="4" Grid.Row="1"
-                 Text="{Binding Race.Distance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Text="{Binding Distance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Style="{StaticResource racetb}"
                 IsEnabled="{Binding AllControlsEnabled}"/>
 
@@ -149,7 +149,7 @@
                   ItemsSource="{Binding CategoryFactorDict}"
                   SelectedValuePath="Key"
                   DisplayMemberPath="Key"
-                  SelectedValue="{Binding Race.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedValue="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 IsEnabled="{Binding AllControlsEnabled}"/>
 
         <!--Horse data-->

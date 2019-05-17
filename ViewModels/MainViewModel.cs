@@ -24,6 +24,7 @@ namespace Horse_Picker.ViewModels
         HorseDataWrapper _horseWrapper;
         IFileDataServices _dataServices;
         IScrapDataServices _scrapServices;
+        RaceData raceDataModel;
         public MainViewModel(IFileDataServices dataServices, IScrapDataServices scrapServices)
         {
             _allHorses = new List<LoadedHorse>();
@@ -34,18 +35,17 @@ namespace Horse_Picker.ViewModels
             _dataServices = dataServices; //data files
             _scrapServices = scrapServices; //data scrap
             HorseList = new ObservableCollection<HorseDataWrapper>();
+            raceDataModel = new RaceData();
+
+            HorseList.Clear();
+            Category = "fill up";
+            City = "-";
+            Distance = "0";
+            RaceNo = "0";
+            RaceDate = DateTime.Now;
 
             AllControlsEnabled = true;
             VisibilityStatusBar = Visibility.Hidden;
-
-            Race = new RaceData()
-            {
-                Category = "fill up",
-                City = "-",
-                Distance = "0",
-                RaceNo = "0",
-                RaceDate = DateTime.Now
-            };
 
             LoadAllData();
 
@@ -138,6 +138,75 @@ namespace Horse_Picker.ViewModels
         private void HorseListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             ValidateButtons();
+        }
+
+        public string Distance
+        {
+            get
+            {
+                return raceDataModel.Distance;
+            }
+            set
+            {
+                raceDataModel.Distance = value;
+                OnPropertyChanged();
+                ValidateButtons();
+            }
+        }
+
+        public string Category
+        {
+            get
+            {
+                return raceDataModel.Category;
+            }
+            set
+            {
+                raceDataModel.Category = value;
+                OnPropertyChanged();
+                ValidateButtons();
+            }
+        }
+
+        public string City
+        {
+            get
+            {
+                return raceDataModel.City;
+            }
+            set
+            {
+                raceDataModel.City = value;
+                OnPropertyChanged();
+                ValidateButtons();
+            }
+        }
+
+        public string RaceNo
+        {
+            get
+            {
+                return raceDataModel.RaceNo;
+            }
+            set
+            {
+                raceDataModel.RaceNo = value;
+                OnPropertyChanged();
+                ValidateButtons();
+            }
+        }
+
+        public DateTime RaceDate
+        {
+            get
+            {
+                return raceDataModel.RaceDate;
+            }
+            set
+            {
+                raceDataModel.RaceDate = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -242,39 +311,20 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        /// <summary>
-        /// current race property
-        /// </summary>
-        private RaceData _race;
-        public RaceData Race
-        {
-            get
-            {
-                //Task task = Task.Run(() => ValidateButtons());
-                return _race;
-            }
-            set
-            {
-                _race = value;
-                OnPropertyChanged();
-                PropertyChanged += (s, e) => ValidateButtons();
-            }
-        }
-
         private void ValidateButtons()
         {
             int n;
-            bool isDistanceCorrect = int.TryParse(_race.Distance, out n);
+            bool isDistanceCorrect = int.TryParse(Distance, out n);
 
             //if distance is numeric
             if (isDistanceCorrect)
             {
-                if (int.Parse(_race.Distance) < 100) isDistanceCorrect = false; //check if is greater than 100m
+                if (int.Parse(Distance) < 100) isDistanceCorrect = false; //check if is greater than 100m
             }
-            bool isRaceNoNumeric = int.TryParse(_race.Distance, out n);
+            bool isRaceNoNumeric = int.TryParse(Distance, out n);
 
             //for `Add new horse` btn
-            if (IsAnyNullOrEmptyOrWhiteSpace(_race) || _race.City == "-" || !isDistanceCorrect || !isRaceNoNumeric || _race.Category == "fill up" || _race.RaceNo == "0")
+            if (City == "-" || !isDistanceCorrect || !isRaceNoNumeric || Category == "fill up" || RaceNo == "0")
             {
                 IsNewHorseEnabled = false;
             }
@@ -376,17 +426,11 @@ namespace Horse_Picker.ViewModels
                     o =>
                     {
                         HorseList.Clear();
-                        Race.City = "dupa";
-                        /*
-                        Race = new RaceData()
-                        {
-                            Category = "fill up",
-                            City = "-",
-                            Distance = "0",
-                            RaceNo = "0",
-                            RaceDate = DateTime.Now
-                        };
-                        */
+                        Category = "fill up";
+                        City = "-";
+                        Distance = "0";
+                        RaceNo = "0";
+                        RaceDate = DateTime.Now;
                     });
                 return _clearDataCommand;
             }
@@ -443,7 +487,7 @@ namespace Horse_Picker.ViewModels
                     horseWrapper.HorseName = theName;
                 }
 
-                    //if age is not written
+                //if age is not written
                 if (horseWrapper.Age == 0)
                 {
                     horseFromList = _allHorses
@@ -573,7 +617,7 @@ namespace Horse_Picker.ViewModels
                             dictValue = 13;
                         }
 
-                        distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(Race.Distance)) / 10000 * dictValue;
+                        distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(Distance)) / 10000 * dictValue;
                         distFactor = Math.Abs(distFactor);
 
                         distRaceIndex = placeFactor * dictValue / 10;
@@ -632,7 +676,7 @@ namespace Horse_Picker.ViewModels
                             dictValue = 13;
                         }
 
-                        distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(Race.Distance)) / 10000 * dictValue;
+                        distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(Distance)) / 10000 * dictValue;
                         distFactor = Math.Abs(distFactor);
 
                         distRaceIndex = placeFactor * horseFromList.AllRaces[i].RaceCompetition * dictValue / 10;
@@ -674,7 +718,7 @@ namespace Horse_Picker.ViewModels
                         if (jockeyFromList.AllRaces[i].WonPlace == 1) placeFactor = 1;
                         if (jockeyFromList.AllRaces[i].WonPlace < 1) placeFactor = 0;
 
-                        distFactor = (double)(jockeyFromList.AllRaces[i].RaceDistance - int.Parse(Race.Distance)) / 10000;
+                        distFactor = (double)(jockeyFromList.AllRaces[i].RaceDistance - int.Parse(Distance)) / 10000;
                         distFactor = Math.Abs(distFactor);
 
                         distRaceIndex = placeFactor * jockeyFromList.AllRaces[i].RaceCompetition;
@@ -770,7 +814,7 @@ namespace Horse_Picker.ViewModels
             categoryFactorDict.Add("III", 2);
             categoryFactorDict.Add("IV", 1);
             categoryFactorDict.Add("V", 1);
-            if (Race.Category == "sulki" || Race.Category == "kłusaki")
+            if (Category == "sulki" || Category == "kłusaki")
             {
                 categoryFactorDict.Add("sulki", 34);
                 categoryFactorDict.Add("kłusaki", 34);
@@ -780,7 +824,7 @@ namespace Horse_Picker.ViewModels
                 categoryFactorDict.Add("sulki", 2);
                 categoryFactorDict.Add("kłusaki", 2);
             }
-            if (Race.Category == "steeple" || Race.Category == "płoty")
+            if (Category == "steeple" || Category == "płoty")
             {
                 categoryFactorDict.Add("steeple", 34);
                 categoryFactorDict.Add("płoty", 34);
@@ -834,7 +878,7 @@ namespace Horse_Picker.ViewModels
             int taskCounter = 0;
 
             //for all races in the file
-            for (int i = 0; i < _allRaces.Count; i ++)
+            for (int i = 0; i < _allRaces.Count; i++)
             {
                 int j = i;
 
@@ -848,8 +892,8 @@ namespace Horse_Picker.ViewModels
                     //if the race is from 2018
                     if (_allRaces[j].RaceDate.Year == 2018)
                     {
-                        Race.Category = _allRaces[j].RaceCategory;
-                        Race.Distance = _allRaces[j].RaceDistance.ToString();
+                        Category = _allRaces[j].RaceCategory;
+                        Distance = _allRaces[j].RaceDistance.ToString();
 
                         //for all horses in the race
                         for (int h = 0; h < _allRaces[j].HorseList.Count; h++)
@@ -1136,7 +1180,5 @@ namespace Horse_Picker.ViewModels
             doubledHorse.AllRaces = doubledHorse.AllRaces.Union(horse.AllRaces).ToList();
             _allHorses.Add(doubledHorse);
         }
-
-
     }
 }
