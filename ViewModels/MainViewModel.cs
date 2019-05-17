@@ -964,16 +964,10 @@ namespace Horse_Picker.ViewModels
                     o =>
                     {
                         TaskCancellation = true;
+
                         _tokenSource.Cancel();
 
-                        ProgressDisplay = "";
-                        WorkStatus = "";
-                        VisibilityStatusBar = Visibility.Hidden;
-                        VisibilityCancelTestingBtn = Visibility.Collapsed;
-                        VisibilityTestingBtn = Visibility.Visible;
-                        VisibilityCancelUpdatingBtn = Visibility.Collapsed;
-                        VisibilityUpdatingBtn = Visibility.Visible;
-                        UpdateStatusBar = 0;
+                        CommandCompletedControlsSetup();
                     });
                 return _taskCancellationCommand;
             }
@@ -994,14 +988,11 @@ namespace Horse_Picker.ViewModels
                         _tokenSource = new CancellationTokenSource();
                         _cancellationToken = _tokenSource.Token;
 
-                        AllControlsEnabled = false;
-                        ValidateButtons();
+                        CommandStartedControlsSetup("TestResultsCommand");
 
                         await TestHistoricalResults();
 
-                        AllControlsEnabled = true;
-                        TaskCancellation = false;
-                        ValidateButtons();
+                        CommandCompletedControlsSetup();
                     });
                 return _testResultsCommand;
             }
@@ -1013,11 +1004,6 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         private async Task TestHistoricalResults()
         {
-            VisibilityCancelTestingBtn = Visibility.Visible;
-            VisibilityTestingBtn = Visibility.Collapsed;
-            VisibilityStatusBar = Visibility.Visible;
-            UpdateStatusBar = 0;
-
             List<Task> tasks = new List<Task>();
             int loopCounter = 0;
             int taskCounter = 0;
@@ -1070,23 +1056,17 @@ namespace Horse_Picker.ViewModels
             try
             {
                 await Task.WhenAll(tasks);
+
+                await Task.Run(() => _dataServices.SaveRaceTestResultsAsync(_allRaces)); //save the analysis to the file
             }
             catch (TaskCanceledException)
             {
-                //
+                AllControlsEnabled = true;
             }
             finally
             {
                 _tokenSource.Dispose();
             }
-
-            await Task.Run(() => _dataServices.SaveRaceTestResultsAsync(_allRaces)); //save the analysis to the file
-
-            //completed
-            VisibilityCancelTestingBtn = Visibility.Collapsed;
-            VisibilityTestingBtn = Visibility.Visible;
-            VisibilityStatusBar = Visibility.Hidden;
-            UpdateStatusBar = 0;
         }
 
         /// <summary>
@@ -1104,11 +1084,7 @@ namespace Horse_Picker.ViewModels
                         _tokenSource = new CancellationTokenSource();
                         _cancellationToken = _tokenSource.Token;
 
-                        VisibilityCancelUpdatingBtn = Visibility.Visible;
-                        VisibilityUpdatingBtn = Visibility.Collapsed;
-                        VisibilityStatusBar = Visibility.Visible;
-                        AllControlsEnabled = false;
-                        ValidateButtons();
+                        CommandStartedControlsSetup("UpdateDataCommand");
 
                         //await ScrapJockeys(1, 1049, "jockeysPl"); //1 - 1049
                         //await ScrapJockeys(26200, 32549, "jockeysCz"); //4000 - 31049
@@ -1116,12 +1092,7 @@ namespace Horse_Picker.ViewModels
                         //await ScrapHorses(114300, 150049, "horsesCz"); // 8000 - 150049
                         await ScrapHistoricalRaces(1, 18049, "racesPl"); // 1 - 17049
 
-                        VisibilityCancelUpdatingBtn = Visibility.Collapsed;
-                        VisibilityUpdatingBtn = Visibility.Visible;
-                        VisibilityStatusBar = Visibility.Hidden;
-                        AllControlsEnabled = true;
-                        TaskCancellation = false;
-                        ValidateButtons();
+                        CommandCompletedControlsSetup();
                     });
                 return _updateDataCommand;
             }
@@ -1148,22 +1119,24 @@ namespace Horse_Picker.ViewModels
 
                 Task task = Task.Run(async () =>
                 {
-
-                    if (dataType == "racesPl")
-                        race = await Task.Run(() => _scrapServices.ScrapSingleRacePL(j));
-
-                    //if the race is from 2018
-                    if (race.RaceDate.Year == 2018)
+                    while (!_cancellationToken.IsCancellationRequested)
                     {
-                        lock (((ICollection)_allHorses).SyncRoot)
+                        if (dataType == "racesPl")
+                            race = await Task.Run(() => _scrapServices.ScrapSingleRacePL(j));
+
+                        //if the race is from 2018
+                        if (race.RaceDate.Year == 2018)
                         {
-                            _allRaces.Add(race);
+                            lock (((ICollection)_allHorses).SyncRoot)
+                            {
+                                _allRaces.Add(race);
+                            }
                         }
+
+                        loopCounter++;
+
+                        ProgressBarTick("Looking for historic data", loopCounter, stopIndex, startIndex);
                     }
-
-                    loopCounter++;
-
-                    ProgressBarTick("Looking for historic data", loopCounter, stopIndex, startIndex);
                 }, _tokenSource.Token);
 
                 tasks.Add(task);
@@ -1172,17 +1145,17 @@ namespace Horse_Picker.ViewModels
             try
             {
                 await Task.WhenAll(tasks);
+
+                await Task.Run(() => _dataServices.SaveAllRaces(_allRaces.ToList())); //saves everything to JSON file
             }
             catch (TaskCanceledException)
             {
-                //
+                AllControlsEnabled = true;
             }
             finally
             {
                 _tokenSource.Dispose();
             }
-
-            await Task.Run(() => _dataServices.SaveAllRaces(_allRaces.ToList())); //saves everything to JSON file
         }
 
         /// <summary>
@@ -1206,37 +1179,39 @@ namespace Horse_Picker.ViewModels
 
                 Task task = Task.Run(async () =>
                 {
-
-                    if (dataType == "jockeysPl")
-                        jockey = await Task.Run(() => _scrapServices.ScrapSingleJockeyPL(j));
-                    if (dataType == "jockeysCz")
-                        jockey = await Task.Run(() => _scrapServices.ScrapSingleJockeyCZ(j));
-
-                    if (jockey.Name != null)
+                    while (!_cancellationToken.IsCancellationRequested)
                     {
-                        lock (((ICollection)_allHorses).SyncRoot)
-                        {//if objects are already in the List
-                            if (_allJockeys.Any(h => h.Name.ToLower() == jockey.Name.ToLower()))
-                            {
-                                LoadedJockey doubledJockey = _allJockeys.Where(h => h.Name.ToLower() == jockey.Name.ToLower()).FirstOrDefault();
-                                _allJockeys.Remove(doubledJockey);
-                                MergeJockeysData(doubledJockey, jockey);
-                            }
-                            else
-                            {
-                                _allJockeys.Add(jockey);
+                        if (dataType == "jockeysPl")
+                            jockey = await Task.Run(() => _scrapServices.ScrapSingleJockeyPL(j));
+                        if (dataType == "jockeysCz")
+                            jockey = await Task.Run(() => _scrapServices.ScrapSingleJockeyCZ(j));
+
+                        if (jockey.Name != null)
+                        {
+                            lock (((ICollection)_allHorses).SyncRoot)
+                            {//if objects are already in the List
+                                if (_allJockeys.Any(h => h.Name.ToLower() == jockey.Name.ToLower()))
+                                {
+                                    LoadedJockey doubledJockey = _allJockeys.Where(h => h.Name.ToLower() == jockey.Name.ToLower()).FirstOrDefault();
+                                    _allJockeys.Remove(doubledJockey);
+                                    MergeJockeysData(doubledJockey, jockey);
+                                }
+                                else
+                                {
+                                    _allJockeys.Add(jockey);
+                                }
                             }
                         }
+
+                        loopCounter++;
+
+                        if (loopCounter % 1000 == 0)
+                        {
+                            await Task.Run(() => _dataServices.SaveAllJockeys(_allJockeys.ToList())); //saves everything to JSON file
+                        }
+
+                        ProgressBarTick("Looking for jockeys", loopCounter, stopIndex, startIndex);
                     }
-
-                    loopCounter++;
-
-                    if (loopCounter % 1000 == 0)
-                    {
-                        await Task.Run(() => _dataServices.SaveAllJockeys(_allJockeys.ToList())); //saves everything to JSON file
-                    }
-
-                    ProgressBarTick("Looking for jockeys", loopCounter, stopIndex, startIndex);
                 }, _tokenSource.Token);
 
                 tasks.Add(task);
@@ -1248,7 +1223,7 @@ namespace Horse_Picker.ViewModels
             }
             catch (TaskCanceledException)
             {
-                //
+                AllControlsEnabled = true;
             }
             finally
             {
@@ -1288,45 +1263,47 @@ namespace Horse_Picker.ViewModels
 
                 Task task = Task.Run(async () =>
                 {
-
-                    if (dataType == "horsesPl")
-                        horse = await Task.Run(() => _scrapServices.ScrapSingleHorsePL(j));
-                    if (dataType == "horsesCz")
-                        horse = await Task.Run(() => _scrapServices.ScrapSingleHorseCZ(j));
-
-                    if (horse.Name != null)
+                    while (!_cancellationToken.IsCancellationRequested)
                     {
-                        lock (((ICollection)_allHorses).SyncRoot)
+                        if (dataType == "horsesPl")
+                            horse = await Task.Run(() => _scrapServices.ScrapSingleHorsePL(j));
+                        if (dataType == "horsesCz")
+                            horse = await Task.Run(() => _scrapServices.ScrapSingleHorseCZ(j));
+
+                        if (horse.Name != null)
                         {
-                            //if objects are already in the List
-                            if (_allHorses.Any(h => h.Name.ToLower() == horse.Name.ToLower()))
+                            lock (((ICollection)_allHorses).SyncRoot)
                             {
-                                LoadedHorse doubledHorse = _allHorses.Where(h => h.Name.ToLower() == horse.Name.ToLower()).Where(h => h.Age == horse.Age).FirstOrDefault();
-                                if (doubledHorse != null)
+                                //if objects are already in the List
+                                if (_allHorses.Any(h => h.Name.ToLower() == horse.Name.ToLower()))
                                 {
-                                    _allHorses.Remove(doubledHorse);
-                                    MergeHorsesData(doubledHorse, horse);
+                                    LoadedHorse doubledHorse = _allHorses.Where(h => h.Name.ToLower() == horse.Name.ToLower()).Where(h => h.Age == horse.Age).FirstOrDefault();
+                                    if (doubledHorse != null)
+                                    {
+                                        _allHorses.Remove(doubledHorse);
+                                        MergeHorsesData(doubledHorse, horse);
+                                    }
+                                    else
+                                    {
+                                        _allHorses.Add(horse);
+                                    }
                                 }
                                 else
                                 {
                                     _allHorses.Add(horse);
                                 }
                             }
-                            else
-                            {
-                                _allHorses.Add(horse);
-                            }
                         }
+
+                        loopCounter++;
+
+                        if (loopCounter % 1000 == 0)
+                        {
+                            await Task.Run(() => _dataServices.SaveAllHorses(_allHorses.ToList())); //saves everything to JSON file
+                        }
+
+                        ProgressBarTick("Looking for horses", loopCounter, stopIndex, startIndex);
                     }
-
-                    loopCounter++;
-
-                    if (loopCounter % 1000 == 0)
-                    {
-                        await Task.Run(() => _dataServices.SaveAllHorses(_allHorses.ToList())); //saves everything to JSON file
-                    }
-
-                    ProgressBarTick("Looking for horses", loopCounter, stopIndex, startIndex);
                 }, _tokenSource.Token);
 
                 tasks.Add(task);
@@ -1338,7 +1315,7 @@ namespace Horse_Picker.ViewModels
             }
             catch (TaskCanceledException)
             {
-                //
+                AllControlsEnabled = true;
             }
             finally
             {
@@ -1370,6 +1347,41 @@ namespace Horse_Picker.ViewModels
             doubledHorse.AllChildren = doubledHorse.AllChildren.Union(horse.AllChildren).ToList();
             doubledHorse.AllRaces = doubledHorse.AllRaces.Union(horse.AllRaces).ToList();
             _allHorses.Add(doubledHorse);
+        }
+
+        private void CommandStartedControlsSetup(string command)
+        {
+            TaskCancellation = false;
+            AllControlsEnabled = false;
+            ValidateButtons();
+            VisibilityStatusBar = Visibility.Visible;
+            UpdateStatusBar = 0;
+
+            if (command == "TestResultsCommand")
+            {
+                VisibilityCancelTestingBtn = Visibility.Visible;
+                VisibilityTestingBtn = Visibility.Collapsed;
+            }
+
+            if (command == "UpdateDataCommand")
+            {
+                VisibilityCancelUpdatingBtn = Visibility.Visible;
+                VisibilityUpdatingBtn = Visibility.Collapsed;
+            }
+        }
+
+        private void CommandCompletedControlsSetup()
+        {
+            TaskCancellation = false;
+            UpdateStatusBar = 0;
+            VisibilityStatusBar = Visibility.Hidden;
+            ValidateButtons();
+            ProgressDisplay = "";
+            WorkStatus = "";
+            VisibilityCancelTestingBtn = Visibility.Collapsed;
+            VisibilityTestingBtn = Visibility.Visible;
+            VisibilityCancelUpdatingBtn = Visibility.Collapsed;
+            VisibilityUpdatingBtn = Visibility.Visible;
         }
     }
 }
