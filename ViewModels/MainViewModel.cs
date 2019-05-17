@@ -692,6 +692,10 @@ namespace Horse_Picker.ViewModels
             {
                 for (int i = 0; i < horseFromList.AllRaces.Count; i++)
                 {
+                    if (TaskCancellation == true)
+                    {
+                        break;
+                    }
 
                     if (horseFromList.AllRaces[i].WonPlace > 0 && horseFromList.AllRaces[i].RaceDate < date)
                     {
@@ -750,6 +754,10 @@ namespace Horse_Picker.ViewModels
 
                 for (int i = 0; i < horseFromList.AllRaces.Count; i++)
                 {
+                    if (TaskCancellation == true)
+                    {
+                        break;
+                    }
 
                     if (horseFromList.AllRaces[i].WonPlace < 3 && horseFromList.AllRaces[i].WonPlace > 0 && horseFromList.AllRaces[i].RaceDate < date)
                     {
@@ -806,6 +814,11 @@ namespace Horse_Picker.ViewModels
             {
                 for (int i = 0; i < jockeyFromList.AllRaces.Count; i++)
                 {
+                    if (TaskCancellation == true)
+                    {
+                        break;
+                    }
+
                     if (jockeyFromList.AllRaces[i].WonPlace > 0 && jockeyFromList.AllRaces[i].RaceDate < date)
                     {
                         if (jockeyFromList.AllRaces[i].WonPlace == 1) placeFactor = 1;
@@ -846,6 +859,11 @@ namespace Horse_Picker.ViewModels
 
             for (int i = 0; i < fatherFromList.AllChildren.Count; i++)
             {
+                if (TaskCancellation == true)
+                {
+                    break;
+                }
+
                 _allHorses = _allHorses.OrderBy(l => l.Age).ToList(); //from smallest to biggest
                 HorseChildDetails child = fatherFromList.AllChildren[i];
 
@@ -946,15 +964,16 @@ namespace Horse_Picker.ViewModels
                     o =>
                     {
                         TaskCancellation = true;
-                        AllControlsEnabled = true;
                         _tokenSource.Cancel();
-                        /*
+
+                        ProgressDisplay = "";
+                        WorkStatus = "";
                         VisibilityStatusBar = Visibility.Hidden;
                         VisibilityCancelTestingBtn = Visibility.Collapsed;
                         VisibilityTestingBtn = Visibility.Visible;
                         VisibilityCancelUpdatingBtn = Visibility.Collapsed;
                         VisibilityUpdatingBtn = Visibility.Visible;
-                        */
+                        UpdateStatusBar = 0;
                     });
                 return _taskCancellationCommand;
             }
