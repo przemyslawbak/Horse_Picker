@@ -31,6 +31,12 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+        <Style x:Key="cancelbtn" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#e59544"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
         <Style x:Key="racetb" TargetType="TextBox">
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -348,46 +354,61 @@
                     HorizontalAlignment="Right">
 
             <Button
-            x:Name="btnSaveRace"
-            Content="Save race"
-            HorizontalAlignment="Center"
-            Height="40"
-            Width="100"
-            RenderTransformOrigin="0.5,0.5"
-            Style="{StaticResource appbtn}"
-            Command="{Binding SaveToFileCommand}"
-            IsEnabled="{Binding IsSaveEnabled}">
+                Content="Save race"
+                HorizontalAlignment="Center"
+                Height="40"
+                Width="100"
+                Style="{StaticResource appbtn}"
+                Command="{Binding SaveToFileCommand}"
+                IsEnabled="{Binding IsSaveEnabled}">
             </Button>
             <Button
-            x:Name="btnClearData"
-            Content="Clear race"
-            HorizontalAlignment="Center"
-            Height="40"
-            Width="100"
-            Style="{StaticResource appbtn}"
-            Command="{Binding ClearDataCommand}"
+                Content="Clear race"
+                HorizontalAlignment="Center"
+                Height="40"
+                Width="100"
+                Style="{StaticResource appbtn}"
+                Command="{Binding ClearDataCommand}"
                 IsEnabled="{Binding AllControlsEnabled}">
             </Button>
             <Button
-            x:Name="btnTestResults"
-            Content="Test results"
-            HorizontalAlignment="Center"
-            Height="40"
-            Width="100"
-            Style="{StaticResource appbtn}"
-            Command="{Binding TestResultsCommand}"
-                IsEnabled="{Binding AllControlsEnabled}">
+                Content="Test results"
+                HorizontalAlignment="Center"
+                Height="40"
+                Width="100"
+                Style="{StaticResource appbtn}"
+                Command="{Binding TestResultsCommand}"
+                IsEnabled="{Binding AllControlsEnabled}"
+                Visibility="{Binding VisibilityTestingBtn}">
             </Button>
             <Button
-            x:Name="btnUpdateHorses"
-            Content="Update data"
-            HorizontalAlignment="Center"
-            Height="40"
-            Width="100"
-            RenderTransformOrigin="0.5,0.5"
-            Style="{StaticResource appbtn}"
-            Command="{Binding UpdateDataCommand}"
-                IsEnabled="{Binding AllControlsEnabled}">
+                Content="Cancel testing"
+                HorizontalAlignment="Center"
+                Height="40"
+                Width="100"
+                Style="{StaticResource cancelbtn}"
+                Command="{Binding TaskCancellationCommand}"
+                Visibility="{Binding VisibilityCancelTestingBtn}">
+            </Button>
+            <Button
+                x:Name="btnUpdateHorses"
+                Content="Update data"
+                HorizontalAlignment="Center"
+                Height="40"
+                Width="100"
+                Style="{StaticResource appbtn}"
+                Command="{Binding UpdateDataCommand}"
+                IsEnabled="{Binding AllControlsEnabled}"
+                Visibility="{Binding VisibilityUpdatingBtn}">
+            </Button>
+            <Button
+                Content="Cancel updating"
+                HorizontalAlignment="Center"
+                Height="40"
+                Width="100"
+                Style="{StaticResource cancelbtn}"
+                Command="{Binding TaskCancellationCommand}"
+                Visibility="{Binding VisibilityCancelUpdatingBtn}">
             </Button>
         </StackPanel>
         <Button

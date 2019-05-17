@@ -10,6 +10,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -24,7 +25,9 @@ namespace Horse_Picker.ViewModels
         HorseDataWrapper _horseWrapper;
         IFileDataServices _dataServices;
         IScrapDataServices _scrapServices;
-        RaceData raceDataModel;
+        RaceData _raceDataModel;
+        CancellationTokenSource _tokenSource;
+        CancellationToken _cancellationToken;
         public MainViewModel(IFileDataServices dataServices, IScrapDataServices scrapServices)
         {
             _allHorses = new List<LoadedHorse>();
@@ -35,7 +38,7 @@ namespace Horse_Picker.ViewModels
             _dataServices = dataServices; //data files
             _scrapServices = scrapServices; //data scrap
             HorseList = new ObservableCollection<HorseDataWrapper>();
-            raceDataModel = new RaceData();
+            _raceDataModel = new RaceData();
 
             HorseList.Clear();
             Category = "fill up";
@@ -44,8 +47,13 @@ namespace Horse_Picker.ViewModels
             RaceNo = "0";
             RaceDate = DateTime.Now;
 
+            TaskCancellation = false;
             AllControlsEnabled = true;
             VisibilityStatusBar = Visibility.Hidden;
+            VisibilityCancelTestingBtn = Visibility.Collapsed;
+            VisibilityCancelUpdatingBtn = Visibility.Collapsed;
+            VisibilityUpdatingBtn = Visibility.Visible;
+            VisibilityTestingBtn = Visibility.Visible;
 
             LoadAllData();
 
@@ -144,11 +152,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return raceDataModel.Distance;
+                return _raceDataModel.Distance;
             }
             set
             {
-                raceDataModel.Distance = value;
+                _raceDataModel.Distance = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -158,11 +166,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return raceDataModel.Category;
+                return _raceDataModel.Category;
             }
             set
             {
-                raceDataModel.Category = value;
+                _raceDataModel.Category = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -172,11 +180,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return raceDataModel.City;
+                return _raceDataModel.City;
             }
             set
             {
-                raceDataModel.City = value;
+                _raceDataModel.City = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -186,11 +194,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return raceDataModel.RaceNo;
+                return _raceDataModel.RaceNo;
             }
             set
             {
-                raceDataModel.RaceNo = value;
+                _raceDataModel.RaceNo = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -200,11 +208,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return raceDataModel.RaceDate;
+                return _raceDataModel.RaceDate;
             }
             set
             {
-                raceDataModel.RaceDate = value;
+                _raceDataModel.RaceDate = value;
                 OnPropertyChanged();
             }
         }
@@ -364,6 +372,91 @@ namespace Horse_Picker.ViewModels
             set
             {
                 _visibilityStatusBar = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// display "cancel updates" btn or not
+        /// </summary>
+        private Visibility _visibilityCancelUpdatesBtn;
+        public Visibility VisibilityCancelUpdatingBtn
+        {
+            get
+            {
+                return _visibilityCancelUpdatesBtn;
+            }
+            set
+            {
+                _visibilityCancelUpdatesBtn = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// display "cancel tests" btn or not
+        /// </summary>
+        private Visibility _visibilityCancelTestingBtn;
+        public Visibility VisibilityCancelTestingBtn
+        {
+            get
+            {
+                return _visibilityCancelTestingBtn;
+            }
+            set
+            {
+                _visibilityCancelTestingBtn = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// display "tests" btn or not
+        /// </summary>
+        private Visibility _visibilityTestingBtn;
+        public Visibility VisibilityTestingBtn
+        {
+            get
+            {
+                return _visibilityTestingBtn;
+            }
+            set
+            {
+                _visibilityTestingBtn = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// display "tests" btn or not
+        /// </summary>
+        private Visibility _visibilityUpdatingBtn;
+        public Visibility VisibilityUpdatingBtn
+        {
+            get
+            {
+                return _visibilityUpdatingBtn;
+            }
+            set
+            {
+                _visibilityUpdatingBtn = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// for update/test cancellation
+        /// </summary>
+        private bool _taskCancellation;
+        public bool TaskCancellation
+        {
+            get
+            {
+                return _taskCancellation;
+            }
+            set
+            {
+                _taskCancellation = value;
                 OnPropertyChanged();
             }
         }
@@ -841,6 +934,33 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
+        /// cancel result tests or updates
+        /// </summary>
+        private ICommand _taskCancellationCommand;
+        public ICommand TaskCancellationCommand
+        {
+            get
+            {
+                if (_taskCancellationCommand == null)
+                    _taskCancellationCommand = new RelayCommand(
+                    o =>
+                    {
+                        TaskCancellation = true;
+                        AllControlsEnabled = true;
+                        _tokenSource.Cancel();
+                        /*
+                        VisibilityStatusBar = Visibility.Hidden;
+                        VisibilityCancelTestingBtn = Visibility.Collapsed;
+                        VisibilityTestingBtn = Visibility.Visible;
+                        VisibilityCancelUpdatingBtn = Visibility.Collapsed;
+                        VisibilityUpdatingBtn = Visibility.Visible;
+                        */
+                    });
+                return _taskCancellationCommand;
+            }
+        }
+
+        /// <summary>
         /// test on historical results
         /// </summary>
         private ICommand _testResultsCommand;
@@ -852,12 +972,16 @@ namespace Horse_Picker.ViewModels
                     _testResultsCommand = new RelayCommand(
                     async o =>
                     {
+                        _tokenSource = new CancellationTokenSource();
+                        _cancellationToken = _tokenSource.Token;
+
                         AllControlsEnabled = false;
                         ValidateButtons();
 
                         await TestHistoricalResults();
 
                         AllControlsEnabled = true;
+                        TaskCancellation = false;
                         ValidateButtons();
                     });
                 return _testResultsCommand;
@@ -870,6 +994,8 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         private async Task TestHistoricalResults()
         {
+            VisibilityCancelTestingBtn = Visibility.Visible;
+            VisibilityTestingBtn = Visibility.Collapsed;
             VisibilityStatusBar = Visibility.Visible;
             UpdateStatusBar = 0;
 
@@ -882,46 +1008,64 @@ namespace Horse_Picker.ViewModels
             {
                 int j = i;
 
-                Task task = Task.Run(async () =>
+                if (TaskCancellation == true)
                 {
+                    break;
+                }
 
-                    loopCounter++;
-
-                    ProgressBarTick("Requesting historic data", loopCounter, _allRaces.Count, 0);
-
-                    //if the race is from 2018
-                    if (_allRaces[j].RaceDate.Year == 2018)
+                Task task = Task.Run(() =>
+                {
+                    while (!_cancellationToken.IsCancellationRequested)
                     {
-                        Category = _allRaces[j].RaceCategory;
-                        Distance = _allRaces[j].RaceDistance.ToString();
+                        loopCounter++;
 
-                        //for all horses in the race
-                        for (int h = 0; h < _allRaces[j].HorseList.Count; h++)
+                        ProgressBarTick("Requesting historic data", loopCounter, _allRaces.Count, 0);
+
+                        //if the race is from 2018
+                        if (_allRaces[j].RaceDate.Year == 2018)
                         {
-                            HorseDataWrapper horse = new HorseDataWrapper();
-                            horse = ParseHorseData(_allRaces[j].HorseList[h], _allRaces[j].RaceDate);
-                            _allRaces[j].HorseList[h] = horse; //get all indexes
+                            Category = _allRaces[j].RaceCategory;
+                            Distance = _allRaces[j].RaceDistance.ToString();
 
-                            await Task.Delay(1);
+                            //for all horses in the race
+                            for (int h = 0; h < _allRaces[j].HorseList.Count; h++)
+                            {
+                                HorseDataWrapper horse = new HorseDataWrapper();
+                                horse = ParseHorseData(_allRaces[j].HorseList[h], _allRaces[j].RaceDate);
+                                _allRaces[j].HorseList[h] = horse; //get all indexes
+                            }
+                        }
+
+                        taskCounter++;
+
+                        if (loopCounter >= _allRaces.Count)
+                        {
+                            ProgressBarTick("Testing on historic data", taskCounter, _allRaces.Count, 0);
                         }
                     }
-
-                    taskCounter++;
-
-                    if (loopCounter >= _allRaces.Count)
-                    {
-                        ProgressBarTick("Testing on historic data", taskCounter, _allRaces.Count, 0);
-                    }
-                });
+                }, _tokenSource.Token);
 
                 tasks.Add(task);
             }
 
-            await Task.WhenAll(tasks);
+            try
+            {
+                await Task.WhenAll(tasks);
+            }
+            catch (TaskCanceledException)
+            {
+                //
+            }
+            finally
+            {
+                _tokenSource.Dispose();
+            }
 
             await Task.Run(() => _dataServices.SaveRaceTestResultsAsync(_allRaces)); //save the analysis to the file
 
             //completed
+            VisibilityCancelTestingBtn = Visibility.Collapsed;
+            VisibilityTestingBtn = Visibility.Visible;
             VisibilityStatusBar = Visibility.Hidden;
             UpdateStatusBar = 0;
         }
@@ -938,6 +1082,12 @@ namespace Horse_Picker.ViewModels
                     _updateDataCommand = new RelayCommand(
                     async o =>
                     {
+                        _tokenSource = new CancellationTokenSource();
+                        _cancellationToken = _tokenSource.Token;
+
+                        VisibilityCancelUpdatingBtn = Visibility.Visible;
+                        VisibilityUpdatingBtn = Visibility.Collapsed;
+                        VisibilityStatusBar = Visibility.Visible;
                         AllControlsEnabled = false;
                         ValidateButtons();
 
@@ -947,7 +1097,11 @@ namespace Horse_Picker.ViewModels
                         //await ScrapHorses(114300, 150049, "horsesCz"); // 8000 - 150049
                         await ScrapHistoricalRaces(1, 18049, "racesPl"); // 1 - 17049
 
+                        VisibilityCancelUpdatingBtn = Visibility.Collapsed;
+                        VisibilityUpdatingBtn = Visibility.Visible;
+                        VisibilityStatusBar = Visibility.Hidden;
                         AllControlsEnabled = true;
+                        TaskCancellation = false;
                         ValidateButtons();
                     });
                 return _updateDataCommand;
@@ -963,7 +1117,6 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         private async Task ScrapHistoricalRaces(int startIndex, int stopIndex, string dataType)
         {
-            VisibilityStatusBar = Visibility.Visible;
             UpdateStatusBar = 0;
 
             List<Task> tasks = new List<Task>();
@@ -992,18 +1145,25 @@ namespace Horse_Picker.ViewModels
                     loopCounter++;
 
                     ProgressBarTick("Looking for historic data", loopCounter, stopIndex, startIndex);
-                });
+                }, _tokenSource.Token);
 
                 tasks.Add(task);
             }
 
-            await Task.WhenAll(tasks);
+            try
+            {
+                await Task.WhenAll(tasks);
+            }
+            catch (TaskCanceledException)
+            {
+                //
+            }
+            finally
+            {
+                _tokenSource.Dispose();
+            }
 
             await Task.Run(() => _dataServices.SaveAllRaces(_allRaces.ToList())); //saves everything to JSON file
-
-            //completed
-            VisibilityStatusBar = Visibility.Hidden;
-            UpdateStatusBar = 0;
         }
 
         /// <summary>
@@ -1015,7 +1175,6 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         private async Task ScrapJockeys(int startIndex, int stopIndex, string dataType)
         {
-            VisibilityStatusBar = Visibility.Visible;
             UpdateStatusBar = 0;
 
             List<Task> tasks = new List<Task>();
@@ -1059,16 +1218,23 @@ namespace Horse_Picker.ViewModels
                     }
 
                     ProgressBarTick("Looking for jockeys", loopCounter, stopIndex, startIndex);
-                });
+                }, _tokenSource.Token);
 
                 tasks.Add(task);
             }
 
-            await Task.WhenAll(tasks);
-
-            //completed
-            VisibilityStatusBar = Visibility.Hidden;
-            UpdateStatusBar = 0;
+            try
+            {
+                await Task.WhenAll(tasks);
+            }
+            catch (TaskCanceledException)
+            {
+                //
+            }
+            finally
+            {
+                _tokenSource.Dispose();
+            }
         }
 
         /// <summary>
@@ -1091,7 +1257,6 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         private async Task ScrapHorses(int startIndex, int stopIndex, string dataType)
         {
-            VisibilityStatusBar = Visibility.Visible;
             UpdateStatusBar = 0;
 
             List<Task> tasks = new List<Task>();
@@ -1143,16 +1308,23 @@ namespace Horse_Picker.ViewModels
                     }
 
                     ProgressBarTick("Looking for horses", loopCounter, stopIndex, startIndex);
-                });
+                }, _tokenSource.Token);
 
                 tasks.Add(task);
             }
 
-            await Task.WhenAll(tasks);
-
-            //completed
-            VisibilityStatusBar = Visibility.Hidden;
-            UpdateStatusBar = 0;
+            try
+            {
+                await Task.WhenAll(tasks);
+            }
+            catch (TaskCanceledException)
+            {
+                //
+            }
+            finally
+            {
+                _tokenSource.Dispose();
+            }
         }
 
         /// <summary>
