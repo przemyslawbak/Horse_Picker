@@ -19,15 +19,15 @@ namespace Horse_Picker.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        List<LoadedHorse> _allHorses;
-        List<LoadedJockey> _allJockeys;
-        List<LoadedHistoricalRace> _allRaces;
-        HorseDataWrapper _horseWrapper;
-        IFileDataServices _dataServices;
-        IScrapDataServices _scrapServices;
-        RaceData _raceDataModel;
-        CancellationTokenSource _tokenSource;
-        CancellationToken _cancellationToken;
+        private List<LoadedHorse> _allHorses;
+        private List<LoadedJockey> _allJockeys;
+        private List<LoadedHistoricalRace> _allRaces;
+        private HorseDataWrapper _horseWrapper;
+        private IFileDataServices _dataServices;
+        private IScrapDataServices _scrapServices;
+        private RaceData _raceDataModel;
+        private CancellationTokenSource _tokenSource;
+        private CancellationToken _cancellationToken;
         public MainViewModel(IFileDataServices dataServices, IScrapDataServices scrapServices)
         {
             _allHorses = new List<LoadedHorse>();
