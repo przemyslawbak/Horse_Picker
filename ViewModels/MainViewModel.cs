@@ -1020,8 +1020,9 @@ namespace Horse_Picker.ViewModels
 
                 Task task = Task.Run(() =>
                 {
-                    while (!_cancellationToken.IsCancellationRequested)
+                    while (true)
                     {
+                        _cancellationToken.ThrowIfCancellationRequested();
                         loopCounter++;
 
                         ProgressBarTick("Requesting historic data", loopCounter, _allRaces.Count, 0);
@@ -1035,6 +1036,7 @@ namespace Horse_Picker.ViewModels
                             //for all horses in the race
                             for (int h = 0; h < _allRaces[j].HorseList.Count; h++)
                             {
+                                _cancellationToken.ThrowIfCancellationRequested();
                                 HorseDataWrapper horse = new HorseDataWrapper();
                                 horse = ParseHorseData(_allRaces[j].HorseList[h], _allRaces[j].RaceDate);
                                 _allRaces[j].HorseList[h] = horse; //get all indexes
@@ -1053,13 +1055,15 @@ namespace Horse_Picker.ViewModels
                 tasks.Add(task);
             }
 
+            Task entireTasks = Task.WhenAll(tasks);
+
             try
             {
                 await Task.WhenAll(tasks);
 
                 await Task.Run(() => _dataServices.SaveRaceTestResultsAsync(_allRaces)); //save the analysis to the file
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
             {
                 AllControlsEnabled = true;
             }
@@ -1123,8 +1127,9 @@ namespace Horse_Picker.ViewModels
 
                 Task task = Task.Run(async () =>
                 {
-                    while (!_cancellationToken.IsCancellationRequested)
+                    while (true)
                     {
+                        _cancellationToken.ThrowIfCancellationRequested();
                         if (dataType == "racesPl")
                             race = await Task.Run(() => _scrapServices.ScrapSingleRacePL(j));
 
@@ -1152,7 +1157,7 @@ namespace Horse_Picker.ViewModels
 
                 await Task.Run(() => _dataServices.SaveAllRaces(_allRaces.ToList())); //saves everything to JSON file
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
             {
                 AllControlsEnabled = true;
             }
@@ -1187,8 +1192,9 @@ namespace Horse_Picker.ViewModels
 
                 Task task = Task.Run(async () =>
                 {
-                    while (!_cancellationToken.IsCancellationRequested)
+                    while (true)
                     {
+                        _cancellationToken.ThrowIfCancellationRequested();
                         if (dataType == "jockeysPl")
                             jockey = await Task.Run(() => _scrapServices.ScrapSingleJockeyPL(j));
                         if (dataType == "jockeysCz")
@@ -1229,7 +1235,7 @@ namespace Horse_Picker.ViewModels
             {
                 await Task.WhenAll(tasks);
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
             {
                 AllControlsEnabled = true;
             }
@@ -1275,8 +1281,9 @@ namespace Horse_Picker.ViewModels
 
                 Task task = Task.Run(async () =>
                 {
-                    while (!_cancellationToken.IsCancellationRequested)
+                    while (true)
                     {
+                        _cancellationToken.ThrowIfCancellationRequested();
                         if (dataType == "horsesPl")
                             horse = await Task.Run(() => _scrapServices.ScrapSingleHorsePL(j));
                         if (dataType == "horsesCz")
@@ -1325,7 +1332,7 @@ namespace Horse_Picker.ViewModels
             {
                 await Task.WhenAll(tasks);
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
             {
                 AllControlsEnabled = true;
             }
