@@ -26,6 +26,7 @@ namespace Horse_Picker.ViewModels
         private IFileDataServices _dataServices;
         private IScrapDataServices _scrapServices;
         private RaceData _raceDataModel;
+        private UpdateModules _updateModulesModel;
         private CancellationTokenSource _tokenSource;
         private CancellationToken _cancellationToken;
         public MainViewModel(IFileDataServices dataServices, IScrapDataServices scrapServices)
@@ -39,6 +40,7 @@ namespace Horse_Picker.ViewModels
             _scrapServices = scrapServices; //data scrap
             HorseList = new ObservableCollection<HorseDataWrapper>();
             _raceDataModel = new RaceData();
+            _updateModulesModel = new UpdateModules();
 
             HorseList.Clear();
             Category = "fill up";
@@ -146,6 +148,71 @@ namespace Horse_Picker.ViewModels
         private void HorseListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             ValidateButtons();
+        }
+
+        public bool JockeysPl
+        {
+            get
+            {
+                return _updateModulesModel.JockeysPl;
+            }
+            set
+            {
+                _updateModulesModel.JockeysPl = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool JockeysCz
+        {
+            get
+            {
+                return _updateModulesModel.JockeysCz;
+            }
+            set
+            {
+                _updateModulesModel.JockeysCz = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool HorsesCz
+        {
+            get
+            {
+                return _updateModulesModel.HorsesCz;
+            }
+            set
+            {
+                _updateModulesModel.HorsesCz = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool HorsesPl
+        {
+            get
+            {
+                return _updateModulesModel.HorsesPl;
+            }
+            set
+            {
+                _updateModulesModel.HorsesPl = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool RacesPl
+        {
+            get
+            {
+                return _updateModulesModel.RacesPl;
+            }
+            set
+            {
+                _updateModulesModel.RacesPl = value;
+                OnPropertyChanged();
+            }
         }
 
         public string Distance
