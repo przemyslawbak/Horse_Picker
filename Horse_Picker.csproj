@@ -92,11 +92,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="DataServices\FileDataServices.cs" />
     <Compile Include="DataServices\IFileDataProvider.cs" />
     <Compile Include="DataServices\IScrapDataServices.cs" />
     <Compile Include="DataServices\ScrapDataServices.cs" />
-    <Compile Include="Dialogs\DialogManager.cs" />
+    <Compile Include="DialogServices\DialogManager.cs" />
+    <Compile Include="DialogServices\IMessageDialogService.cs" />
+    <Compile Include="DialogServices\MessageDialogService.cs" />
     <Compile Include="Models\HorseRaceDetails.cs" />
     <Compile Include="Models\HorseChildData.cs" />
     <Compile Include="Models\JockeyRaceDetails.cs" />
@@ -118,7 +121,6 @@
     </Compile>
     <Compile Include="Models\RaceData.cs" />
     <Compile Include="Models\LoadedHorse.cs" />
-    <Compile Include="Models\RelayCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

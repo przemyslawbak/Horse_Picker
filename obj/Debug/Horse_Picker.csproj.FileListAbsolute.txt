@@ -412,3 +412,5 @@ C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\De
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker.csproj.CopyComplete
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker.exe
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker.pdb
+C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Views\UpdateWindow.g.cs
+C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Views\UpdateWindow.baml
