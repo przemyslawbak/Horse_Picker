@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Horse_Picker.DataProvider;
-using Horse_Picker.Dialogs;
 using Horse_Picker.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -22,11 +21,8 @@ namespace Horse_Picker.Startup
             builder.RegisterType<ScrapDataServices>()
               .As<IScrapDataServices>().SingleInstance();
 
-            builder.RegisterType<MessageDialogService>()
-              .As<IMessageDialogService>().SingleInstance();
-
             builder.RegisterType<MainWindow>().AsSelf();
-            builder.RegisterType<MainViewModel>().AsSelf().SingleInstance();
+            builder.RegisterType<MainViewModel>().AsSelf();
 
             return builder.Build();
         }

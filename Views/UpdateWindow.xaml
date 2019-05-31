@@ -3,12 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Horse_Picker.Views"
              mc:Ignorable="d"
              d:DesignHeight="335" d:DesignWidth="250"
-        MinHeight="335" MinWidth="250"
-        MaxHeight="335" MaxWidth="250"
-        Title="Update data"
-        WindowStartupLocation="CenterOwner"
+        Title="Choose data modules"
+        WindowStartupLocation="CenterScreen"
         Background="Green">
     <Window.Resources>
         <Style x:Key="ckbx" TargetType="CheckBox">
@@ -45,27 +44,27 @@
         <CheckBox Grid.Column="0"
                   Grid.Row="1"
                    Style="{StaticResource ckbx}"
-                  IsChecked="{Binding UpdateJockeysPl, Mode=TwoWay}"/>
+                  IsChecked="{Binding JockeysPl}"/>
 
         <CheckBox Grid.Column="0"
                   Grid.Row="2"
                    Style="{StaticResource ckbx}"
-                  IsChecked="{Binding UpdateJockeysCz, Mode=TwoWay}"/>
+                  IsChecked="{Binding JockeysCz}"/>
 
         <CheckBox Grid.Column="0"
                   Grid.Row="3"
                    Style="{StaticResource ckbx}"
-                  IsChecked="{Binding UpdateHorsesPl, Mode=TwoWay}"/>
+                  IsChecked="{Binding HorsesPl}"/>
 
         <CheckBox Grid.Column="0"
                   Grid.Row="4"
                    Style="{StaticResource ckbx}"
-                  IsChecked="{Binding UpdateHorsesCz, Mode=TwoWay}"/>
+                  IsChecked="{Binding HorsesCz}"/>
 
         <CheckBox Grid.Column="0"
                   Grid.Row="5"
                    Style="{StaticResource ckbx}"
-                  IsChecked="{Binding UpdateRacesPl, Mode=TwoWay}"/>
+                  IsChecked="{Binding RacesPl}"/>
 
         <TextBlock Grid.Column="1"
                    Grid.Row="1"
@@ -99,8 +98,7 @@
                 Height="40"
                 Width="100"
                 Style="{StaticResource appbtn}"
-                Visibility="{Binding VisibilityTestingBtn}"
-                Click="ButtonUpdate_Click">
+                Visibility="{Binding VisibilityTestingBtn}">
         </Button>
     </Grid>
 </Window>
