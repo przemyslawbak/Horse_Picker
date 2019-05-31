@@ -1,4 +1,6 @@
-﻿using Horse_Picker.DataProvider;
+﻿using Horse_Picker.Commands;
+using Horse_Picker.DataProvider;
+using Horse_Picker.Dialogs;
 using Horse_Picker.Models;
 using Horse_Picker.NewModels;
 using Horse_Picker.Wrappers;
@@ -19,17 +21,18 @@ namespace Horse_Picker.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private IMessageDialogService _messageDialogService;
+        private IFileDataServices _dataServices;
+        private IScrapDataServices _scrapServices;
         private List<LoadedHorse> _allHorses;
         private List<LoadedJockey> _allJockeys;
         private List<LoadedHistoricalRace> _allRaces;
         private HorseDataWrapper _horseWrapper;
-        private IFileDataServices _dataServices;
-        private IScrapDataServices _scrapServices;
         private RaceData _raceDataModel;
         private UpdateModules _updateModulesModel;
         private CancellationTokenSource _tokenSource;
         private CancellationToken _cancellationToken;
-        public MainViewModel(IFileDataServices dataServices, IScrapDataServices scrapServices)
+        public MainViewModel(IFileDataServices dataServices, IScrapDataServices scrapServices, IMessageDialogService messageDialogService)
         {
             _allHorses = new List<LoadedHorse>();
             _allJockeys = new List<LoadedJockey>();
@@ -38,6 +41,7 @@ namespace Horse_Picker.ViewModels
             _loadedJockeys = new List<string>();
             _dataServices = dataServices; //data files
             _scrapServices = scrapServices; //data scrap
+            _messageDialogService = messageDialogService; //dialogs
             HorseList = new ObservableCollection<HorseDataWrapper>();
             _raceDataModel = new RaceData();
             _updateModulesModel = new UpdateModules();
@@ -57,9 +61,99 @@ namespace Horse_Picker.ViewModels
             VisibilityUpdatingBtn = Visibility.Visible;
             VisibilityTestingBtn = Visibility.Visible;
 
+            NewHorseCommand = new DelegateCommand(OnNewHorseExecute);
+            ClearDataCommand = new DelegateCommand(OnClearDataExecute);
+            TaskCancellationCommand = new DelegateCommand(OnTaskCancellationExecute);
+            TestResultsCommand = new DelegateCommand(OnTestResultExecuteAsync);
+            PickHorseDataCommand = new DelegateCommand(OnPickHorseDataExecute);
+            UpdateDataCommand = new DelegateCommand(OnUpdateDataExecuteAsync);
+
             LoadAllData();
 
             HorseList.CollectionChanged += HorseListCollectionChanged;
+        }
+
+        private async void OnTestResultExecuteAsync(object obj)
+        {
+            _tokenSource = new CancellationTokenSource();
+            _cancellationToken = _tokenSource.Token;
+
+            CommandStartedControlsSetup("TestResultsCommand");
+
+            await TestHistoricalResults();
+
+            _dataServices.SaveRaceTestResultsAsync(_allRaces); //save results to
+
+            CommandCompletedControlsSetup();
+        }
+
+        private void OnPickHorseDataExecute(object obj)
+        {
+            HorseDataWrapper horseWrapper = (HorseDataWrapper)obj;
+            Task task = Task.Run(() => horseWrapper = ParseHorseData(horseWrapper, DateTime.Now)); //sometimes consume time
+        }
+
+        private async void OnUpdateDataExecuteAsync(object obj)
+        {
+            List<bool> updateModules = new List<bool>();
+
+            UpdateHorsesCz = false;
+            UpdateHorsesPl = false;
+            UpdateJockeysCz = false;
+            UpdateJockeysPl = false;
+            UpdateRacesPl = false;
+
+            var result = _messageDialogService.ShowUpdateWindow();
+
+            //DODAC KONTEKST DLA OKNA
+            updateModules.Add(UpdateHorsesCz);
+            updateModules.Add(UpdateHorsesPl);
+            updateModules.Add(UpdateJockeysCz);
+            updateModules.Add(UpdateJockeysPl);
+            updateModules.Add(UpdateRacesPl);
+
+            bool isAnyTrue = updateModules.Any(module => module == true);
+
+            if (result == MessageDialogResult.Update && isAnyTrue)
+            {
+
+                _tokenSource = new CancellationTokenSource();
+                _cancellationToken = _tokenSource.Token;
+
+
+                if (UpdateJockeysPl) await ScrapJockeys(1, 1049, "jockeysPl"); //1 - 1049
+                if (UpdateJockeysCz) await ScrapJockeys(4500, 32549, "jockeysCz"); //4000 - 31049
+                if (UpdateHorsesPl) await ScrapHorses(1, 30049, "horsesPl"); //1 - 25049
+                if (UpdateHorsesCz) await ScrapHorses(8000, 150049, "horsesCz"); // 8000 - 150049
+                if (UpdateRacesPl) await ScrapHistoricalRaces(1, 18049, "racesPl"); // 1 - 17049
+
+                CommandCompletedControlsSetup();
+            }
+        }
+
+        private void OnTaskCancellationExecute(object obj)
+        {
+            TaskCancellation = true;
+
+            _tokenSource.Cancel();
+
+            CommandCompletedControlsSetup();
+        }
+
+        private void OnClearDataExecute(object obj)
+        {
+            HorseList.Clear();
+            Category = "fill up";
+            City = "-";
+            Distance = "0";
+            RaceNo = "0";
+            RaceDate = DateTime.Now;
+        }
+
+        private void OnNewHorseExecute(object obj)
+        {
+            _horseWrapper = new HorseDataWrapper();
+            HorseList.Add(_horseWrapper);
         }
 
         /// <summary>
@@ -150,7 +244,7 @@ namespace Horse_Picker.ViewModels
             ValidateButtons();
         }
 
-        public bool JockeysPl
+        public bool UpdateJockeysPl
         {
             get
             {
@@ -163,7 +257,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        public bool JockeysCz
+        public bool UpdateJockeysCz
         {
             get
             {
@@ -176,7 +270,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        public bool HorsesCz
+        public bool UpdateHorsesCz
         {
             get
             {
@@ -189,7 +283,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        public bool HorsesPl
+        public bool UpdateHorsesPl
         {
             get
             {
@@ -202,7 +296,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        public bool RacesPl
+        public bool UpdateRacesPl
         {
             get
             {
@@ -554,66 +648,13 @@ namespace Horse_Picker.ViewModels
             return false;
         }
 
-        /// <summary>
-        /// add new horse to the list
-        /// </summary>
-        private ICommand _newHorseCommand;
-        public ICommand NewHorseCommand
-        {
-            get
-            {
-                if (_newHorseCommand == null)
-                    _newHorseCommand = new RelayCommand(
-                    o =>
-                    {
-                        _horseWrapper = new HorseDataWrapper();
-                        HorseList.Add(_horseWrapper);
-                    });
-                return _newHorseCommand;
-            }
-        }
+        public ICommand NewHorseCommand { get; private set; }
+        public ICommand ClearDataCommand { get; private set; }
+        public ICommand TaskCancellationCommand { get; private set; }
+        public ICommand TestResultsCommand { get; private set; }
+        public ICommand UpdateDataCommand { get; private set; }
+        public ICommand PickHorseDataCommand { get; private set; }
 
-        /// <summary>
-        /// clear all horses from the list
-        /// </summary>
-        private ICommand _clearDataCommand;
-        public ICommand ClearDataCommand
-        {
-            get
-            {
-                if (_clearDataCommand == null)
-                    _clearDataCommand = new RelayCommand(
-                    o =>
-                    {
-                        HorseList.Clear();
-                        Category = "fill up";
-                        City = "-";
-                        Distance = "0";
-                        RaceNo = "0";
-                        RaceDate = DateTime.Now;
-                    });
-                return _clearDataCommand;
-            }
-        }
-
-        /// <summary>
-        /// pick up horses data
-        /// </summary>
-        private ICommand _pickHorseDataCommand;
-        public ICommand PickHorseDataCommand
-        {
-            get
-            {
-                if (_pickHorseDataCommand == null)
-                    _pickHorseDataCommand = new RelayCommand(
-                    o =>
-                    {
-                        HorseDataWrapper horseWrapper = (HorseDataWrapper)o;
-                        Task task = Task.Run(() => horseWrapper = ParseHorseData(horseWrapper, DateTime.Now)); //sometimes consume time
-                    });
-                return _pickHorseDataCommand;
-            }
-        }
 
         /// <summary>
         /// parses the horse from _allHorses with providen data
@@ -1019,53 +1060,6 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// cancel result tests or updates
-        /// </summary>
-        private ICommand _taskCancellationCommand;
-        public ICommand TaskCancellationCommand
-        {
-            get
-            {
-                if (_taskCancellationCommand == null)
-                    _taskCancellationCommand = new RelayCommand(
-                    o =>
-                    {
-                        TaskCancellation = true;
-
-                        _tokenSource.Cancel();
-
-                        CommandCompletedControlsSetup();
-                    });
-                return _taskCancellationCommand;
-            }
-        }
-
-        /// <summary>
-        /// test on historical results
-        /// </summary>
-        private ICommand _testResultsCommand;
-        public ICommand TestResultsCommand
-        {
-            get
-            {
-                if (_testResultsCommand == null)
-                    _testResultsCommand = new RelayCommand(
-                    async o =>
-                    {
-                        _tokenSource = new CancellationTokenSource();
-                        _cancellationToken = _tokenSource.Token;
-
-                        CommandStartedControlsSetup("TestResultsCommand");
-
-                        await TestHistoricalResults();
-
-                        CommandCompletedControlsSetup();
-                    });
-                return _testResultsCommand;
-            }
-        }
-
-        /// <summary>
         /// is parsing race stats with every single horse from all historic races
         /// </summary>
         /// <returns></returns>
@@ -1092,7 +1086,10 @@ namespace Horse_Picker.ViewModels
                         _cancellationToken.ThrowIfCancellationRequested();
                         loopCounter++;
 
-                        ProgressBarTick("Requesting historic data", loopCounter, _allRaces.Count, 0);
+                        if (loopCounter < _allRaces.Count - 1)
+                        {
+                            ProgressBarTick("Requesting historic data", loopCounter, _allRaces.Count, 0);
+                        }
 
                         //if the race is from 2018
                         if (_allRaces[j].RaceDate.Year == 2018)
@@ -1112,7 +1109,7 @@ namespace Horse_Picker.ViewModels
 
                         taskCounter++;
 
-                        if (loopCounter >= _allRaces.Count)
+                        if (loopCounter > _allRaces.Count - 1)
                         {
                             ProgressBarTick("Testing on historic data", taskCounter, _allRaces.Count, 0);
                         }
@@ -1141,35 +1138,6 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// update data files
-        /// </summary>
-        private ICommand _updateDataCommand;
-        public ICommand UpdateDataCommand
-        {
-            get
-            {
-                if (_updateDataCommand == null)
-                    _updateDataCommand = new RelayCommand(
-                    async o =>
-                    {
-                        _tokenSource = new CancellationTokenSource();
-                        _cancellationToken = _tokenSource.Token;
-
-                        CommandStartedControlsSetup("UpdateDataCommand");
-
-                        //await ScrapJockeys(1, 1049, "jockeysPl"); //1 - 1049
-                        //await ScrapJockeys(26200, 32549, "jockeysCz"); //4000 - 31049
-                        //await ScrapHorses(1, 30049, "horsesPl"); //1 - 25049
-                        //await ScrapHorses(114300, 150049, "horsesCz"); // 8000 - 150049
-                        await ScrapHistoricalRaces(1, 18049, "racesPl"); // 1 - 17049
-
-                        CommandCompletedControlsSetup();
-                    });
-                return _updateDataCommand;
-            }
-        }
-
-        /// <summary>
         /// scraps historic races
         /// </summary>
         /// <param name="startIndex">page to start loop</param>
@@ -1178,7 +1146,9 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         private async Task ScrapHistoricalRaces(int startIndex, int stopIndex, string dataType)
         {
-            UpdateStatusBar = 0;
+            CommandStartedControlsSetup("UpdateDataCommand");
+
+            //_allRaces.Clear(); //ODKOMENTOWAĆ PO UKOŃCENIU PROJEKTU!!!!!!!!!
 
             List<Task> tasks = new List<Task>();
             int loopCounter = 0;
@@ -1243,7 +1213,7 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         private async Task ScrapJockeys(int startIndex, int stopIndex, string dataType)
         {
-            UpdateStatusBar = 0;
+            CommandStartedControlsSetup("UpdateDataCommand");
 
             List<Task> tasks = new List<Task>();
             int loopCounter = 0;
@@ -1332,7 +1302,7 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         private async Task ScrapHorses(int startIndex, int stopIndex, string dataType)
         {
-            UpdateStatusBar = 0;
+            CommandStartedControlsSetup("UpdateDataCommand");
 
             List<Task> tasks = new List<Task>();
             int loopCounter = 0;

@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Autofac;
+using Horse_Picker.DataProvider;
+using Horse_Picker.Dialogs;
+using Horse_Picker.Startup;
+using Horse_Picker.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +27,12 @@ namespace Horse_Picker.Views
         public UpdateWindow()
         {
             InitializeComponent();
+            DataContext = Application.Current.MainWindow.DataContext;
+        }
+
+        private void ButtonUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
         }
     }
 }

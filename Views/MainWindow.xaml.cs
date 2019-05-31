@@ -1,4 +1,6 @@
-﻿using Horse_Picker.ViewModels;
+﻿using Autofac;
+using Horse_Picker.Startup;
+using Horse_Picker.ViewModels;
 using System.Windows;
 
 namespace Horse_Picker
@@ -8,12 +10,13 @@ namespace Horse_Picker
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainViewModel _viewModel;
-        public MainWindow(MainViewModel viewModel)
+        public MainWindow()
         {
+            var bootStrapper = new BootStrapper();
+            var container = bootStrapper.BootStrap();
+            MainViewModel vm = container.Resolve<MainViewModel>();
             InitializeComponent();
-            _viewModel = viewModel;
-            DataContext = _viewModel;
+            DataContext = vm;
         }
     }
 }
