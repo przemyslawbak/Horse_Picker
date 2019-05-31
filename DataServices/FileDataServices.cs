@@ -15,11 +15,11 @@ namespace Horse_Picker.DataProvider
 {
     public class FileDataServices : IFileDataServices
     {
-        DialogBox dialog = new DialogBox();
+        MessageBoxDisplay dialog = new MessageBoxDisplay();
         string _horsesFileName = "_horses_list.json";
         string _jockeysFileName = "_jockeys_list.json";
         string _racesFileName = "_historic_races.json";
-        string _testsFileName = "_historic_tests.json";
+        string _testsFileName = "_historic_tests.txt";
 
         public List<LoadedHorse> GetAllHorses()
         {
@@ -83,7 +83,7 @@ namespace Horse_Picker.DataProvider
                 }
                 catch (Exception e)
                 {
-                    dialog.ShowDialog("Could not save the results, " + e.ToString(), "Error");
+                    dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace Horse_Picker.DataProvider
                 }
                 catch (Exception e)
                 {
-                    dialog.ShowDialog("Could not save the results, " + e.ToString(), "Error");
+                    dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
                 }
             }
         }
@@ -125,31 +125,49 @@ namespace Horse_Picker.DataProvider
                 }
                 catch (Exception e)
                 {
-                    dialog.ShowDialog("Could not save the results, " + e.ToString(), "Error");
+                    dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
                 }
             }
         }
 
-        public void SaveRaceTestResultsAsync(List<LoadedHistoricalRace> allRaces)
+        public async void SaveRaceTestResultsAsync(List<LoadedHistoricalRace> allRaces)
         {
-
+            string line;
             if (allRaces.Count != 0)
             {
                 if (File.Exists(_testsFileName)) File.Delete(_testsFileName);
 
                 try
                 {
-                    using (StreamWriter file = File.CreateText(_testsFileName))
+                    for (int j = 0; j < allRaces.Count; j++)
                     {
-                        JsonSerializer serializer = new JsonSerializer();
-                        serializer.Serialize(file, allRaces);
+                        line = "";
+                        await SaveTestResultLine(line);
+                        line = allRaces[j].RaceDate + " - " + allRaces[j].RaceDistance + " - " + allRaces[j].RaceCategory;
+                        await SaveTestResultLine(line);
+
+                        for (int h = 0; h < allRaces[j].HorseList.Count; h++)
+                        {
+                            line = allRaces[j].HorseList[h].HorseScore.ToString("0.000"); //get all indexes
+                            await SaveTestResultLine(line);
+                        }
+
                     }
                 }
                 catch (Exception e)
                 {
-                    dialog.ShowDialog("Could not save the results, " + e.ToString(), "Error");
+                    dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
                 }
             }
+        }
+
+        async Task SaveTestResultLine(string line)
+        {
+            using (TextWriter csvLineBuilder = new StreamWriter(_testsFileName, true))
+            {
+                csvLineBuilder.WriteLine(line);
+            }
+            await Task.Delay(1);
         }
     }
 }
