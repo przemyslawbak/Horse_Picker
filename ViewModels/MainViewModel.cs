@@ -89,8 +89,8 @@ namespace Horse_Picker.ViewModels
 
         private void OnPickHorseDataExecute(object obj)
         {
-            HorseDataWrapper horseWrapper = (HorseDataWrapper)obj;
-            Task task = Task.Run(() => horseWrapper = ParseHorseData(horseWrapper, DateTime.Now)); //sometimes consume time
+            _horseWrapper = (HorseDataWrapper)obj;
+            Task task = Task.Run(() => _horseWrapper = ParseHorseData(_horseWrapper, DateTime.Now)); //consumes time
         }
 
         private async void OnUpdateDataExecuteAsync(object obj)
