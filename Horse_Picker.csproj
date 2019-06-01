@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>horse.ico</ApplicationIcon>
+    <ApplicationIcon>horseicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.9.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -172,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="horse.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="horseicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("horse.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("horseicon.ico")]
 
 

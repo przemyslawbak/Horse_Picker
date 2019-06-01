@@ -396,11 +396,12 @@ C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\bin\De
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\bin\Debug\Newtonsoft.Json.xml
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\bin\Debug\System.Windows.Interactivity.xml
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\bin\Debug\WPFTextBoxAutoComplete.pdb
-C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker.csprojAssemblyReference.cache
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker.exe.config
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Interop.MSHTML.dll
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker.csproj.ResolveComReference.cache
+C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Views\UpdateWindow.baml
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Views\MainWindow.g.cs
+C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Views\UpdateWindow.g.cs
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\App.g.cs
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker_MarkupCompile.cache
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker_MarkupCompile.lref
@@ -412,5 +413,4 @@ C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\De
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker.csproj.CopyComplete
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker.exe
 C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker.pdb
-C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Views\UpdateWindow.g.cs
-C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Views\UpdateWindow.baml
+C:\Users\asus\Desktop\IT\Programowanie\Projekty\Horse_Picker\Horse_Picker\obj\Debug\Horse_Picker.csprojAssemblyReference.cache

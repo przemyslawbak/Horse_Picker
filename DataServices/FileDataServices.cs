@@ -130,7 +130,7 @@ namespace Horse_Picker.DataProvider
             }
         }
 
-        public async void SaveRaceTestResultsAsync(List<LoadedHistoricalRace> allRaces)
+        public async Task SaveRaceTestResultsAsync(List<LoadedHistoricalRace> allRaces)
         {
             string line;
             if (allRaces.Count != 0)
@@ -165,9 +165,8 @@ namespace Horse_Picker.DataProvider
         {
             using (TextWriter csvLineBuilder = new StreamWriter(_testsFileName, true))
             {
-                csvLineBuilder.WriteLine(line);
+                await csvLineBuilder.WriteLineAsync(line);
             }
-            await Task.Delay(1);
         }
     }
 }

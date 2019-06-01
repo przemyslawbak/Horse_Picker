@@ -16,6 +16,6 @@ namespace Horse_Picker.DataProvider
         List<LoadedJockey> GetAllJockeys();
         void SaveAllRaces(List<LoadedHistoricalRace> list);
         List<LoadedHistoricalRace> GetAllRaces();
-        void SaveRaceTestResultsAsync(List<LoadedHistoricalRace> allRaces);
+        Task SaveRaceTestResultsAsync(List<LoadedHistoricalRace> allRaces);
     }
 }
