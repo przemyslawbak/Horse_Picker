@@ -145,10 +145,18 @@ namespace Horse_Picker.DataProvider
                         await SaveTestResultLine(line);
                         line = allRaces[j].RaceDate + " - " + allRaces[j].RaceDistance + " - " + allRaces[j].RaceCategory;
                         await SaveTestResultLine(line);
+                        line = "Name - Jockey - WI - JI - CI - SI - Score";
+                        await SaveTestResultLine(line);
 
                         for (int h = 0; h < allRaces[j].HorseList.Count; h++)
                         {
-                            line = allRaces[j].HorseList[h].HorseScore.ToString("0.000"); //get all indexes
+                            line = allRaces[j].HorseList[h].HorseName + " - "
+                                + allRaces[j].HorseList[h].Jockey + " - "
+                                + allRaces[j].HorseList[h].WinIndex.ToString("0.000") + " - "
+                                + allRaces[j].HorseList[h].JockeyIndex.ToString("0.000") + " - "
+                                + allRaces[j].HorseList[h].CategoryIndex.ToString("0.000") + " - "
+                                + allRaces[j].HorseList[h].SiblingsIndex.ToString("0.000") + " - "
+                                + allRaces[j].HorseList[h].HorseScore.ToString("0.000") + " - ";
                             await SaveTestResultLine(line);
                         }
 
