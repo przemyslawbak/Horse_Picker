@@ -1245,6 +1245,12 @@ namespace Horse_Picker.ViewModels
 
                     loopCounter++;
 
+                    //saves all every 1000 records, just in case
+                    if (loopCounter % 1000 == 0)
+                    {
+                        await _dataServices.SaveAllJockeysAsync(_allJockeys.ToList());
+                    }
+
                     ProgressBarTick("Looking for jockeys", loopCounter, stopIndex, startIndex);
 
                 }, _tokenSource.Token);
@@ -1262,7 +1268,7 @@ namespace Horse_Picker.ViewModels
             }
             finally
             {
-                _dataServices.SaveAllJockeys(_allJockeys.ToList()); //saves everything to JSON file
+                await _dataServices.SaveAllJockeysAsync(_allJockeys.ToList()); //saves everything to JSON file
 
                 AllControlsEnabled = true;
 
@@ -1341,6 +1347,12 @@ namespace Horse_Picker.ViewModels
 
                     loopCounter++;
 
+                    //saves all every 1000 records, just in case
+                    if (loopCounter % 1000 == 0)
+                    {
+                        await _dataServices.SaveAllHorsesAsync(_allHorses.ToList());
+                    }
+
                     ProgressBarTick("Looking for horses", loopCounter, stopIndex, startIndex);
 
                 }, _tokenSource.Token);
@@ -1358,7 +1370,7 @@ namespace Horse_Picker.ViewModels
             }
             finally
             {
-                _dataServices.SaveAllHorses(_allHorses.ToList()); //saves everything to JSON file
+                await _dataServices.SaveAllHorsesAsync(_allHorses.ToList()); //saves everything to JSON file
 
                 AllControlsEnabled = true;
 

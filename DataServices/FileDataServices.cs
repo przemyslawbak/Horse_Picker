@@ -67,46 +67,52 @@ namespace Horse_Picker.DataProvider
             return _allRaces;
         }
 
-        public void SaveAllHorses(List<LoadedHorse> allHorses)
+        public async Task SaveAllHorsesAsync(List<LoadedHorse> allHorses)
         {
-            if (allHorses.Count != 0)
+            await Task.Run(() =>
             {
-                try
+                if (allHorses.Count != 0)
                 {
-                    if (File.Exists(_horsesFileName)) File.Delete(_horsesFileName);
-
-                    using (StreamWriter file = File.CreateText(_horsesFileName))
+                    try
                     {
-                        JsonSerializer serializer = new JsonSerializer();
-                        serializer.Serialize(file, allHorses);
+                        if (File.Exists(_horsesFileName)) File.Delete(_horsesFileName);
+
+                        using (StreamWriter file = File.CreateText(_horsesFileName))
+                        {
+                            JsonSerializer serializer = new JsonSerializer();
+                            serializer.Serialize(file, allHorses);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
                     }
                 }
-                catch (Exception e)
-                {
-                    dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
-                }
-            }
+            });
         }
 
-        public void SaveAllJockeys(List<LoadedJockey> allJockeys)
+        public async Task SaveAllJockeysAsync(List<LoadedJockey> allJockeys)
         {
-            if (allJockeys.Count != 0)
+            await Task.Run(() =>
             {
-                if (File.Exists(_jockeysFileName)) File.Delete(_jockeysFileName);
-
-                try
+                if (allJockeys.Count != 0)
                 {
-                    using (StreamWriter file = File.CreateText(_jockeysFileName))
+                    if (File.Exists(_jockeysFileName)) File.Delete(_jockeysFileName);
+
+                    try
                     {
-                        JsonSerializer serializer = new JsonSerializer();
-                        serializer.Serialize(file, allJockeys);
+                        using (StreamWriter file = File.CreateText(_jockeysFileName))
+                        {
+                            JsonSerializer serializer = new JsonSerializer();
+                            serializer.Serialize(file, allJockeys);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
                     }
                 }
-                catch (Exception e)
-                {
-                    dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
-                }
-            }
+            });
         }
 
         public void SaveAllRaces(List<LoadedHistoricalRace> allRaces)

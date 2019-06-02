@@ -11,8 +11,8 @@ namespace Horse_Picker.DataProvider
     public interface IFileDataServices
     {
         List<LoadedHorse> GetAllHorses();
-        void SaveAllHorses(List<LoadedHorse> horses);
-        void SaveAllJockeys(List<LoadedJockey> allJockeys);
+        Task SaveAllHorsesAsync(List<LoadedHorse> horses);
+        Task SaveAllJockeysAsync(List<LoadedJockey> allJockeys);
         List<LoadedJockey> GetAllJockeys();
         void SaveAllRaces(List<LoadedHistoricalRace> list);
         List<LoadedHistoricalRace> GetAllRaces();
