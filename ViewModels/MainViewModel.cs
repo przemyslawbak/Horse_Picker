@@ -771,6 +771,7 @@ namespace Horse_Picker.ViewModels
                         horseWrapper.JockeyIndex = 0; //clear
                     }
                 }
+                horseWrapper.Comments = horseWrapper.HorseScore.ToString("0.000");
             }
 
             return horseWrapper;
