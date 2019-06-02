@@ -30,7 +30,7 @@ namespace Horse_Picker.Wrappers
 
         public double HorseScore
         {
-            get { return WinIndex; }
+            get { return 2*WinIndex + 0.5*SiblingsIndex + JockeyIndex + 0.5*CategoryIndex; }
         }
 
         public string HorseName
