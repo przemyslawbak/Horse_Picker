@@ -15,7 +15,6 @@ namespace Horse_Picker.DataProvider
 {
     public class FileDataServices : IFileDataServices
     {
-        MessageBoxDisplay dialog = new MessageBoxDisplay();
         string _horsesFileName = "_horses_list.json";
         string _jockeysFileName = "_jockeys_list.json";
         string _racesFileName = "_historic_races.json";
@@ -85,7 +84,7 @@ namespace Horse_Picker.DataProvider
                     }
                     catch (Exception e)
                     {
-                        dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
+                        //
                     }
                 }
             });
@@ -109,7 +108,7 @@ namespace Horse_Picker.DataProvider
                     }
                     catch (Exception e)
                     {
-                        dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
+                        //
                     }
                 }
             });
@@ -131,7 +130,7 @@ namespace Horse_Picker.DataProvider
                 }
                 catch (Exception e)
                 {
-                    dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
+                    //
                 }
             }
         }
@@ -170,7 +169,7 @@ namespace Horse_Picker.DataProvider
                 }
                 catch (Exception e)
                 {
-                    dialog.ShowMessageBox("Could not save the results, " + e.ToString(), "Error");
+                    //
                 }
             }
         }
