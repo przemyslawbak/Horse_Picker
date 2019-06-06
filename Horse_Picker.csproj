@@ -97,7 +97,6 @@
     <Compile Include="DataServices\IFileDataProvider.cs" />
     <Compile Include="DataServices\IScrapDataServices.cs" />
     <Compile Include="DataServices\ScrapDataServices.cs" />
-    <Compile Include="DialogServices\DialogManager.cs" />
     <Compile Include="DialogServices\IMessageDialogService.cs" />
     <Compile Include="DialogServices\MessageDialogService.cs" />
     <Compile Include="Models\HorseRaceDetails.cs" />
