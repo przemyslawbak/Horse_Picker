@@ -56,6 +56,7 @@ namespace Horse_Picker.ViewModels
             TaskCancellation = false;
             AllControlsEnabled = true;
             VisibilityStatusBar = Visibility.Hidden;
+            VisibilityCancellingMsg = Visibility.Collapsed;
             VisibilityCancelTestingBtn = Visibility.Collapsed;
             VisibilityCancelUpdatingBtn = Visibility.Collapsed;
             VisibilityUpdatingBtn = Visibility.Visible;
@@ -602,6 +603,23 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
+        /// display "cancel tests" btn or not
+        /// </summary>
+        private Visibility _visibilityCancellingMsg;
+        public Visibility VisibilityCancellingMsg
+        {
+            get
+            {
+                return _visibilityCancellingMsg;
+            }
+            set
+            {
+                _visibilityCancellingMsg = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// for update/test cancellation
         /// </summary>
         private bool _taskCancellation;
@@ -1121,6 +1139,8 @@ namespace Horse_Picker.ViewModels
                 AllControlsEnabled = true;
 
                 await _dataServices.SaveRaceTestResultsAsync(_allRaces); //save the analysis to the file
+
+                VisibilityCancellingMsg = Visibility.Collapsed;
             }
         }
 
@@ -1189,6 +1209,8 @@ namespace Horse_Picker.ViewModels
                 AllControlsEnabled = true;
 
                 CommandCompletedControlsSetup();
+
+                VisibilityCancellingMsg = Visibility.Collapsed;
             }
         }
 
@@ -1273,6 +1295,8 @@ namespace Horse_Picker.ViewModels
                 AllControlsEnabled = true;
 
                 CommandCompletedControlsSetup();
+
+                VisibilityCancellingMsg = Visibility.Collapsed;
             }
         }
 
@@ -1375,6 +1399,8 @@ namespace Horse_Picker.ViewModels
                 AllControlsEnabled = true;
 
                 CommandCompletedControlsSetup();
+
+                VisibilityCancellingMsg = Visibility.Collapsed;
             }
         }
 
@@ -1434,6 +1460,7 @@ namespace Horse_Picker.ViewModels
             ValidateButtons();
             ProgressDisplay = "";
             WorkStatus = "";
+            VisibilityCancellingMsg = Visibility.Visible;
             VisibilityCancelTestingBtn = Visibility.Collapsed;
             VisibilityTestingBtn = Visibility.Visible;
             VisibilityCancelUpdatingBtn = Visibility.Collapsed;

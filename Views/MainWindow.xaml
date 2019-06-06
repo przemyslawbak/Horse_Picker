@@ -451,5 +451,20 @@
                 VerticalAlignment="Top"
                 />
         </Grid>
+        <Label
+            Foreground="White"
+            Background="orange"
+                Content="CANCELLING..."
+                FontSize="20"
+                Grid.Column="0"
+                 Grid.ColumnSpan="6"
+				 Grid.Row="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+            Padding="20"
+            BorderBrush="White"
+            BorderThickness="1"
+            Visibility="{Binding VisibilityCancellingMsg}"
+            />
     </Grid>
 </Window>
