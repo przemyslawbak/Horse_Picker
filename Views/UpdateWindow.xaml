@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignHeight="335" d:DesignWidth="250"
-        MinHeight="335" MinWidth="250"
-        MaxHeight="335" MaxWidth="250"
+             d:DesignHeight="335" d:DesignWidth="350"
+        Height="335" Width="350"
+        ResizeMode="NoResize"
         Title="Update data"
         WindowStartupLocation="CenterOwner"
         Background="Green">
@@ -27,10 +27,18 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
+        <Style x:Key="inputTb" TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="25"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -92,7 +100,7 @@
                    Style="{StaticResource racetblk}">
             Historic races PL
         </TextBlock>
-        <Button Grid.ColumnSpan="2"
+        <Button Grid.ColumnSpan="4"
                 Grid.Row="6"
                 Content="Start update"
                 HorizontalAlignment="Center"
@@ -102,5 +110,57 @@
                 Visibility="{Binding VisibilityTestingBtn}"
                 Click="ButtonUpdate_Click">
         </Button>
+        <TextBlock Grid.Row="0"
+                   Grid.Column="2"
+                   Text="From ID"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Foreground="White"/>
+        <TextBlock Grid.Row="0"
+                   Grid.Column="3"
+                   Text="To ID"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Foreground="White"/>
+        <TextBox Grid.Row="1"
+                 Grid.Column="2"
+                 Style="{StaticResource inputTb}"
+                 Text="{Binding JPlFrom, Mode=TwoWay}"/>
+        <TextBox Grid.Row="1"
+                 Grid.Column="3"
+                 Style="{StaticResource inputTb}"
+                 Text="{Binding JPlTo, Mode=TwoWay}"/>
+        <TextBox Grid.Row="2"
+                 Grid.Column="2"
+                 Style="{StaticResource inputTb}"
+                 Text="{Binding JCzFrom, Mode=TwoWay}"/>
+        <TextBox Grid.Row="2"
+                 Grid.Column="3"
+                 Style="{StaticResource inputTb}"
+                 Text="{Binding JCzTo, Mode=TwoWay}"/>
+        <TextBox Grid.Row="3"
+                 Grid.Column="2"
+                 Style="{StaticResource inputTb}"
+                 Text="{Binding HPlFrom, Mode=TwoWay}"/>
+        <TextBox Grid.Row="3"
+                 Grid.Column="3"
+                 Style="{StaticResource inputTb}"
+                 Text="{Binding HPlTo, Mode=TwoWay}"/>
+        <TextBox Grid.Row="4"
+                 Grid.Column="2"
+                 Style="{StaticResource inputTb}"
+                 Text="{Binding HCzFrom, Mode=TwoWay}"/>
+        <TextBox Grid.Row="4"
+                 Grid.Column="3"
+                 Style="{StaticResource inputTb}"
+                 Text="{Binding HCzTo, Mode=TwoWay}"/>
+        <TextBox Grid.Row="5"
+                 Grid.Column="2"
+                 Style="{StaticResource inputTb}"
+                 Text="{Binding HistPlFrom, Mode=TwoWay}"/>
+        <TextBox Grid.Row="5"
+                 Grid.Column="3"
+                 Style="{StaticResource inputTb}"
+                 Text="{Binding HistPlTo, Mode=TwoWay}"/>
     </Grid>
 </Window>

@@ -13,5 +13,15 @@ namespace Horse_Picker.Models
         public bool HorsesCz { get; set; }
         public bool HorsesPl { get; set; }
         public bool RacesPl { get; set; }
+        public int JPlFrom { get; set; }
+        public int JPlTo { get; set; }
+        public int JCzTo { get; set; }
+        public int JCzFrom { get; set; }
+        public int HPlFrom { get; set; }
+        public int HPlTo { get; set; }
+        public int HCzTo { get; set; }
+        public int HCzFrom { get; set; }
+        public int HistPlFrom { get; set; }
+        public int HistPlTo { get; set; }
     }
 }

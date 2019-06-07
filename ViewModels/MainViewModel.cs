@@ -102,6 +102,19 @@ namespace Horse_Picker.ViewModels
             UpdateJockeysPl = false;
             UpdateRacesPl = false;
 
+            //default values
+            JPlFrom = 1;
+            JPlTo = 1049;
+            JCzFrom = 4000;
+            JCzTo = 31049;
+            HPlFrom = 1;
+            HPlTo = 25049;
+            HCzFrom = 8000;
+            HCzTo = 150049;
+            HistPlFrom = 1;
+            HistPlTo = 17049;
+
+
             var result = _messageDialogService.ShowUpdateWindow();
 
             //DODAC KONTEKST DLA OKNA
@@ -120,11 +133,11 @@ namespace Horse_Picker.ViewModels
                 _cancellationToken = _tokenSource.Token;
 
 
-                if (UpdateJockeysPl) await ScrapJockeys(1, 1049, "jockeysPl"); //1 - 1049
-                if (UpdateJockeysCz) await ScrapJockeys(4000, 31049, "jockeysCz"); //4000 - 31049
-                if (UpdateHorsesPl) await ScrapHorses(1, 25049, "horsesPl"); //1 - 25049
-                if (UpdateHorsesCz) await ScrapHorses(8000, 150049, "horsesCz"); // 8000 - 150049
-                if (UpdateRacesPl) await ScrapHistoricalRaces(1, 17049, "racesPl"); // 1 - 17049
+                if (UpdateJockeysPl) await ScrapJockeys(JPlFrom, JPlTo, "jockeysPl"); //1 - 1049
+                if (UpdateJockeysCz) await ScrapJockeys(JCzFrom, JCzTo, "jockeysCz"); //4000 - 31049
+                if (UpdateHorsesPl) await ScrapHorses(HPlFrom, HPlTo, "horsesPl"); //1 - 25049
+                if (UpdateHorsesCz) await ScrapHorses(HCzFrom, HCzTo, "horsesCz"); // 8000 - 150049
+                if (UpdateRacesPl) await ScrapHistoricalRaces(HistPlFrom, HistPlTo, "racesPl"); // 1 - 17049
             }
         }
 
@@ -239,6 +252,136 @@ namespace Horse_Picker.ViewModels
         private void HorseListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             ValidateButtons();
+        }
+
+        public int JPlFrom
+        {
+            get
+            {
+                return _updateModulesModel.JPlFrom;
+            }
+            set
+            {
+                _updateModulesModel.JPlFrom = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int JPlTo
+        {
+            get
+            {
+                return _updateModulesModel.JPlTo;
+            }
+            set
+            {
+                _updateModulesModel.JPlTo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int JCzFrom
+        {
+            get
+            {
+                return _updateModulesModel.JCzFrom;
+            }
+            set
+            {
+                _updateModulesModel.JCzFrom = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int JCzTo
+        {
+            get
+            {
+                return _updateModulesModel.JCzTo;
+            }
+            set
+            {
+                _updateModulesModel.JCzTo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int HPlFrom
+        {
+            get
+            {
+                return _updateModulesModel.HPlFrom;
+            }
+            set
+            {
+                _updateModulesModel.HPlFrom = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int HPlTo
+        {
+            get
+            {
+                return _updateModulesModel.HPlTo;
+            }
+            set
+            {
+                _updateModulesModel.HPlTo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int HCzFrom
+        {
+            get
+            {
+                return _updateModulesModel.HCzFrom;
+            }
+            set
+            {
+                _updateModulesModel.HCzFrom = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int HCzTo
+        {
+            get
+            {
+                return _updateModulesModel.HCzTo;
+            }
+            set
+            {
+                _updateModulesModel.HCzTo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int HistPlFrom
+        {
+            get
+            {
+                return _updateModulesModel.HistPlFrom;
+            }
+            set
+            {
+                _updateModulesModel.HistPlFrom = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int HistPlTo
+        {
+            get
+            {
+                return _updateModulesModel.HistPlTo;
+            }
+            set
+            {
+                _updateModulesModel.HistPlTo = value;
+                OnPropertyChanged();
+            }
         }
 
         public bool UpdateJockeysPl
