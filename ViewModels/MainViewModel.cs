@@ -133,11 +133,11 @@ namespace Horse_Picker.ViewModels
                 _cancellationToken = _tokenSource.Token;
 
 
-                if (UpdateJockeysPl) await ScrapJockeys(JPlFrom, JPlTo, "jockeysPl"); //1 - 1049
-                if (UpdateJockeysCz) await ScrapJockeys(JCzFrom, JCzTo, "jockeysCz"); //4000 - 31049
-                if (UpdateHorsesPl) await ScrapHorses(HPlFrom, HPlTo, "horsesPl"); //1 - 25049
-                if (UpdateHorsesCz) await ScrapHorses(HCzFrom, HCzTo, "horsesCz"); // 8000 - 150049
-                if (UpdateRacesPl) await ScrapHistoricalRaces(HistPlFrom, HistPlTo, "racesPl"); // 1 - 17049
+                if (UpdateJockeysPl) await ScrapJockeys(JPlFrom, JPlTo + 1, "jockeysPl"); //1 - 1049
+                if (UpdateJockeysCz) await ScrapJockeys(JCzFrom, JCzTo + 1, "jockeysCz"); //4000 - 31049
+                if (UpdateHorsesPl) await ScrapHorses(HPlFrom, HPlTo + 1, "horsesPl"); //1 - 25049
+                if (UpdateHorsesCz) await ScrapHorses(HCzFrom, HCzTo + 1, "horsesCz"); // 8000 - 150049
+                if (UpdateRacesPl) await ScrapHistoricalRaces(HistPlFrom, HistPlTo + 1, "racesPl"); // 1 - 17049
             }
         }
 
