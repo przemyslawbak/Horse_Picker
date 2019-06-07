@@ -79,11 +79,7 @@ namespace Horse_Picker.ViewModels
             _tokenSource = new CancellationTokenSource();
             _cancellationToken = _tokenSource.Token;
 
-            CommandStartedControlsSetup("TestResultsCommand");
-
             await TestHistoricalResults();
-
-            CommandCompletedControlsSetup();
         }
 
         private void OnPickHorseDataExecute(object obj)
@@ -888,6 +884,9 @@ namespace Horse_Picker.ViewModels
 
                     //category index
                     horseWrapper.CategoryIndex = ComputeCategoryIndex(horseFromList, date);
+
+                    //age index
+                    horseWrapper.AgeIndex = ComputeAgeIndex(horseFromList, date);
                 }
                 else
                 {
@@ -936,6 +935,25 @@ namespace Horse_Picker.ViewModels
             }
 
             return horseWrapper;
+        }
+
+        private double ComputeAgeIndex(LoadedHorse horseFromList, DateTime date)
+        {
+            int yearsDifference = DateTime.Now.Year - date.Year; //how many years passed since race
+
+            int horsesRaceAge = horseFromList.Age - yearsDifference; //how old was horse
+
+            if (horsesRaceAge > 5)
+            {
+                int multiplier = horsesRaceAge - 4;
+                double result = 0.6 * multiplier;
+                return result;
+            }
+            else
+            {
+                return 1;
+            }
+
         }
 
         /// <summary>
@@ -1161,7 +1179,14 @@ namespace Horse_Picker.ViewModels
                 result = result + siblingIndex;
             }
 
-            finalResult = result / childCounter;
+            if (childCounter != 0)
+            {
+                finalResult = result / childCounter;
+            }
+            else
+            {
+                finalResult = 0;
+            }
 
             return finalResult;
         }
@@ -1173,28 +1198,28 @@ namespace Horse_Picker.ViewModels
         private Dictionary<string, int> GetRaceDictionary()
         {
             Dictionary<string, int> categoryFactorDict = new Dictionary<string, int>();
-            categoryFactorDict.Add("G1 A", 89);
-            categoryFactorDict.Add("G3 A", 55);
-            categoryFactorDict.Add("LR A", 34);
-            categoryFactorDict.Add("LR B", 27);
-            categoryFactorDict.Add("L A", 21);
-            categoryFactorDict.Add("B", 8);
-            categoryFactorDict.Add("A", 5);
-            categoryFactorDict.Add("Gd 3", 89);
-            categoryFactorDict.Add("Gd 1", 55);
-            categoryFactorDict.Add("L", 30);
-            categoryFactorDict.Add("F", 21);
-            categoryFactorDict.Add("C", 13);
-            categoryFactorDict.Add("D", 8);
-            categoryFactorDict.Add("I", 5);
+            categoryFactorDict.Add("G1 A", 11);
+            categoryFactorDict.Add("G3 A", 10);
+            categoryFactorDict.Add("LR A", 9);
+            categoryFactorDict.Add("LR B", 8);
+            categoryFactorDict.Add("L A", 7);
+            categoryFactorDict.Add("B", 5);
+            categoryFactorDict.Add("A", 4);
+            categoryFactorDict.Add("Gd 3", 11);
+            categoryFactorDict.Add("Gd 1", 10);
+            categoryFactorDict.Add("L", 8);
+            categoryFactorDict.Add("F", 7);
+            categoryFactorDict.Add("C", 6);
+            categoryFactorDict.Add("D", 5);
+            categoryFactorDict.Add("I", 4);
             categoryFactorDict.Add("II", 3);
             categoryFactorDict.Add("III", 2);
             categoryFactorDict.Add("IV", 1);
             categoryFactorDict.Add("V", 1);
             if (Category == "sulki" || Category == "kłusaki")
             {
-                categoryFactorDict.Add("sulki", 34);
-                categoryFactorDict.Add("kłusaki", 34);
+                categoryFactorDict.Add("sulki", 9);
+                categoryFactorDict.Add("kłusaki", 9);
             }
             else
             {
@@ -1203,17 +1228,17 @@ namespace Horse_Picker.ViewModels
             }
             if (Category == "steeple" || Category == "płoty")
             {
-                categoryFactorDict.Add("steeple", 34);
-                categoryFactorDict.Add("płoty", 34);
+                categoryFactorDict.Add("steeple", 9);
+                categoryFactorDict.Add("płoty", 9);
             }
             else
             {
                 categoryFactorDict.Add("steeple", 2);
                 categoryFactorDict.Add("płoty", 2);
             }
-            categoryFactorDict.Add("-", 13);
-            categoryFactorDict.Add(" ", 13);
-            categoryFactorDict.Add("", 13);
+            categoryFactorDict.Add("-", 6);
+            categoryFactorDict.Add(" ", 6);
+            categoryFactorDict.Add("", 6);
             return categoryFactorDict;
         }
 
@@ -1224,9 +1249,11 @@ namespace Horse_Picker.ViewModels
         private async Task TestHistoricalResults()
         {
             //init values and controls
+            CommandStartedControlsSetup("TestResultsCommand");
+
             List<Task> tasks = new List<Task>();
             int loopCounter = 0;
-            ProgressBarTick("Requesting historic data", loopCounter, _allRaces.Count, 0);
+            ProgressBarTick("Testing on historic data", loopCounter, _allRaces.Count, 0);
 
             //for all races in the file
             for (int i = 0; i < _allRaces.Count; i++)
@@ -1260,7 +1287,7 @@ namespace Horse_Picker.ViewModels
 
                     loopCounter++;
 
-                    ProgressBarTick("Requesting historic data", loopCounter, _allRaces.Count, 0);
+                    ProgressBarTick("Testing on historic data", loopCounter, _allRaces.Count, 0);
 
                 }, _tokenSource.Token);
 
@@ -1277,11 +1304,11 @@ namespace Horse_Picker.ViewModels
             }
             finally
             {
-                _tokenSource.Dispose();
+                await _dataServices.SaveRaceTestResultsAsync(_allRaces); //save the analysis to the file
 
                 AllControlsEnabled = true;
 
-                await _dataServices.SaveRaceTestResultsAsync(_allRaces); //save the analysis to the file
+                CommandCompletedControlsSetup();
 
                 VisibilityCancellingMsg = Visibility.Collapsed;
             }
