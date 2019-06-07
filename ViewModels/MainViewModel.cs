@@ -871,6 +871,26 @@ namespace Horse_Picker.ViewModels
 
                 _allHorses = _allHorses.OrderByDescending(l => l.Age).ToList(); //from biggest to smallest
 
+                //jockey index
+                if (!string.IsNullOrEmpty(horseWrapper.Jockey))
+                {
+                    jockeyFromList = _allJockeys
+                    .Where(i => i.Name.ToLower() == horseWrapper
+                    .Jockey.ToLower())
+                    .FirstOrDefault();
+
+                    if (jockeyFromList != null)
+                    {
+                        horseWrapper.JockeyIndex = ComputeJockeyIndex(jockeyFromList, date);
+                    }
+                    else
+                    {
+                        horseWrapper.Jockey = "--Not found--";
+                        horseWrapper.JockeyIndex = 0; //clear
+                    }
+                }
+                horseWrapper.Comments = horseWrapper.HorseScore.ToString("0.000");
+
                 if (horseFromList != null)
                 {
                     horseWrapper.HorseName = horseFromList.Name; //displayed name
@@ -880,13 +900,19 @@ namespace Horse_Picker.ViewModels
                     horseWrapper.Comments = "";
 
                     //win index
-                    horseWrapper.WinIndex = ComputeWinIndex(horseFromList, date);
+                    if (jockeyFromList != null)
+                        horseWrapper.WinIndex = ComputeWinIndex(horseFromList, date, jockeyFromList);
+                    else
+                        horseWrapper.WinIndex = ComputeWinIndex(horseFromList, date, null);
 
                     //category index
                     horseWrapper.CategoryIndex = ComputeCategoryIndex(horseFromList, date);
 
                     //age index
                     horseWrapper.AgeIndex = ComputeAgeIndex(horseFromList, date);
+
+                    //win percentage
+                    horseWrapper.WinPercentage = ComputeWinPercentage(horseFromList, date);
                 }
                 else
                 {
@@ -912,29 +938,40 @@ namespace Horse_Picker.ViewModels
                         horseWrapper.SiblingsIndex = 0; //clear
                     }
                 }
-
-                //jockey index
-                if (!string.IsNullOrEmpty(horseWrapper.Jockey))
-                {
-                    jockeyFromList = _allJockeys
-                    .Where(i => i.Name.ToLower() == horseWrapper
-                    .Jockey.ToLower())
-                    .FirstOrDefault();
-
-                    if (jockeyFromList != null)
-                    {
-                        horseWrapper.JockeyIndex = ComputeJockeyIndex(jockeyFromList, date);
-                    }
-                    else
-                    {
-                        horseWrapper.Jockey = "--Not found--";
-                        horseWrapper.JockeyIndex = 0; //clear
-                    }
-                }
-                horseWrapper.Comments = horseWrapper.HorseScore.ToString("0.000");
             }
 
             return horseWrapper;
+        }
+
+        private double ComputeWinPercentage(LoadedHorse horseFromList, DateTime date)
+        {
+            int winCounter = 0;
+            double finalResult = 0;
+
+            if (horseFromList.AllRaces.Count > 0)
+            {
+
+                for (int i = 0; i < horseFromList.AllRaces.Count; i++)
+                {
+                    if (TaskCancellation == true)
+                    {
+                        break;
+                    }
+
+                    if (horseFromList.AllRaces[i].WonPlace == 1 && horseFromList.AllRaces[i].RaceDate < date)
+                    {
+                        winCounter++;
+                    }
+                }
+
+                finalResult = (double)winCounter / horseFromList.AllRaces.Count * 100;
+
+                return finalResult;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         private double ComputeAgeIndex(LoadedHorse horseFromList, DateTime date)
@@ -968,14 +1005,15 @@ namespace Horse_Picker.ViewModels
             int dictValue = 1;
             double finalResult;
             double result = 0;
-            double distFactor = 0;
-            double placeFactor = 0;
-            double distRaceIndex = 0;
 
             if (horseFromList.AllRaces.Count > 0)
             {
                 for (int i = 0; i < horseFromList.AllRaces.Count; i++)
                 {
+                    double distFactor = 0;
+                    double placeFactor = 0;
+                    double distRaceIndex = 0;
+
                     if (TaskCancellation == true)
                     {
                         break;
@@ -1023,21 +1061,22 @@ namespace Horse_Picker.ViewModels
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns></returns>
-        private double ComputeWinIndex(LoadedHorse horseFromList, DateTime date)
+        private double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList)
         {
             Dictionary<string, int> categoryFactorDict = GetRaceDictionary();
             int dictValue = 1;
             double finalResult = 0;
             double result = 0;
-            double distFactor = 0;
-            double placeFactor = 0;
-            double distRaceIndex = 0;
 
             if (horseFromList.AllRaces.Count > 0)
             {
 
                 for (int i = 0; i < horseFromList.AllRaces.Count; i++)
                 {
+                    double distFactor = 0;
+                    double placeFactor = 0;
+                    double distRaceIndex = 0;
+
                     if (TaskCancellation == true)
                     {
                         break;
@@ -1045,8 +1084,16 @@ namespace Horse_Picker.ViewModels
 
                     if (horseFromList.AllRaces[i].WonPlace < 3 && horseFromList.AllRaces[i].WonPlace > 0 && horseFromList.AllRaces[i].RaceDate < date)
                     {
-                        if (horseFromList.AllRaces[i].WonPlace == 1) placeFactor = 1;
-                        if (horseFromList.AllRaces[i].WonPlace == 2) placeFactor = 0.8;
+                        if (horseFromList.AllRaces[i].WonPlace == 1)
+                            placeFactor = 1;
+                        if (horseFromList.AllRaces[i].WonPlace == 2)
+                            placeFactor = 0.8;
+                        //bonus if was the same jockey as in current race
+                        if (!string.IsNullOrEmpty(jockeyFromList.Name) && !string.IsNullOrEmpty(horseFromList.AllRaces[i].RacersName))
+                        {
+                            if (horseFromList.AllRaces[i].RacersName.Contains(jockeyFromList.Name))
+                                placeFactor = placeFactor * 3;
+                        }
 
                         bool foundKey = categoryFactorDict.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
                                       StringComparison.CurrentCultureIgnoreCase)
@@ -1090,14 +1137,15 @@ namespace Horse_Picker.ViewModels
         {
             double finalResult = 0;
             double result = 0;
-            double distFactor = 0;
-            double placeFactor = 0;
-            double distRaceIndex = 0;
 
             if (jockeyFromList.AllRaces.Count > 0)
             {
                 for (int i = 0; i < jockeyFromList.AllRaces.Count; i++)
                 {
+                    double distFactor = 0;
+                    double placeFactor = 0;
+                    double distRaceIndex = 0;
+
                     if (TaskCancellation == true)
                     {
                         break;
@@ -1168,7 +1216,7 @@ namespace Horse_Picker.ViewModels
 
                 if (childFromList != null && childFromList.AllRaces.Count > 0)
                 {
-                    siblingIndex = ComputeWinIndex(childFromList, date);
+                    siblingIndex = ComputeWinIndex(childFromList, date, null);
                     childCounter++;
                 }
                 else
@@ -1278,6 +1326,10 @@ namespace Horse_Picker.ViewModels
                         //for all horses in the race
                         for (int h = 0; h < _allRaces[j].HorseList.Count; h++)
                         {
+                            if (TaskCancellation == true)
+                            {
+                                break;
+                            }
                             _cancellationToken.ThrowIfCancellationRequested();
                             HorseDataWrapper horse = new HorseDataWrapper();
                             horse = ParseHorseData(_allRaces[j].HorseList[h], _allRaces[j].RaceDate);

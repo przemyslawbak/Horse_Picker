@@ -10,7 +10,7 @@
         xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
         mc:Ignorable="d"
         Title="HorsePicker"
-        MinHeight="650" MinWidth="1000" Height="650" Width="1020"
+        MinHeight="650" MinWidth="1000" Height="650" Width="1120"
         WindowStartupLocation="CenterScreen"
         Background="Green">
     <Window.Resources>
@@ -185,6 +185,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <!--Row 0-->
@@ -216,29 +217,34 @@
                         <TextBlock Grid.Column="5"
                                        Grid.Row="0"
                                        Style="{StaticResource racetblk}">
-                                    Win index
+                                    Win %
                         </TextBlock>
                         <TextBlock Grid.Column="6"
                                        Grid.Row="0"
                                        Style="{StaticResource racetblk}">
-                                    Joc Index
+                                    Win index
                         </TextBlock>
                         <TextBlock Grid.Column="7"
                                        Grid.Row="0"
                                        Style="{StaticResource racetblk}">
-                                    Sib index
+                                    Joc Index
                         </TextBlock>
                         <TextBlock Grid.Column="8"
                                        Grid.Row="0"
                                        Style="{StaticResource racetblk}">
-                                    Cat Index
+                                    Sib index
                         </TextBlock>
                         <TextBlock Grid.Column="9"
                                        Grid.Row="0"
                                        Style="{StaticResource racetblk}">
-                                    Age Index
+                                    Cat Index
                         </TextBlock>
                         <TextBlock Grid.Column="10"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Age Index
+                        </TextBlock>
+                        <TextBlock Grid.Column="11"
                                        Grid.Row="0"
                                        Style="{StaticResource racetblk}">
                                     Comments
@@ -310,39 +316,45 @@
                                  Style="{StaticResource tableItem}"
                                  Height="20"
                                  Width="40"/>
-                        <TextBox Text="{Binding Path=WinIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                        <TextBox Text="{Binding Path=WinPercentage, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N1}"
                                  Grid.Row="1"
                                  Grid.Column="5"
                                  Style="{StaticResource tableItem}"
                                  Height="20"
                                  Width="40"/>
-                        <TextBox Text="{Binding Path=JockeyIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                        <TextBox Text="{Binding Path=WinIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
                                  Grid.Row="1"
                                  Grid.Column="6"
                                  Style="{StaticResource tableItem}"
                                  Height="20"
                                  Width="40"/>
-                        <TextBox Text="{Binding Path=SiblingsIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                        <TextBox Text="{Binding Path=JockeyIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
                                  Grid.Row="1"
                                  Grid.Column="7"
                                  Style="{StaticResource tableItem}"
                                  Height="20"
                                  Width="40"/>
-                        <TextBox Text="{Binding Path=CategoryIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                        <TextBox Text="{Binding Path=SiblingsIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
                                  Grid.Row="1"
                                  Grid.Column="8"
                                  Style="{StaticResource tableItem}"
                                  Height="20"
                                  Width="40"/>
-                        <TextBox Text="{Binding Path=AgeIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N1}"
+                        <TextBox Text="{Binding Path=CategoryIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
                                  Grid.Row="1"
                                  Grid.Column="9"
                                  Style="{StaticResource tableItem}"
                                  Height="20"
                                  Width="40"/>
-                        <TextBox Text="{Binding Path=Comments, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                        <TextBox Text="{Binding Path=AgeIndex, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N1}"
                                  Grid.Row="1"
                                  Grid.Column="10"
+                                 Style="{StaticResource tableItem}"
+                                 Height="20"
+                                 Width="40"/>
+                        <TextBox Text="{Binding Path=Comments, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                                 Grid.Row="1"
+                                 Grid.Column="11"
                                  Style="{StaticResource tableItem}"
                                  Height="20"
                                  Width="130"/>

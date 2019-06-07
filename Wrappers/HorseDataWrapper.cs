@@ -21,6 +21,7 @@ namespace Horse_Picker.Wrappers
         private double _jockeyIndex;
         private double _categoryIndex;
         private double _ageIndex;
+        private double _winPercentage;
         private string _comments;
 
         public HorseDataWrapper()
@@ -147,6 +148,16 @@ namespace Horse_Picker.Wrappers
             set
             {
                 _ageIndex = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double WinPercentage
+        {
+            get { return _winPercentage; }
+            set
+            {
+                _winPercentage = value;
                 OnPropertyChanged();
             }
         }
