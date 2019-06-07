@@ -20,6 +20,7 @@ namespace Horse_Picker.Wrappers
         private double _siblingsIndex;
         private double _jockeyIndex;
         private double _categoryIndex;
+        private double _ageIndex;
         private string _comments;
 
         public HorseDataWrapper()
@@ -30,7 +31,7 @@ namespace Horse_Picker.Wrappers
 
         public double HorseScore
         {
-            get { return 2*WinIndex + 0.5*SiblingsIndex + JockeyIndex + 0.5*CategoryIndex; }
+            get { return 4 * WinIndex + 0.5 * SiblingsIndex + JockeyIndex + 0.5*CategoryIndex; }
         }
 
         public string HorseName
@@ -49,7 +50,10 @@ namespace Horse_Picker.Wrappers
 
         public int Age
         {
-            get { return _horse.Age; }
+            get
+            {
+                return _horse.Age;
+            }
             set
             {
                 _horse.Age = value;
@@ -133,6 +137,16 @@ namespace Horse_Picker.Wrappers
             set
             {
                 _categoryIndex = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double AgeIndex
+        {
+            get { return _ageIndex; }
+            set
+            {
+                _ageIndex = value;
                 OnPropertyChanged();
             }
         }
