@@ -18,7 +18,7 @@ namespace Horse_Picker.DataProvider
         string _horsesFileName = "_horses_list.json";
         string _jockeysFileName = "_jockeys_list.json";
         string _racesFileName = "_historic_races.json";
-        string _testsFileName = "_historic_tests.txt";
+        string _testsFileName = "_test_results.txt";
 
         public List<LoadedHorse> GetAllHorses()
         {
@@ -161,7 +161,7 @@ namespace Horse_Picker.DataProvider
                                 + allRaces[j].HorseList[h].JockeyIndex.ToString("0.000") + " - "
                                 + allRaces[j].HorseList[h].CategoryIndex.ToString("0.000") + " - "
                                 + allRaces[j].HorseList[h].SiblingsIndex.ToString("0.000") + " - "
-                                + allRaces[j].HorseList[h].HorseScore.ToString("0.000") + " - ";
+                                + allRaces[j].HorseList[h].HorseScore.ToString("0.000");
                             await SaveTestResultLine(line);
                         }
 
