@@ -911,6 +911,9 @@ namespace Horse_Picker.ViewModels
                     //age index
                     horseWrapper.AgeIndex = ComputeAgeIndex(horseFromList, date);
 
+                    //tired index
+                    horseWrapper.TiredIndex = ComputeTiredIndex(horseFromList, date);
+
                     //win percentage
                     horseWrapper.WinPercentage = ComputeWinPercentage(horseFromList, date);
 
@@ -944,6 +947,50 @@ namespace Horse_Picker.ViewModels
             }
 
             return horseWrapper;
+        }
+
+        private double ComputeTiredIndex(LoadedHorse horseFromList, DateTime date)
+        {
+            double finalResult = 0;
+            int raceCounter = 0;
+
+            if (horseFromList.AllRaces.Count > 0)
+            {
+                //get races only before race date, sort by race date from biggest to smallest
+                horseFromList.AllRaces = horseFromList.AllRaces.Where(l => l.RaceDate < date).OrderByDescending(l => l.RaceDate).ToList();
+
+                for (int i = 0; i < horseFromList.AllRaces.Count; i++)
+                {
+                    //if task cancelled by the user
+                    if (TaskCancellation == true)
+                    {
+                        break;
+                    }
+
+                    DateTime twoYearsBack = date.AddYears(-2);
+
+                    //for all races 2 years back from this race
+                    if (horseFromList.AllRaces[i].RaceDate < date && horseFromList.AllRaces[i].RaceDate > twoYearsBack)
+                    {
+                        raceCounter++;
+                    }
+                }
+
+                if (raceCounter > 12)
+                {
+                    finalResult = (raceCounter - 12) * 0.1;
+                }
+                else
+                {
+                    return 0;
+                }
+
+                return finalResult;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         private double ComputeDaysOfRest(LoadedHorse horseFromList, DateTime date)
@@ -1006,7 +1053,7 @@ namespace Horse_Picker.ViewModels
             if (horsesRaceAge > 5)
             {
                 int multiplier = horsesRaceAge - 4;
-                double result = 0.6 * multiplier;
+                double result = 0.2 * multiplier;
                 return result;
             }
             else
@@ -1063,7 +1110,7 @@ namespace Horse_Picker.ViewModels
                         }
                         else
                         {
-                            dictValue = 13;
+                            dictValue = 5;
                         }
 
                         distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(Distance)) / 10000 * dictValue;
@@ -1123,17 +1170,20 @@ namespace Horse_Picker.ViewModels
                         if (horseFromList.AllRaces[i].WonPlace == 2)
                             placeFactor = 0.7;
 
-                        //bonus if was the same jockey as in current race
-                        if (!string.IsNullOrEmpty(jockeyFromList.Name) && !string.IsNullOrEmpty(horseFromList.AllRaces[i].RacersName))
+                        if (jockeyFromList != null)
                         {
-                            if (horseFromList.AllRaces[i].RacersName.Contains(jockeyFromList.Name))
-                                placeFactor = placeFactor * 3;
+                            //bonus if was the same jockey as in current race
+                            if (!string.IsNullOrEmpty(jockeyFromList.Name) && !string.IsNullOrEmpty(horseFromList.AllRaces[i].RacersName))
+                            {
+                                if (horseFromList.AllRaces[i].RacersName.Contains(jockeyFromList.Name))
+                                    placeFactor = placeFactor * 1.5;
+                            }
                         }
 
                         //bonus for place factor if won race in last 3 races
                         if (i < 3)
                         {
-                            placeFactor = placeFactor * 3;
+                            placeFactor = placeFactor * 1.5;
                         }
 
                         //increase factor for races over 12 horses and place between 1-4
@@ -1152,7 +1202,7 @@ namespace Horse_Picker.ViewModels
                         }
                         else
                         {
-                            dictValue = 13;
+                            dictValue = 5;
                         }
 
                         distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(Distance)) / 10000 * dictValue;

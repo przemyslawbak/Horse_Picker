@@ -23,6 +23,7 @@ namespace Horse_Picker.Wrappers
         private double _ageIndex;
         private double _winPercentage;
         private double _daysOfRest;
+        private double _tiredIndex;
         private string _comments;
 
         public HorseDataWrapper()
@@ -31,9 +32,14 @@ namespace Horse_Picker.Wrappers
             _jockey = new LoadedJockey();
         }
 
+        //Win %; WI; JI; SI; CI; AI(- *0.2); TI (- *0.1); RD (- days)
         public double HorseScore
         {
-            get { return 4 * WinIndex + 0.5 * SiblingsIndex + JockeyIndex + 0.5*CategoryIndex; }
+            get
+            {
+                double
+                return 4 * WinIndex + 0.5 * SiblingsIndex + JockeyIndex + 0.5 * CategoryIndex;
+            }
         }
 
         public string HorseName
@@ -169,6 +175,16 @@ namespace Horse_Picker.Wrappers
             set
             {
                 _daysOfRest = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TiredIndex
+        {
+            get { return _tiredIndex; }
+            set
+            {
+                _tiredIndex = value;
                 OnPropertyChanged();
             }
         }
