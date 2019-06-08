@@ -10,7 +10,7 @@
         xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
         mc:Ignorable="d"
         Title="HorsePicker"
-        MinHeight="650" MinWidth="1000" Height="650" Width="1120"
+        MinHeight="650" MinWidth="1000" Height="650" Width="1220"
         WindowStartupLocation="CenterScreen"
         Background="Green">
     <Window.Resources>
@@ -186,6 +186,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <!--Row 0-->
@@ -245,6 +246,11 @@
                                     Age Index
                         </TextBlock>
                         <TextBlock Grid.Column="11"
+                                       Grid.Row="0"
+                                       Style="{StaticResource racetblk}">
+                                    Rest days
+                        </TextBlock>
+                        <TextBlock Grid.Column="12"
                                        Grid.Row="0"
                                        Style="{StaticResource racetblk}">
                                     Comments
@@ -352,9 +358,15 @@
                                  Style="{StaticResource tableItem}"
                                  Height="20"
                                  Width="40"/>
-                        <TextBox Text="{Binding Path=Comments, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                        <TextBox Text="{Binding Path=DaysOfRest, Mode=OneWay, UpdateSourceTrigger=LostFocus, StringFormat=N0}"
                                  Grid.Row="1"
                                  Grid.Column="11"
+                                 Style="{StaticResource tableItem}"
+                                 Height="20"
+                                 Width="40"/>
+                        <TextBox Text="{Binding Path=Comments, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=N3}"
+                                 Grid.Row="1"
+                                 Grid.Column="12"
                                  Style="{StaticResource tableItem}"
                                  Height="20"
                                  Width="130"/>

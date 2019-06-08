@@ -22,6 +22,7 @@ namespace Horse_Picker.Wrappers
         private double _categoryIndex;
         private double _ageIndex;
         private double _winPercentage;
+        private double _daysOfRest;
         private string _comments;
 
         public HorseDataWrapper()
@@ -158,6 +159,16 @@ namespace Horse_Picker.Wrappers
             set
             {
                 _winPercentage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double DaysOfRest
+        {
+            get { return _daysOfRest; }
+            set
+            {
+                _daysOfRest = value;
                 OnPropertyChanged();
             }
         }
