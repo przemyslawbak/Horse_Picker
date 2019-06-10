@@ -1,22 +1,4 @@
 
-OK - od ostatniego biegu 60-90dni najlepiej - do sprawdzenia
-OK - do 13 startow przez 2 lata, nie wiecej - bardzo rzadko spotykane
-OK - wyscigi duzej liczby koni sa wazniejsze
-OK - czy wygral w ostatnich 3 startach?
-OK - czy wygrywa 20% lub wiecej?
-OK - czy jockey wygrywal na tym koniu
-OK - wiek konia ponizej 6 lat
-
-co sie da, do wrzucenia w algorytm:
-czy trener wystawia kilka koni - do sprawdzenia
-czy kon zmienil ostatnio trenera - jak tak to dobrze, bedzie chcial sie wykazac
-jak klacz wystawiana vs ogierom, to pozytywnie
-bandaze - zly znak
-klapki na oczy - zly znak
-waga - jak przybral to zle
-nie da sie - shipping - czy kon przyjezdza?
-humor konia - https://kashtan.pl/pl/n/Jak-rozpoznac-humor-konia/142
-
 globalne zmienne przy computing
 przy scrapowaniu koni i dzokejow, jesli jest 0 startow, i tak dodajemy
 walidacja input update dla INT oraz from < to
@@ -31,6 +13,20 @@ generyczna metoda w VM dla scrap jockeys/horses
 algorytm co analizuje konie + jockey kombinacje oraz koni co biegaly ze soba
 https://www.irishracing.com/horse?prt=529433
 
+scrapowanie: trenerzy, plec, waga/handicap
+czy trener wystawia kilka koni - do sprawdzenia
+waga - jak przybral to zle
+czy kon zmienil ostatnio trenera - jak tak to dobrze, bedzie chcial sie wykazac
+jak klacz wystawiana vs ogierom, to pozytywnie
+nie da sie - shipping - czy kon przyjezdza?
+
+OK - od ostatniego biegu 60-90dni najlepiej - do sprawdzenia
+OK - do 13 startow przez 2 lata, nie wiecej - bardzo rzadko spotykane
+OK - wyscigi duzej liczby koni sa wazniejsze
+OK - czy wygral w ostatnich 3 startach?
+OK - czy wygrywa 20% lub wiecej?
+OK - czy jockey wygrywal na tym koniu
+OK - wiek konia ponizej 6 lat
 OK - przedzialy update / lista ID update / system wybiorczego update
 OK - dialog manager zastapic serwisem - zwykle dialogi z mvvmdialogs - przyszle projekty
 OK - po anulowaniu update wyswietla "please wait"
