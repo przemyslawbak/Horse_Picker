@@ -21,6 +21,7 @@ namespace Horse_Picker.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private IEventAggregator _eventAggregator; //Prism
         private IMessageDialogService _messageDialogService;
         private IFileDataServices _dataServices;
         private IScrapDataServices _scrapServices;
