@@ -4,6 +4,7 @@ using Horse_Picker.Dialogs;
 using Horse_Picker.Models;
 using Horse_Picker.NewModels;
 using Horse_Picker.Wrappers;
+using Prism.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,8 +29,6 @@ namespace Horse_Picker.ViewModels
         private HorseDataWrapper _horseWrapper;
         private RaceData _raceDataModel;
         private UpdateModules _updateModulesModel;
-        private CancellationTokenSource _tokenSource;
-        private CancellationToken _cancellationToken;
         public MainViewModel(IFileDataServices dataServices, IScrapDataServices scrapServices, IMessageDialogService messageDialogService)
         {
             Horses = new ObservableCollection<LoadedHorse>();
@@ -38,6 +37,7 @@ namespace Horse_Picker.ViewModels
 
             _loadedHorses = new List<string>();
             _loadedJockeys = new List<string>();
+            //_eventAggregator = eventAggregator; //prism events
             _dataServices = dataServices; //data files
             _scrapServices = scrapServices; //data scrap
             _messageDialogService = messageDialogService; //dialogs
@@ -75,10 +75,10 @@ namespace Horse_Picker.ViewModels
 
         private async void OnTestResultExecuteAsync(object obj)
         {
-            _tokenSource = new CancellationTokenSource();
-            _cancellationToken = _tokenSource.Token;
+            TokenSource = new CancellationTokenSource();
+            CancellationToken = TokenSource.Token;
 
-            await TestHistoricalResults();
+            //await TestHistoricalResults();
         }
 
         private void OnPickHorseDataExecute(object obj)
@@ -124,9 +124,8 @@ namespace Horse_Picker.ViewModels
             if (result == MessageDialogResult.Update && isAnyTrue)
             {
 
-                _tokenSource = new CancellationTokenSource();
-                _cancellationToken = _tokenSource.Token;
-
+                TokenSource = new CancellationTokenSource();
+                CancellationToken = TokenSource.Token;
 
                 if (UpdateJockeysPl) await ScrapJockeys(JPlFrom, JPlTo + 1, "jockeysPl"); //1 - 1049
                 if (UpdateJockeysCz) await ScrapJockeys(JCzFrom, JCzTo + 1, "jockeysCz"); //4000 - 31049
@@ -140,7 +139,7 @@ namespace Horse_Picker.ViewModels
         {
             TaskCancellation = true;
 
-            _tokenSource.Cancel();
+            TokenSource.Cancel();
 
             CommandCompletedControlsSetup();
         }
@@ -207,6 +206,8 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        public CancellationToken CancellationToken { get; private set; }
+        public CancellationTokenSource TokenSource { get; private set; }
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
         public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
         public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
@@ -1483,7 +1484,7 @@ namespace Horse_Picker.ViewModels
 
                 Task task = Task.Run(() =>
                 {
-                    _cancellationToken.ThrowIfCancellationRequested();
+                    CancellationToken.ThrowIfCancellationRequested();
 
                     //if the race is from 2018
                     if (Races[j].RaceDate.Year == 2018)
@@ -1498,7 +1499,7 @@ namespace Horse_Picker.ViewModels
                             {
                                 break;
                             }
-                            _cancellationToken.ThrowIfCancellationRequested();
+                            CancellationToken.ThrowIfCancellationRequested();
                             HorseDataWrapper horse = new HorseDataWrapper();
                             horse = ParseHorseData(Races[j].HorseList[h], Races[j].RaceDate);
                             Races[j].HorseList[h] = horse; //get all indexes
@@ -1509,7 +1510,7 @@ namespace Horse_Picker.ViewModels
 
                     ProgressBarTick("Testing on historic data", loopCounter, Races.Count, 0);
 
-                }, _tokenSource.Token);
+                }, TokenSource.Token);
 
                 tasks.Add(task);
             }
@@ -1562,7 +1563,7 @@ namespace Horse_Picker.ViewModels
                 {
                     LoadedHistoricalRace race = new LoadedHistoricalRace();
 
-                    _cancellationToken.ThrowIfCancellationRequested();
+                    CancellationToken.ThrowIfCancellationRequested();
 
                     if (dataType == "racesPl") race = await _scrapServices.ScrapSingleRacePlAsync(j);
 
@@ -1579,7 +1580,7 @@ namespace Horse_Picker.ViewModels
 
                     ProgressBarTick("Looking for historic data", loopCounter, stopIndex, startIndex);
 
-                }, _tokenSource.Token);
+                }, TokenSource.Token);
 
                 tasks.Add(task);
             }
@@ -1632,7 +1633,7 @@ namespace Horse_Picker.ViewModels
                 {
                     LoadedJockey jockey = new LoadedJockey();
 
-                    _cancellationToken.ThrowIfCancellationRequested();
+                    CancellationToken.ThrowIfCancellationRequested();
 
                     if (dataType == "jockeysPl") jockey = await _scrapServices.ScrapSingleJockeyPlAsync(j);
                     if (dataType == "jockeysCz") jockey = await _scrapServices.ScrapSingleJockeyCzAsync(j);
@@ -1665,7 +1666,7 @@ namespace Horse_Picker.ViewModels
 
                     ProgressBarTick("Looking for jockeys", loopCounter, stopIndex, startIndex);
 
-                }, _tokenSource.Token);
+                }, TokenSource.Token);
 
                 tasks.Add(task);
             }
@@ -1729,7 +1730,7 @@ namespace Horse_Picker.ViewModels
                 {
                     LoadedHorse horse = new LoadedHorse();
 
-                    _cancellationToken.ThrowIfCancellationRequested();
+                    CancellationToken.ThrowIfCancellationRequested();
 
                     if (dataType == "horsesPl") horse = await _scrapServices.ScrapSingleHorsePlAsync(j);
                     if (dataType == "horsesCz") horse = await _scrapServices.ScrapSingleHorseCzAsync(j);
@@ -1769,7 +1770,7 @@ namespace Horse_Picker.ViewModels
 
                     ProgressBarTick("Looking for horses", loopCounter, stopIndex, startIndex);
 
-                }, _tokenSource.Token);
+                }, TokenSource.Token);
 
                 tasks.Add(task);
             }
@@ -1843,7 +1844,7 @@ namespace Horse_Picker.ViewModels
 
         private void CommandCompletedControlsSetup()
         {
-            _tokenSource.Dispose();
+            TokenSource.Dispose();
             TaskCancellation = false;
             UpdateStatusBar = 0;
             VisibilityStatusBar = Visibility.Hidden;
