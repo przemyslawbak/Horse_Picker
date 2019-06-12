@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -111,6 +112,16 @@ namespace Horse_Picker.Tests.ViewModels
         {
             _viewModel.LoadAllData();
             Assert.Equal(2, _viewModel.Races.Count); //counts races
+        }
+
+        [Fact]
+        public void OnTestResultExecuteAsync_ShouldCreateCancellationTokenSource_True()
+        {
+            CancellationTokenSource tokenSource = new CancellationTokenSource();
+            CancellationToken cancellationToken = tokenSource.Token;
+            _viewModel.TestResultsCommand.Execute(null);
+            Assert.Equal(cancellationToken.CanBeCanceled, _viewModel.CancellationToken.CanBeCanceled);
+            Assert.Equal(cancellationToken.IsCancellationRequested, _viewModel.CancellationToken.IsCancellationRequested);
         }
     }
 }
