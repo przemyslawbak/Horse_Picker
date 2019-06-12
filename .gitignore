@@ -7,3 +7,5 @@
 /.vs
 /Horse_Picker/obj
 /Horse_Picker/bin
+/Horse_Picker.Tests/obj
+/Horse_Picker.Tests/bin
