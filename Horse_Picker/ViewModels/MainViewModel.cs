@@ -24,9 +24,6 @@ namespace Horse_Picker.ViewModels
         private IMessageDialogService _messageDialogService;
         private IFileDataServices _dataServices;
         private IScrapDataServices _scrapServices;
-        private List<LoadedHorse> _allHorses;
-        private List<LoadedJockey> _allJockeys;
-        private List<LoadedHistoricalRace> _allRaces;
         private HorseDataWrapper _horseWrapper;
         private RaceData _raceDataModel;
         private UpdateModules _updateModulesModel;
@@ -34,9 +31,10 @@ namespace Horse_Picker.ViewModels
         private CancellationToken _cancellationToken;
         public MainViewModel(IFileDataServices dataServices, IScrapDataServices scrapServices, IMessageDialogService messageDialogService)
         {
-            _allHorses = new List<LoadedHorse>();
-            _allJockeys = new List<LoadedJockey>();
-            _allRaces = new List<LoadedHistoricalRace>();
+            Horses = new ObservableCollection<LoadedHorse>();
+            Jockeys = new ObservableCollection<LoadedJockey>();
+            Races = new ObservableCollection<LoadedHistoricalRace>();
+
             _loadedHorses = new List<string>();
             _loadedJockeys = new List<string>();
             _dataServices = dataServices; //data files
@@ -165,14 +163,54 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// loading horses from the list in web
         /// </summary>
-        private void LoadAllData()
+        public void LoadAllData()
         {
-            _allJockeys = _dataServices.GetAllJockeys().ToList();
+            Horses.Clear();
+            Jockeys.Clear();
+            Races.Clear();
 
-            _allHorses = _dataServices.GetAllHorses().ToList();
+            foreach (var horse in _dataServices.GetAllHorses())
+            {
+                Horses.Add(new LoadedHorse
+                {
+                    Name = horse.Name,
+                    Age = horse.Age,
+                    AllRaces = horse.AllRaces,
+                    AllChildren = horse.AllChildren,
+                    Father = horse.Father,
+                    Link = horse.Link,
+                    FatherLink = horse.FatherLink
+                });
+            }
 
-            _allRaces = _dataServices.GetAllRaces().ToList();
+            foreach (var jockey in _dataServices.GetAllJockeys())
+            {
+                Jockeys.Add(new LoadedJockey
+                {
+                    Name = jockey.Name,
+                    AllRaces = jockey.AllRaces,
+                    Link = jockey.Link
+                });
+            }
+
+            foreach (var race in _dataServices.GetAllRaces())
+            {
+                Races.Add(new LoadedHistoricalRace
+                {
+                    RaceCategory = race.RaceCategory,
+                    RaceDate = race.RaceDate,
+                    RaceDistance = race.RaceDistance,
+                    RaceLink = race.RaceLink,
+                    HorseList = race.HorseList
+                });
+            }
+
+            //DODAĆ JOCKEYS i RACES
         }
+
+        public ObservableCollection<LoadedHorse> Horses { get; private set; }
+        public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
+        public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
 
         /// <summary>
         /// list of horses for AutoCompleteBox binding
@@ -183,13 +221,31 @@ namespace Horse_Picker.ViewModels
             get
             {
                 _loadedHorses.Clear();
-                for (int i = 0; i < _allHorses.Count; i++)
+                for (int i = 0; i < Horses.Count; i++)
                 {
-                    string theName = MakeTitleCase(_allHorses[i].Name);
-                    _loadedHorses.Add(theName + ", " + _allHorses[i].Age.ToString());
+                    string theName = MakeTitleCase(Horses[i].Name);
+                    _loadedHorses.Add(theName + ", " + Horses[i].Age.ToString());
                 }
 
                 return _loadedHorses;
+            }
+        }
+
+        /// <summary>
+        /// list of jockeys for AutoCompleteBox binding
+        /// </summary>
+        private List<string> _loadedJockeys;
+        public List<string> LoadedJockeys
+        {
+            get
+            {
+                _loadedJockeys.Clear();
+                for (int i = 0; i < Jockeys.Count; i++)
+                {
+                    _loadedJockeys.Add(Jockeys[i].Name);
+                }
+
+                return _loadedJockeys;
             }
         }
 
@@ -203,24 +259,6 @@ namespace Horse_Picker.ViewModels
             }
 
             return name;
-        }
-
-        /// <summary>
-        /// list of jockeys for AutoCompleteBox binding
-        /// </summary>
-        private List<string> _loadedJockeys;
-        public List<string> LoadedJockeys
-        {
-            get
-            {
-                _loadedJockeys.Clear();
-                for (int i = 0; i < _allJockeys.Count; i++)
-                {
-                    _loadedJockeys.Add(_allJockeys[i].Name);
-                }
-
-                return _loadedJockeys;
-            }
         }
 
         /// <summary>
@@ -810,7 +848,7 @@ namespace Horse_Picker.ViewModels
 
 
         /// <summary>
-        /// parses the horse from _allHorses with providen data
+        /// parses the horse from Horses with providen data
         /// </summary>
         /// <param name="horseWrapper">horse data</param>
         /// <param name="date">day of the race</param>
@@ -823,7 +861,7 @@ namespace Horse_Picker.ViewModels
             //if name is entered
             if (!string.IsNullOrEmpty(horseWrapper.HorseName))
             {
-                _allHorses = _allHorses.OrderBy(l => l.Age).ToList(); //from smallest to biggest
+                Horses = new ObservableCollection<LoadedHorse>(Horses.OrderBy(l => l.Age)); //from smallest to biggest
 
                 //if age is from AutoCompleteBox
                 if (horseWrapper.HorseName.Contains(", "))
@@ -844,7 +882,7 @@ namespace Horse_Picker.ViewModels
                 //if age is not written
                 if (horseWrapper.Age == 0)
                 {
-                    horseFromList = _allHorses
+                    horseFromList = Horses
                     .Where(h => h.Name.ToLower() == horseWrapper.HorseName.ToLower())
                     .FirstOrDefault();
                 }
@@ -852,7 +890,7 @@ namespace Horse_Picker.ViewModels
                 //if age is written
                 else
                 {
-                    horseFromList = _allHorses
+                    horseFromList = Horses
                     .Where(h => h.Name.ToLower() == horseWrapper.HorseName.ToLower())
                     .Where(h => h.Age == horseWrapper.Age)
                     .FirstOrDefault();
@@ -863,18 +901,18 @@ namespace Horse_Picker.ViewModels
                 {
                     horseWrapper.Age = 0;
 
-                    horseFromList = _allHorses
+                    horseFromList = Horses
                     .Where(i => i.Name.ToLower() == horseWrapper
                     .HorseName.ToLower())
                     .FirstOrDefault();
                 }
 
-                _allHorses = _allHorses.OrderByDescending(l => l.Age).ToList(); //from biggest to smallest
+                Horses = new ObservableCollection<LoadedHorse>(Horses.OrderByDescending(l => l.Age)); //from biggest to smallest
 
                 //jockey index
                 if (!string.IsNullOrEmpty(horseWrapper.Jockey))
                 {
-                    jockeyFromList = _allJockeys
+                    jockeyFromList = Jockeys
                     .Where(i => i.Name.ToLower() == horseWrapper
                     .Jockey.ToLower())
                     .FirstOrDefault();
@@ -931,7 +969,7 @@ namespace Horse_Picker.ViewModels
                 //siblings index
                 if (!string.IsNullOrEmpty(horseWrapper.Father))
                 {
-                    fatherFromList = _allHorses.Where(i => i.Name.ToLower() == horseWrapper.Father.ToLower()).FirstOrDefault();
+                    fatherFromList = Horses.Where(i => i.Name.ToLower() == horseWrapper.Father.ToLower()).FirstOrDefault();
 
                     if (fatherFromList != null)
                     {
@@ -1327,19 +1365,19 @@ namespace Horse_Picker.ViewModels
                     break;
                 }
 
-                _allHorses = _allHorses.OrderBy(l => l.Age).ToList(); //from smallest to biggest
+                Horses = new ObservableCollection<LoadedHorse>(Horses.OrderBy(l => l.Age)); //from smallest to biggest
                 HorseChildDetails child = fatherFromList.AllChildren[i];
 
                 if (child.ChildAge == 0)
                 {
-                    childFromList = _allHorses
+                    childFromList = Horses
                                 .Where(h => h.Name.ToLower() == child
                                 .ChildName.ToLower())
                                 .FirstOrDefault();
                 }
                 else
                 {
-                    childFromList = _allHorses
+                    childFromList = Horses
                                 .Where(h => h.Name.ToLower() == child.ChildName.ToLower())
                                 .Where(h => h.Age == child.ChildAge)
                                 .FirstOrDefault();
@@ -1432,10 +1470,10 @@ namespace Horse_Picker.ViewModels
 
             List<Task> tasks = new List<Task>();
             int loopCounter = 0;
-            ProgressBarTick("Testing on historic data", loopCounter, _allRaces.Count, 0);
+            ProgressBarTick("Testing on historic data", loopCounter, Races.Count, 0);
 
             //for all races in the file
-            for (int i = 0; i < _allRaces.Count; i++)
+            for (int i = 0; i < Races.Count; i++)
             {
                 int j = i;
 
@@ -1449,13 +1487,13 @@ namespace Horse_Picker.ViewModels
                     _cancellationToken.ThrowIfCancellationRequested();
 
                     //if the race is from 2018
-                    if (_allRaces[j].RaceDate.Year == 2018)
+                    if (Races[j].RaceDate.Year == 2018)
                     {
-                        Category = _allRaces[j].RaceCategory;
-                        Distance = _allRaces[j].RaceDistance.ToString();
+                        Category = Races[j].RaceCategory;
+                        Distance = Races[j].RaceDistance.ToString();
 
                         //for all horses in the race
-                        for (int h = 0; h < _allRaces[j].HorseList.Count; h++)
+                        for (int h = 0; h < Races[j].HorseList.Count; h++)
                         {
                             if (TaskCancellation == true)
                             {
@@ -1463,14 +1501,14 @@ namespace Horse_Picker.ViewModels
                             }
                             _cancellationToken.ThrowIfCancellationRequested();
                             HorseDataWrapper horse = new HorseDataWrapper();
-                            horse = ParseHorseData(_allRaces[j].HorseList[h], _allRaces[j].RaceDate);
-                            _allRaces[j].HorseList[h] = horse; //get all indexes
+                            horse = ParseHorseData(Races[j].HorseList[h], Races[j].RaceDate);
+                            Races[j].HorseList[h] = horse; //get all indexes
                         }
                     }
 
                     loopCounter++;
 
-                    ProgressBarTick("Testing on historic data", loopCounter, _allRaces.Count, 0);
+                    ProgressBarTick("Testing on historic data", loopCounter, Races.Count, 0);
 
                 }, _tokenSource.Token);
 
@@ -1487,7 +1525,7 @@ namespace Horse_Picker.ViewModels
             }
             finally
             {
-                await _dataServices.SaveRaceTestResultsAsync(_allRaces); //save the analysis to the file
+                await _dataServices.SaveRaceTestResultsAsync(Races.ToList()); //save the analysis to the file
 
                 AllControlsEnabled = true;
 
@@ -1507,7 +1545,7 @@ namespace Horse_Picker.ViewModels
         private async Task ScrapHistoricalRaces(int startIndex, int stopIndex, string dataType)
         {
             //init values and controls
-            _allRaces.Clear(); //method does not remove doublers
+            Races.Clear(); //method does not remove doublers
             CommandStartedControlsSetup("UpdateDataCommand");
             List<Task> tasks = new List<Task>();
             int loopCounter = 0;
@@ -1532,9 +1570,9 @@ namespace Horse_Picker.ViewModels
                     //if the race is from 2018
                     if (race.RaceDate.Year == 2018)
                     {
-                        lock (((ICollection)_allRaces).SyncRoot)
+                        lock (((ICollection)Races).SyncRoot)
                         {
-                            _allRaces.Add(race);
+                            Races.Add(race);
                         }
                     }
 
@@ -1557,7 +1595,7 @@ namespace Horse_Picker.ViewModels
             }
             finally
             {
-                _dataServices.SaveAllRaces(_allRaces.ToList()); //saves everything to JSON file
+                _dataServices.SaveAllRaces(Races.ToList()); //saves everything to JSON file
 
                 AllControlsEnabled = true;
 
@@ -1602,18 +1640,18 @@ namespace Horse_Picker.ViewModels
 
                     if (jockey.Name != null)
                     {
-                        lock (((ICollection)_allJockeys).SyncRoot)
+                        lock (((ICollection)Jockeys).SyncRoot)
                         {
                             //if objects are already in the List
-                            if (_allJockeys.Any(h => h.Name.ToLower() == jockey.Name.ToLower()))
+                            if (Jockeys.Any(h => h.Name.ToLower() == jockey.Name.ToLower()))
                             {
-                                LoadedJockey doubledJockey = _allJockeys.Where(h => h.Name.ToLower() == jockey.Name.ToLower()).FirstOrDefault();
-                                _allJockeys.Remove(doubledJockey);
+                                LoadedJockey doubledJockey = Jockeys.Where(h => h.Name.ToLower() == jockey.Name.ToLower()).FirstOrDefault();
+                                Jockeys.Remove(doubledJockey);
                                 MergeJockeysData(doubledJockey, jockey);
                             }
                             else
                             {
-                                _allJockeys.Add(jockey);
+                                Jockeys.Add(jockey);
                             }
                         }
                     }
@@ -1623,7 +1661,7 @@ namespace Horse_Picker.ViewModels
                     //saves all every 1000 records, just in case
                     if (loopCounter % 1000 == 0)
                     {
-                        await _dataServices.SaveAllJockeysAsync(_allJockeys.ToList());
+                        await _dataServices.SaveAllJockeysAsync(Jockeys.ToList());
                     }
 
                     ProgressBarTick("Looking for jockeys", loopCounter, stopIndex, startIndex);
@@ -1643,7 +1681,7 @@ namespace Horse_Picker.ViewModels
             }
             finally
             {
-                await _dataServices.SaveAllJockeysAsync(_allJockeys.ToList()); //saves everything to JSON file
+                await _dataServices.SaveAllJockeysAsync(Jockeys.ToList()); //saves everything to JSON file
 
                 AllControlsEnabled = true;
 
@@ -1656,12 +1694,12 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// updates list of jockey races, if found some new
         /// </summary>
-        /// <param name="doubledJockey">jockey for _allJockeys</param>
+        /// <param name="doubledJockey">jockey for Jockeys</param>
         /// <param name="jockey">found doubler</param>
         private void MergeJockeysData(LoadedJockey doubledJockey, LoadedJockey jockey)
         {
             doubledJockey.AllRaces = doubledJockey.AllRaces.Union(jockey.AllRaces).ToList();
-            _allJockeys.Add(doubledJockey);
+            Jockeys.Add(doubledJockey);
         }
 
         /// <summary>
@@ -1699,25 +1737,25 @@ namespace Horse_Picker.ViewModels
 
                     if (horse.Name != null)
                     {
-                        lock (((ICollection)_allHorses).SyncRoot)
+                        lock (((ICollection)Horses).SyncRoot)
                         {
                             //if objects are already in the List
-                            if (_allHorses.Any(h => h.Name.ToLower() == horse.Name.ToLower()))
+                            if (Horses.Any(h => h.Name.ToLower() == horse.Name.ToLower()))
                             {
-                                LoadedHorse doubledHorse = _allHorses.Where(h => h.Name.ToLower() == horse.Name.ToLower()).Where(h => h.Age == horse.Age).FirstOrDefault();
+                                LoadedHorse doubledHorse = Horses.Where(h => h.Name.ToLower() == horse.Name.ToLower()).Where(h => h.Age == horse.Age).FirstOrDefault();
                                 if (doubledHorse != null)
                                 {
-                                    _allHorses.Remove(doubledHorse);
+                                    Horses.Remove(doubledHorse);
                                     MergeHorsesData(doubledHorse, horse);
                                 }
                                 else
                                 {
-                                    _allHorses.Add(horse);
+                                    Horses.Add(horse);
                                 }
                             }
                             else
                             {
-                                _allHorses.Add(horse);
+                                Horses.Add(horse);
                             }
                         }
                     }
@@ -1727,7 +1765,7 @@ namespace Horse_Picker.ViewModels
                     //saves all every 1000 records, just in case
                     if (loopCounter % 1000 == 0)
                     {
-                        await _dataServices.SaveAllHorsesAsync(_allHorses.ToList());
+                        await _dataServices.SaveAllHorsesAsync(Horses.ToList());
                     }
 
                     ProgressBarTick("Looking for horses", loopCounter, stopIndex, startIndex);
@@ -1747,7 +1785,7 @@ namespace Horse_Picker.ViewModels
             }
             finally
             {
-                await _dataServices.SaveAllHorsesAsync(_allHorses.ToList()); //saves everything to JSON file
+                await _dataServices.SaveAllHorsesAsync(Horses.ToList()); //saves everything to JSON file
 
                 AllControlsEnabled = true;
 
@@ -1774,13 +1812,13 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// updates list of horses races and children, if found some new
         /// </summary>
-        /// <param name="doubledHorse">horse from _allHorses</param>
+        /// <param name="doubledHorse">horse from Horses</param>
         /// <param name="horse">scrapped new horse</param>
         private void MergeHorsesData(LoadedHorse doubledHorse, LoadedHorse horse)
         {
             doubledHorse.AllChildren = doubledHorse.AllChildren.Union(horse.AllChildren).ToList();
             doubledHorse.AllRaces = doubledHorse.AllRaces.Union(horse.AllRaces).ToList();
-            _allHorses.Add(doubledHorse);
+            Horses.Add(doubledHorse);
         }
 
         private void CommandStartedControlsSetup(string command)
