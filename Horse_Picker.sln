@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Horse_Picker", "Horse_Picker\Horse_Picker.csproj", "{F4C03A41-030E-431B-9E4E-0F53810670F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Horse_Picker.Tests", "Horse_Picker.Tests\Horse_Picker.Tests.csproj", "{913A7D2E-3763-47F1-AA4F-A08AC15486D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Horse_Picker.Tests", "Horse_Picker.Tests\Horse_Picker.Tests.csproj", "{0B1442FD-A44A-4A2D-A7CE-154D0A245BE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{F4C03A41-030E-431B-9E4E-0F53810670F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4C03A41-030E-431B-9E4E-0F53810670F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4C03A41-030E-431B-9E4E-0F53810670F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{913A7D2E-3763-47F1-AA4F-A08AC15486D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{913A7D2E-3763-47F1-AA4F-A08AC15486D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{913A7D2E-3763-47F1-AA4F-A08AC15486D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{913A7D2E-3763-47F1-AA4F-A08AC15486D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B1442FD-A44A-4A2D-A7CE-154D0A245BE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B1442FD-A44A-4A2D-A7CE-154D0A245BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B1442FD-A44A-4A2D-A7CE-154D0A245BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B1442FD-A44A-4A2D-A7CE-154D0A245BE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,9 @@ using Horse_Picker.ViewModels;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Horse_Picker.Tests.ViewModels
 {
