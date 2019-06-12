@@ -4,3 +4,6 @@
 
 /.vs/Horse_Picker/v15/Server/sqlite3
 /Horse_Picker/bin/Debug
+/.vs
+/Horse_Picker/obj
+/Horse_Picker/bin

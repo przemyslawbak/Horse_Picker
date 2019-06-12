@@ -204,8 +204,6 @@ namespace Horse_Picker.ViewModels
                     HorseList = race.HorseList
                 });
             }
-
-            //DODAĆ JOCKEYS i RACES
         }
 
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
