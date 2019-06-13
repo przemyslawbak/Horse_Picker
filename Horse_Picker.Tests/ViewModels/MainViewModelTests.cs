@@ -114,12 +114,12 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal(2, _viewModel.Races.Count); //counts races
         }
 
-        [Fact]
-        public void OnTestResultExecuteAsync_ShouldCreateCancellationTokenSource_True()
+        [Fact]//testing async void
+        public async Task OnTestResultExecuteAsync_ShouldCreateCancellationTokenSource_True()
         {
             CancellationTokenSource tokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = tokenSource.Token;
-            _viewModel.TestResultsCommand.Execute(null);
+            await Task.Run(() => _viewModel.TestResultsCommand.Execute(null));
             Assert.Equal(cancellationToken.CanBeCanceled, _viewModel.CancellationToken.CanBeCanceled);
             Assert.Equal(cancellationToken.IsCancellationRequested, _viewModel.CancellationToken.IsCancellationRequested);
         }
