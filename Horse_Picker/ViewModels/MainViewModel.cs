@@ -78,7 +78,7 @@ namespace Horse_Picker.ViewModels
             TokenSource = new CancellationTokenSource();
             CancellationToken = TokenSource.Token;
 
-            //await TestHistoricalResults();
+            await TestHistoricalResultsAsync();
         }
 
         private void OnPickHorseDataExecute(object obj)
@@ -1463,7 +1463,7 @@ namespace Horse_Picker.ViewModels
         /// is parsing race stats with every single horse from all historic races
         /// </summary>
         /// <returns></returns>
-        private async Task TestHistoricalResults()
+        public async Task TestHistoricalResultsAsync()
         {
             //init values and controls
             CommandStartedControlsSetup("TestResultsCommand");
