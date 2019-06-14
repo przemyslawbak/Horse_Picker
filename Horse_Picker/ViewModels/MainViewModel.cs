@@ -65,7 +65,7 @@ namespace Horse_Picker.ViewModels
             TaskCancellationCommand = new DelegateCommand(OnTaskCancellationExecute);
             TestResultsCommand = new AsyncCommand(async () => await OnTestResultExecuteAsync());
             PickHorseDataCommand = new DelegateCommand(OnPickHorseDataExecute);
-            UpdateDataCommand = new DelegateCommand(OnUpdateDataExecuteAsync);
+            UpdateDataCommand = new AsyncCommand(async () => await OnUpdateDataExecuteAsync());
 
             LoadAllData();
 
@@ -87,7 +87,7 @@ namespace Horse_Picker.ViewModels
             Task.Run(() => HorseWrapper = ParseHorseData(HorseWrapper, date)); //consumes time
         }
 
-        public async void OnUpdateDataExecuteAsync(object obj)
+        public async Task OnUpdateDataExecuteAsync()
         {
             UpdateModules = new ObservableCollection<bool>();
 
@@ -210,7 +210,7 @@ namespace Horse_Picker.ViewModels
         public ICommand ClearDataCommand { get; private set; }
         public ICommand TaskCancellationCommand { get; private set; }
         public IAsyncCommand TestResultsCommand { get; private set; }
-        public ICommand UpdateDataCommand { get; private set; }
+        public IAsyncCommand UpdateDataCommand { get; private set; }
         public ICommand PickHorseDataCommand { get; private set; }
 
         public ObservableCollection<bool> UpdateModules { get; private set; }
