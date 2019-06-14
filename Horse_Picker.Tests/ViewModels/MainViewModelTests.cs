@@ -102,8 +102,8 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal("Trim", _viewModel.Horses[0].Name);
             Assert.Equal(7, _viewModel.Horses[0].Age);
             Assert.Equal("Belenus", _viewModel.Horses[0].Father);
-            Assert.Equal("https://koniewyscigowe.pl/horse/14474-belenus", _viewModel.Horses[0].FatherLink);
-            Assert.Equal("https://koniewyscigowe.pl/horse/260-trim", _viewModel.Horses[0].Link);
+            Assert.Equal("https://koniewyscigowe.pl/horse/14474", _viewModel.Horses[0].FatherLink);
+            Assert.Equal("https://koniewyscigowe.pl/horse/260", _viewModel.Horses[0].Link);
         }
 
         [Fact]
