@@ -22,11 +22,10 @@ namespace Horse_Picker.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private IEventAggregator _eventAggregator; //Prism
+        //private IEventAggregator _eventAggregator; //Prism
         private IMessageDialogService _messageDialogService;
         private IFileDataServices _dataServices;
         private IScrapDataServices _scrapServices;
-        private HorseDataWrapper _horseWrapper;
         private RaceData _raceDataModel;
         private UpdateModules _updateModulesModel;
         public MainViewModel(IFileDataServices dataServices, IScrapDataServices scrapServices, IMessageDialogService messageDialogService)
@@ -83,9 +82,9 @@ namespace Horse_Picker.ViewModels
 
         private void OnPickHorseDataExecute(object obj)
         {
-            _horseWrapper = (HorseDataWrapper)obj;
+            HorseWrapper = (HorseDataWrapper)obj;
             DateTime date = DateTime.Now;
-            Task task = Task.Run(() => _horseWrapper = ParseHorseData(_horseWrapper, date)); //consumes time
+            Task.Run(() => HorseWrapper = ParseHorseData(HorseWrapper, date)); //consumes time
         }
 
         private async void OnUpdateDataExecuteAsync(object obj)
@@ -157,8 +156,8 @@ namespace Horse_Picker.ViewModels
 
         private void OnNewHorseExecute(object obj)
         {
-            _horseWrapper = new HorseDataWrapper();
-            HorseList.Add(_horseWrapper);
+            HorseWrapper = new HorseDataWrapper();
+            HorseList.Add(HorseWrapper);
         }
 
         /// <summary>
@@ -214,6 +213,7 @@ namespace Horse_Picker.ViewModels
         public ICommand UpdateDataCommand { get; private set; }
         public ICommand PickHorseDataCommand { get; private set; }
 
+        public HorseDataWrapper HorseWrapper { get; private set; }
         public CancellationToken CancellationToken { get; private set; }
         public CancellationTokenSource TokenSource { get; private set; }
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
@@ -853,7 +853,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="horseWrapper">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns></returns>
-        private HorseDataWrapper ParseHorseData(HorseDataWrapper horseWrapper, DateTime date)
+        public HorseDataWrapper ParseHorseData(HorseDataWrapper horseWrapper, DateTime date)
         {
             LoadedJockey jockeyFromList = new LoadedJockey();
             LoadedHorse horseFromList = new LoadedHorse();
