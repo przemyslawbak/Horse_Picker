@@ -98,6 +98,7 @@ namespace Horse_Picker.Tests.ViewModels
         public void LoadAllData_ShouldLoadHorses_True()
         {
             _viewModel.LoadAllData();
+
             Assert.Equal(2, _viewModel.Horses.Count); //counts horses
             Assert.Equal("Trim", _viewModel.Horses[0].Name);
             Assert.Equal(7, _viewModel.Horses[0].Age);
@@ -110,6 +111,7 @@ namespace Horse_Picker.Tests.ViewModels
         public void LoadAllData_ShouldLoadJockeys_True()
         {
             _viewModel.LoadAllData();
+
             Assert.Equal(2, _viewModel.Jockeys.Count); //counts jockeys
             Assert.Equal("N. Hendzel", _viewModel.Jockeys[0].Name);
             Assert.Equal("https://koniewyscigowe.pl/dzokej?d=4", _viewModel.Jockeys[0].Link);
@@ -119,6 +121,7 @@ namespace Horse_Picker.Tests.ViewModels
         public void LoadAllData_ShouldLoadHistoricRaces_True()
         {
             _viewModel.LoadAllData();
+
             Assert.Equal(2, _viewModel.Races.Count); //counts races
             Assert.Equal("I", _viewModel.Races[0].RaceCategory);
             Assert.Equal(1600, _viewModel.Races[0].RaceDistance);
@@ -130,7 +133,9 @@ namespace Horse_Picker.Tests.ViewModels
         {
             CancellationTokenSource tokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = tokenSource.Token;
+
             await Task.Run(() => _viewModel.TestResultsCommand.Execute(null));
+
             Assert.Equal(cancellationToken.CanBeCanceled, _viewModel.CancellationToken.CanBeCanceled);
             Assert.Equal(cancellationToken.IsCancellationRequested, _viewModel.CancellationToken.IsCancellationRequested);
         }
@@ -139,8 +144,11 @@ namespace Horse_Picker.Tests.ViewModels
         public void OnPickHorseDataExecute_ShouldAssignHorseWrapper_True()
         {
             HorseDataWrapper horse = new HorseDataWrapper(){ HorseName = "Trim, 7", Jockey = "N. Hendzel" };
-            DateTime date = new DateTime(2019, 06, 13);
 
+            _viewModel.PickHorseDataCommand.Execute(horse);
+
+            Assert.Equal(horse.HorseName, _viewModel.HorseWrapper.HorseName);
+            Assert.Equal(horse.Jockey, _viewModel.HorseWrapper.Jockey);
         }
     }
 }
