@@ -80,14 +80,14 @@ namespace Horse_Picker.ViewModels
             await TestHistoricalResultsAsync();
         }
 
-        private void OnPickHorseDataExecute(object obj)
+        public void OnPickHorseDataExecute(object obj)
         {
             HorseWrapper = (HorseDataWrapper)obj;
             DateTime date = DateTime.Now;
             Task.Run(() => HorseWrapper = ParseHorseData(HorseWrapper, date)); //consumes time
         }
 
-        private async void OnUpdateDataExecuteAsync(object obj)
+        public async void OnUpdateDataExecuteAsync(object obj)
         {
             List<bool> updateModules = new List<bool>();
 
@@ -135,7 +135,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        private void OnTaskCancellationExecute(object obj)
+        public void OnTaskCancellationExecute(object obj)
         {
             TaskCancellation = true;
 
@@ -144,7 +144,7 @@ namespace Horse_Picker.ViewModels
             CommandCompletedControlsSetup();
         }
 
-        private void OnClearDataExecute(object obj)
+        public void OnClearDataExecute(object obj)
         {
             HorseList.Clear();
             Category = "fill up";
@@ -154,7 +154,7 @@ namespace Horse_Picker.ViewModels
             RaceDate = DateTime.Now;
         }
 
-        private void OnNewHorseExecute(object obj)
+        public void OnNewHorseExecute(object obj)
         {
             HorseWrapper = new HorseDataWrapper();
             HorseList.Add(HorseWrapper);
