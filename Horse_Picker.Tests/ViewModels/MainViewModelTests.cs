@@ -39,8 +39,8 @@ namespace Horse_Picker.Tests.ViewModels
                         AllChildren = { },
                         AllRaces = { },
                         Father = "Belenus",
-                        FatherLink = "https://koniewyscigowe.pl/horse/14474-belenus",
-                        Link = "https://koniewyscigowe.pl/horse/260-trim"
+                        FatherLink = "https://koniewyscigowe.pl/horse/14474",
+                        Link = "https://koniewyscigowe.pl/horse/260"
                     },
                     new LoadedHorse
                     {
@@ -50,7 +50,7 @@ namespace Horse_Picker.Tests.ViewModels
                         AllRaces = { },
                         Father = "-",
                         FatherLink = "",
-                        Link = "https://koniewyscigowe.pl/horse/14474-belenus"
+                        Link = "https://koniewyscigowe.pl/horse/14474"
                     }
                 });
 
@@ -60,13 +60,13 @@ namespace Horse_Picker.Tests.ViewModels
                     new LoadedJockey
                     {
                         Name = "N. Hendzel",
-                        Link = "https://koniewyscigowe.pl/dzokej?d=4-natalia-hendzel",
+                        Link = "https://koniewyscigowe.pl/dzokej?d=4",
                         AllRaces = { }
                     },
                     new LoadedJockey
                     {
                         Name = "V. Popov",
-                        Link = "https://koniewyscigowe.pl/dzokej?d=54-victor-popov",
+                        Link = "https://koniewyscigowe.pl/dzokej?d=54",
                         AllRaces = { }
                     }
                 });
@@ -111,8 +111,8 @@ namespace Horse_Picker.Tests.ViewModels
         {
             _viewModel.LoadAllData();
             Assert.Equal(2, _viewModel.Jockeys.Count); //counts jockeys
-            Assert.Equal("N.Hendzel", _viewModel.Jockeys[0].Name);
-            Assert.Equal("https://koniewyscigowe.pl/dzokej?d=4-natalia-hendzel", _viewModel.Jockeys[0].Link);
+            Assert.Equal("N. Hendzel", _viewModel.Jockeys[0].Name);
+            Assert.Equal("https://koniewyscigowe.pl/dzokej?d=4", _viewModel.Jockeys[0].Link);
         }
 
         [Fact]
