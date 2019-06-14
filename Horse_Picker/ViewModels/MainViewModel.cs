@@ -64,7 +64,7 @@ namespace Horse_Picker.ViewModels
             NewHorseCommand = new DelegateCommand(OnNewHorseExecute);
             ClearDataCommand = new DelegateCommand(OnClearDataExecute);
             TaskCancellationCommand = new DelegateCommand(OnTaskCancellationExecute);
-            TestResultsCommand = new DelegateCommand(OnTestResultExecuteAsync);
+            TestResultsCommand = new AsyncCommand(async () => await OnTestResultExecuteAsync());
             PickHorseDataCommand = new DelegateCommand(OnPickHorseDataExecute);
             UpdateDataCommand = new DelegateCommand(OnUpdateDataExecuteAsync);
 
@@ -73,7 +73,7 @@ namespace Horse_Picker.ViewModels
             HorseList.CollectionChanged += HorseListCollectionChanged;
         }
 
-        private async void OnTestResultExecuteAsync(object obj)
+        public async Task OnTestResultExecuteAsync()
         {
             TokenSource = new CancellationTokenSource();
             CancellationToken = TokenSource.Token;
@@ -84,7 +84,8 @@ namespace Horse_Picker.ViewModels
         private void OnPickHorseDataExecute(object obj)
         {
             _horseWrapper = (HorseDataWrapper)obj;
-            Task task = Task.Run(() => _horseWrapper = ParseHorseData(_horseWrapper, DateTime.Now)); //consumes time
+            DateTime date = DateTime.Now;
+            Task task = Task.Run(() => _horseWrapper = ParseHorseData(_horseWrapper, date)); //consumes time
         }
 
         private async void OnUpdateDataExecuteAsync(object obj)
@@ -205,6 +206,13 @@ namespace Horse_Picker.ViewModels
                 });
             }
         }
+
+        public ICommand NewHorseCommand { get; private set; }
+        public ICommand ClearDataCommand { get; private set; }
+        public ICommand TaskCancellationCommand { get; private set; }
+        public IAsyncCommand TestResultsCommand { get; private set; }
+        public ICommand UpdateDataCommand { get; private set; }
+        public ICommand PickHorseDataCommand { get; private set; }
 
         public CancellationToken CancellationToken { get; private set; }
         public CancellationTokenSource TokenSource { get; private set; }
@@ -838,14 +846,6 @@ namespace Horse_Picker.ViewModels
             }
             return false;
         }
-
-        public ICommand NewHorseCommand { get; private set; }
-        public ICommand ClearDataCommand { get; private set; }
-        public ICommand TaskCancellationCommand { get; private set; }
-        public ICommand TestResultsCommand { get; private set; }
-        public ICommand UpdateDataCommand { get; private set; }
-        public ICommand PickHorseDataCommand { get; private set; }
-
 
         /// <summary>
         /// parses the horse from Horses with providen data
