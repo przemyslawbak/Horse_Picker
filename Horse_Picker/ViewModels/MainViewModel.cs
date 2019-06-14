@@ -89,7 +89,7 @@ namespace Horse_Picker.ViewModels
 
         public async void OnUpdateDataExecuteAsync(object obj)
         {
-            List<bool> updateModules = new List<bool>();
+            UpdateModules = new ObservableCollection<bool>();
 
             UpdateHorsesCz = false;
             UpdateHorsesPl = false;
@@ -113,13 +113,13 @@ namespace Horse_Picker.ViewModels
             var result = _messageDialogService.ShowUpdateWindow();
 
             //DODAC KONTEKST DLA OKNA
-            updateModules.Add(UpdateHorsesCz);
-            updateModules.Add(UpdateHorsesPl);
-            updateModules.Add(UpdateJockeysCz);
-            updateModules.Add(UpdateJockeysPl);
-            updateModules.Add(UpdateRacesPl);
+            UpdateModules.Add(UpdateHorsesCz);
+            UpdateModules.Add(UpdateHorsesPl);
+            UpdateModules.Add(UpdateJockeysCz);
+            UpdateModules.Add(UpdateJockeysPl);
+            UpdateModules.Add(UpdateRacesPl);
 
-            bool isAnyTrue = updateModules.Any(module => module == true);
+            bool isAnyTrue = UpdateModules.Any(module => module == true);
 
             if (result == MessageDialogResult.Update && isAnyTrue)
             {
@@ -213,6 +213,7 @@ namespace Horse_Picker.ViewModels
         public ICommand UpdateDataCommand { get; private set; }
         public ICommand PickHorseDataCommand { get; private set; }
 
+        public ObservableCollection<bool> UpdateModules { get; private set; }
         public HorseDataWrapper HorseWrapper { get; private set; }
         public CancellationToken CancellationToken { get; private set; }
         public CancellationTokenSource TokenSource { get; private set; }
