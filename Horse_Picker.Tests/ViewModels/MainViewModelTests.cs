@@ -3,6 +3,7 @@ using Horse_Picker.Dialogs;
 using Horse_Picker.Models;
 using Horse_Picker.NewModels;
 using Horse_Picker.ViewModels;
+using Horse_Picker.Wrappers;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -98,6 +99,11 @@ namespace Horse_Picker.Tests.ViewModels
         {
             _viewModel.LoadAllData();
             Assert.Equal(2, _viewModel.Horses.Count); //counts horses
+            Assert.Equal("Trim", _viewModel.Horses[0].Name);
+            Assert.Equal(7, _viewModel.Horses[0].Age);
+            Assert.Equal("Belenus", _viewModel.Horses[0].Father);
+            Assert.Equal("https://koniewyscigowe.pl/horse/14474-belenus", _viewModel.Horses[0].FatherLink);
+            Assert.Equal("https://koniewyscigowe.pl/horse/260-trim", _viewModel.Horses[0].Link);
         }
 
         [Fact]
@@ -105,6 +111,8 @@ namespace Horse_Picker.Tests.ViewModels
         {
             _viewModel.LoadAllData();
             Assert.Equal(2, _viewModel.Jockeys.Count); //counts jockeys
+            Assert.Equal("N.Hendzel", _viewModel.Jockeys[0].Name);
+            Assert.Equal("https://koniewyscigowe.pl/dzokej?d=4-natalia-hendzel", _viewModel.Jockeys[0].Link);
         }
 
         [Fact]
@@ -112,9 +120,12 @@ namespace Horse_Picker.Tests.ViewModels
         {
             _viewModel.LoadAllData();
             Assert.Equal(2, _viewModel.Races.Count); //counts races
+            Assert.Equal("I", _viewModel.Races[0].RaceCategory);
+            Assert.Equal(1600, _viewModel.Races[0].RaceDistance);
+            Assert.Equal("somelink", _viewModel.Races[0].RaceLink);
         }
 
-        [Fact]//testing async void
+        [Fact]
         public async Task OnTestResultExecuteAsync_ShouldCreateCancellationTokenSource_True()
         {
             CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -122,6 +133,14 @@ namespace Horse_Picker.Tests.ViewModels
             await Task.Run(() => _viewModel.TestResultsCommand.Execute(null));
             Assert.Equal(cancellationToken.CanBeCanceled, _viewModel.CancellationToken.CanBeCanceled);
             Assert.Equal(cancellationToken.IsCancellationRequested, _viewModel.CancellationToken.IsCancellationRequested);
+        }
+
+        [Fact]
+        public void OnPickHorseDataExecute_ShouldAssignHorseWrapper_True()
+        {
+            HorseDataWrapper horse = new HorseDataWrapper(){ HorseName = "Trim, 7", Jockey = "N. Hendzel" };
+            DateTime date = new DateTime(2019, 06, 13);
+
         }
     }
 }
