@@ -95,6 +95,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\AsyncCommand.cs" />
+    <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="DataServices\FileDataServices.cs" />
     <Compile Include="DataServices\IFileDataProvider.cs" />
