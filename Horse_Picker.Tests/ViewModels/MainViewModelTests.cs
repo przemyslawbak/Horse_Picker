@@ -150,5 +150,20 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal(horse.HorseName, _viewModel.HorseWrapper.HorseName);
             Assert.Equal(horse.Jockey, _viewModel.HorseWrapper.Jockey);
         }
+
+        [Fact]
+        public async Task OnUpdateDataExecuteAsync_UpdateModulesAreFalseByDefault_True()
+        {
+            _viewModel.UpdateHorsesCz = true;
+            _viewModel.UpdateHorsesPl = true;
+            _viewModel.UpdateJockeysCz = true;
+            _viewModel.UpdateJockeysPl = true;
+            _viewModel.UpdateRacesPl = true;
+
+            await Task.Run(() => _viewModel.UpdateDataCommand.Execute(null));
+
+            bool isAnyTrue = _viewModel.UpdateModules.Any(module => module == true);
+            Assert.True(!isAnyTrue);
+        }
     }
 }
