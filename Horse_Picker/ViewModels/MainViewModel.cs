@@ -112,7 +112,6 @@ namespace Horse_Picker.ViewModels
 
             var result = _messageDialogService.ShowUpdateWindow();
 
-            //DODAC KONTEKST DLA OKNA
             UpdateModules.Add(UpdateHorsesCz);
             UpdateModules.Add(UpdateHorsesPl);
             UpdateModules.Add(UpdateJockeysCz);
@@ -216,7 +215,7 @@ namespace Horse_Picker.ViewModels
         public ObservableCollection<bool> UpdateModules { get; private set; }
         public HorseDataWrapper HorseWrapper { get; private set; }
         public CancellationToken CancellationToken { get; private set; }
-        public CancellationTokenSource TokenSource { get; private set; }
+        public CancellationTokenSource TokenSource { get; set; }
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
         public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
         public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
@@ -1843,7 +1842,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        private void CommandCompletedControlsSetup()
+        public void CommandCompletedControlsSetup()
         {
             TokenSource.Dispose();
             TaskCancellation = false;
