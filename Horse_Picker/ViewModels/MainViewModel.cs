@@ -33,6 +33,8 @@ namespace Horse_Picker.ViewModels
             Horses = new ObservableCollection<LoadedHorse>();
             Jockeys = new ObservableCollection<LoadedJockey>();
             Races = new ObservableCollection<LoadedHistoricalRace>();
+            LoadedHorses = new List<string>();
+            LoadedJockeys = new List<string>();
 
             //_eventAggregator = eventAggregator; //prism events
             _dataServices = dataServices; //data files
@@ -66,6 +68,7 @@ namespace Horse_Picker.ViewModels
             UpdateDataCommand = new AsyncCommand(async () => await OnUpdateDataExecuteAsync());
 
             LoadAllData();
+            PopulateLists();
 
             HorseList.CollectionChanged += HorseListCollectionChanged;
         }
@@ -145,6 +148,8 @@ namespace Horse_Picker.ViewModels
                 if (UpdateHorsesPl) await ScrapHorses(HPlFrom, HPlTo + 1, "horsesPl"); //1 - 25049
                 if (UpdateHorsesCz) await ScrapHorses(HCzFrom, HCzTo + 1, "horsesCz"); // 8000 - 150049
                 if (UpdateRacesPl) await ScrapHistoricalRaces(HistPlFrom, HistPlTo + 1, "racesPl"); // 1 - 17049
+
+                PopulateLists();
             }
         }
 
