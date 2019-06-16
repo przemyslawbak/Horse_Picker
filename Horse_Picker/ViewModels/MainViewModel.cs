@@ -238,6 +238,25 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        /// <summary>
+        /// populates LoadedHorses and LoadedJockeys for AutoCompleteBox binding
+        /// </summary>
+        public void PopulateLists()
+        {
+            LoadedHorses.Clear();
+            LoadedJockeys.Clear();
+
+            for (int i = 0; i < Horses.Count; i++)
+            {
+                string theName = MakeTitleCase(Horses[i].Name);
+                LoadedHorses.Add(theName + ", " + Horses[i].Age.ToString());
+            }
+            for (int i = 0; i < Jockeys.Count; i++)
+            {
+                LoadedJockeys.Add(Jockeys[i].Name);
+            }
+        }
+
         //commands
         public ICommand NewHorseCommand { get; private set; }
         public ICommand ClearDataCommand { get; private set; }
@@ -254,43 +273,8 @@ namespace Horse_Picker.ViewModels
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
         public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
         public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
-
-        /// <summary>
-        /// list of horses for AutoCompleteBox binding
-        /// </summary>
-        private List<string> _loadedHorses;
-        public List<string> LoadedHorses
-        {
-            get
-            {
-                _loadedHorses.Clear();
-                for (int i = 0; i < Horses.Count; i++)
-                {
-                    string theName = MakeTitleCase(Horses[i].Name);
-                    _loadedHorses.Add(theName + ", " + Horses[i].Age.ToString());
-                }
-
-                return _loadedHorses;
-            }
-        }
-
-        /// <summary>
-        /// list of jockeys for AutoCompleteBox binding
-        /// </summary>
-        private List<string> _loadedJockeys;
-        public List<string> LoadedJockeys
-        {
-            get
-            {
-                _loadedJockeys.Clear();
-                for (int i = 0; i < Jockeys.Count; i++)
-                {
-                    _loadedJockeys.Add(Jockeys[i].Name);
-                }
-
-                return _loadedJockeys;
-            }
-        }
+        public List<string> LoadedHorses { get; set; }
+        public List<string> LoadedJockeys { get; set; }
 
         /// <summary>
         /// makes title case for horse name
