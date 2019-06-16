@@ -7,6 +7,7 @@ using Horse_Picker.Wrappers;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -202,8 +203,9 @@ namespace Horse_Picker.Tests.ViewModels
         [Fact]
         public void OnClearDataExecute_ClearsRaceProps_True()
         {
+            _viewModel.HorseList.Clear();
             _viewModel.HorseList.Add(new HorseDataWrapper { HorseName = "Eugeniusz", Age = 1, Father = "Żytomir", Comments = "No comment" });
-            _viewModel.HorseList.Add(new HorseDataWrapper { HorseName = "Eustachy", Age = 1, Father = "Dobrosława", Comments = "No comment" });
+            _viewModel.HorseList.Add(new HorseDataWrapper { HorseName = "Eustachy", Age = 2, Father = "Dobrosława", Comments = "Some comment" });
             _viewModel.Category = "I";
             _viewModel.City = "Waw";
             _viewModel.Distance = "1600";
@@ -217,8 +219,17 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal("-", _viewModel.City);
             Assert.Equal("0", _viewModel.Distance);
             Assert.Equal("0", _viewModel.RaceNo);
-            Assert.Equal(DateTime.Now, _viewModel.RaceDate);
+            Assert.Equal(DateTime.Now.Date, _viewModel.RaceDate.Date);
+        }
 
+        [Fact]
+        public void OnNewHorseExecute_AddsNewHorse_True()
+        {
+            _viewModel.NewHorseCommand.Execute(null);
+            _viewModel.NewHorseCommand.Execute(null);
+
+            Assert.Equal(2, _viewModel.HorseList.Count);
+            Assert.False(_viewModel.HorseList[0] == null);
         }
     }
 }
