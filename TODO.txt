@@ -6,6 +6,7 @@ utworzyc nowy VM dla update window
 testy
 
 NA PRZYSZLOSC:
+SaveRaceTestResultsAsync -> StringBuilder
 staty trenerow - trenerzy co wygrywaja
 zapisywanie do pliku (jak w poprzedniej wersji)
 litery czeskie dzokejow pozamieniac na polskie przy scrapowaniu
