@@ -252,11 +252,17 @@ namespace Horse_Picker.ViewModels
             for (int i = 0; i < Horses.Count; i++)
             {
                 string theName = MakeTitleCase(Horses[i].Name);
-                LoadedHorses.Add(theName + ", " + Horses[i].Age.ToString());
+                if (theName != "")
+                {
+                    LoadedHorses.Add(theName + ", " + Horses[i].Age.ToString());
+                }
             }
             for (int i = 0; i < Jockeys.Count; i++)
             {
-                LoadedJockeys.Add(Jockeys[i].Name);
+                if (Jockeys[i].Name != "")
+                {
+                    LoadedJockeys.Add(Jockeys[i].Name);
+                }
             }
         }
 
@@ -286,11 +292,15 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         public string MakeTitleCase(string name)
         {
-            if (!string.IsNullOrEmpty(name) && name != "--Not found--")
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrWhiteSpace(name) && name != "--Not found--")
             {
                 TextInfo myCI = new CultureInfo("en-US", false).TextInfo; //creates CI
                 name = name.ToLower().Trim(' '); //takes to lower, to take to TC later
                 name = myCI.ToTitleCase(name); //takes to TC
+            }
+            else
+            {
+                return "";
             }
 
             return name;
