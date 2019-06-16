@@ -4,7 +4,6 @@ using Horse_Picker.Dialogs;
 using Horse_Picker.Models;
 using Horse_Picker.NewModels;
 using Horse_Picker.Wrappers;
-using Prism.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -140,7 +138,6 @@ namespace Horse_Picker.ViewModels
 
             if (result == MessageDialogResult.Update && isAnyTrue)
             {
-
                 TokenSource = new CancellationTokenSource();
                 CancellationToken = TokenSource.Token;
 
