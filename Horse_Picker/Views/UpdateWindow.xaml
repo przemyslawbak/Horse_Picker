@@ -9,15 +9,16 @@
         ResizeMode="NoResize"
         Title="Update data"
         WindowStartupLocation="CenterOwner"
-        Background="Green">
+        Background="#61445C">
     <Window.Resources>
         <Style x:Key="ckbx" TargetType="CheckBox">
             <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#EBEBEB"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style x:Key="appbtn" TargetType="Button">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#a1c883"/>
+            <Setter Property="Foreground" Value="#EBEBEB"/>
+            <Setter Property="Background" Value="#71ADAA"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
@@ -25,10 +26,11 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="#EBEBEB"/>
         </Style>
         <Style x:Key="inputTb" TargetType="TextBox">
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#EBEBEB"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Width" Value="60"/>
             <Setter Property="Height" Value="25"/>
@@ -115,13 +117,13 @@
                    Text="From ID"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Bottom"
-                   Foreground="White"/>
+                   Foreground="#EBEBEB"/>
         <TextBlock Grid.Row="0"
                    Grid.Column="3"
                    Text="To ID"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Bottom"
-                   Foreground="White"/>
+                   Foreground="#EBEBEB"/>
         <TextBox Grid.Row="1"
                  Grid.Column="2"
                  Style="{StaticResource inputTb}"

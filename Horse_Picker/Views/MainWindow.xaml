@@ -12,7 +12,7 @@
         Title="HorsePicker"
         MinHeight="650" MinWidth="1000" Height="650" Width="1220"
         WindowStartupLocation="CenterScreen"
-        Background="Green">
+        Background="#61445C">
     <Window.Resources>
         <!--for autocompletebox better performance-->
         <Style x:Key="AutoCompleteBoxStyle" TargetType="{x:Type toolkit:AutoCompleteBox}">
@@ -26,19 +26,20 @@
             <Setter Property="IsEnabled" Value="{Binding DataContext.AllControlsEnabled, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
         </Style>
         <Style x:Key="appbtn" TargetType="Button">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#a1c883"/>
+            <Setter Property="Foreground" Value="#EBEBEB"/>
+            <Setter Property="Background" Value="#71ADAA"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style x:Key="cancelbtn" TargetType="Button">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#e59544"/>
+            <Setter Property="Foreground" Value="#EBEBEB"/>
+            <Setter Property="Background" Value="#71ADAA"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style x:Key="racetb" TargetType="TextBox">
             <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Background" Value="#EBEBEB"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="Height" Value="25"/>
             <Setter Property="Margin" Value="5"/>
@@ -53,7 +54,7 @@
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="#EBEBEB"/>
         </Style>
         <Style x:Key="tableHeaderItem" TargetType="TextBlock">
             <Setter Property="Margin" Value="5,0,0,0"/>
@@ -62,8 +63,28 @@
         </Style>
         <Style x:Key="tableItem" TargetType="TextBox">
             <Setter Property="Margin" Value="5,0,0,0"/>
+            <Setter Property="Background" Value="#EBEBEB"/>
             <Setter Property="Width" Value="100"/>
             <Setter Property="IsEnabled" Value="{Binding DataContext.AllControlsEnabled, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        </Style>
+        <Style x:Key="lbItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <TextBlock Text="{Binding}">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Black"></Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
     <Grid>
@@ -85,7 +106,7 @@
         <!--Header-->
         <TextBlock
             Margin="10"
-            Foreground="White"
+            Foreground="#EBEBEB"
             FontSize="50"
             Grid.Row="0"
             Grid.RowSpan="2"
@@ -165,7 +186,7 @@
 				 Grid.Column="0"
                  Grid.ColumnSpan="6"
 				 Grid.Row="2"
-                 Background="SaddleBrown">
+                 Background="#EBEBEB">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -392,6 +413,26 @@
                     <Setter Property="Control.BorderBrush" Value="LightGray" />
                     <Setter Property="Control.BorderThickness" Value="1" />
                     <Setter Property="Control.Background" Value="#566573" />
+                    <Setter Property="SnapsToDevicePixels" Value="true"/>
+                    <Setter Property="OverridesDefaultStyle" Value="true"/>
+                    <!--credits: https://stackoverflow.com/questions/31470122/wpf-listbox-item-style-->
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border Name="Border" Padding="7" SnapsToDevicePixels="True" Background="{TemplateBinding Background}">
+                                    <ContentPresenter />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter TargetName="Border" Property="Background" Value="#71ADAA"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter Property="Foreground" Value="Green"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
@@ -484,7 +525,7 @@
                 VerticalAlignment="Center"
                 Grid.Row="0"
                 Text="{Binding Path=WorkStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                Foreground="White"/>
+                Foreground="#EBEBEB"/>
             <ProgressBar Minimum="0"
                          Maximum="100"
                          Value="{Binding UpdateStatusBar, UpdateSourceTrigger=PropertyChanged}"
@@ -500,8 +541,8 @@
                 />
         </Grid>
         <Label
-            Foreground="White"
-            Background="orange"
+            Foreground="#EBEBEB"
+            Background="#71ADAA"
                 Content="CANCELLING..."
                 FontSize="20"
                 Grid.Column="0"
@@ -510,7 +551,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
             Padding="20"
-            BorderBrush="White"
+            BorderBrush="#EBEBEB"
             BorderThickness="1"
             Visibility="{Binding VisibilityCancellingMsg}"
             />
