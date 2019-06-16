@@ -34,8 +34,6 @@ namespace Horse_Picker.ViewModels
             Jockeys = new ObservableCollection<LoadedJockey>();
             Races = new ObservableCollection<LoadedHistoricalRace>();
 
-            _loadedHorses = new List<string>();
-            _loadedJockeys = new List<string>();
             //_eventAggregator = eventAggregator; //prism events
             _dataServices = dataServices; //data files
             _scrapServices = scrapServices; //data scrap
