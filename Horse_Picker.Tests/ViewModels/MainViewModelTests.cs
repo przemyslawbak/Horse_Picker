@@ -188,6 +188,8 @@ namespace Horse_Picker.Tests.ViewModels
         [Fact]
         public void CommandCompletedControlsSetup_ChangesCancellationProps_True()
         {
+            _viewModel.TokenSource = new CancellationTokenSource();
+
             _viewModel.CommandCompletedControlsSetup();
 
             Assert.True(!_viewModel.TaskCancellation);
