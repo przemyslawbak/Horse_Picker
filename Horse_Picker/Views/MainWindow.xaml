@@ -532,7 +532,8 @@
                          Height="20"
                          Grid.Row="1"
                          HorizontalAlignment="Stretch"
-                         VerticalAlignment="Top"/>
+                         VerticalAlignment="Top"
+                         Foreground="#71ADAA"/>
             <TextBlock
                 Grid.Row="1"
                 Text="{Binding Path=ProgressDisplay}"
@@ -542,7 +543,7 @@
         </Grid>
         <Label
             Foreground="#EBEBEB"
-            Background="#71ADAA"
+            Background="#61445C"
                 Content="CANCELLING..."
                 FontSize="20"
                 Grid.Column="0"
