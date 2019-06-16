@@ -7,6 +7,7 @@ using Horse_Picker.Wrappers;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -152,7 +153,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public async Task OnUpdateDataExecuteAsync_UpdateModulesAreFalseByDefault_True()
+        public async Task OnUpdateDataExecuteAsync_MakesUpdateModulesAreFalseByDefault_True()
         {
             _viewModel.UpdateHorsesCz = true;
             _viewModel.UpdateHorsesPl = true;
@@ -164,6 +165,36 @@ namespace Horse_Picker.Tests.ViewModels
 
             bool isAnyTrue = _viewModel.UpdateModules.Any(module => module == true);
             Assert.True(!isAnyTrue);
+        }
+
+        // <- test OnUpdateDataExecuteAsync CONTINUE!
+
+        [Fact]
+        public void OnTaskCancellationExecute_CancelTask_True()
+        {
+            _viewModel.TaskCancellation = true;
+            _viewModel.TokenSource = new CancellationTokenSource();
+
+            _viewModel.TaskCancellationCommand.Execute(null);
+
+            Assert.True(_viewModel.TokenSource.IsCancellationRequested);
+            Assert.True(!_viewModel.TaskCancellation);
+            Assert.Equal(0, _viewModel.UpdateStatusBar);
+            Assert.Equal(0, _viewModel.UpdateStatusBar);
+            Assert.True(_viewModel.ProgressDisplay == "");
+            Assert.True(_viewModel.WorkStatus == "");
+        }
+
+        [Fact]
+        public void CommandCompletedControlsSetup_ChangesCancellationProps_True()
+        {
+            _viewModel.CommandCompletedControlsSetup();
+
+            Assert.True(!_viewModel.TaskCancellation);
+            Assert.Equal(0, _viewModel.UpdateStatusBar);
+            Assert.Equal(0, _viewModel.UpdateStatusBar);
+            Assert.True(_viewModel.ProgressDisplay == "");
+            Assert.True(_viewModel.WorkStatus == "");
         }
     }
 }
