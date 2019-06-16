@@ -53,6 +53,16 @@ namespace Horse_Picker.Tests.ViewModels
                         Father = "-",
                         FatherLink = "",
                         Link = "https://koniewyscigowe.pl/horse/14474"
+                    },
+                    new LoadedHorse
+                    {
+                        Name = "",
+                        Age = 99,
+                        AllChildren = { },
+                        AllRaces = { },
+                        Father = "-",
+                        FatherLink = "",
+                        Link = "https://koniewyscigowe.pl/horse/14474"
                     }
                 });
 
@@ -69,6 +79,12 @@ namespace Horse_Picker.Tests.ViewModels
                     {
                         Name = "V. Popov",
                         Link = "https://koniewyscigowe.pl/dzokej?d=54",
+                        AllRaces = { }
+                    },
+                    new LoadedJockey
+                    {
+                        Name = "",
+                        Link = "https://koniewyscigowe.pl/dzokej?d=666",
                         AllRaces = { }
                     }
                 });
@@ -101,7 +117,7 @@ namespace Horse_Picker.Tests.ViewModels
         {
             _viewModel.LoadAllData();
 
-            Assert.Equal(2, _viewModel.Horses.Count); //counts horses
+            Assert.Equal(3, _viewModel.Horses.Count); //counts horses
             Assert.Equal("Trim", _viewModel.Horses[0].Name);
             Assert.Equal(7, _viewModel.Horses[0].Age);
             Assert.Equal("Belenus", _viewModel.Horses[0].Father);
@@ -114,7 +130,7 @@ namespace Horse_Picker.Tests.ViewModels
         {
             _viewModel.LoadAllData();
 
-            Assert.Equal(2, _viewModel.Jockeys.Count); //counts jockeys
+            Assert.Equal(3, _viewModel.Jockeys.Count); //counts jockeys
             Assert.Equal("N. Hendzel", _viewModel.Jockeys[0].Name);
             Assert.Equal("https://koniewyscigowe.pl/dzokej?d=4", _viewModel.Jockeys[0].Link);
         }
@@ -238,10 +254,28 @@ namespace Horse_Picker.Tests.ViewModels
             _viewModel.LoadAllData();
             _viewModel.PopulateLists();
 
+            Assert.Equal(3, _viewModel.Horses.Count);
             Assert.Equal(2, _viewModel.LoadedHorses.Count);
             Assert.Equal(2, _viewModel.LoadedJockeys.Count);
             Assert.Equal("Trim, 7", _viewModel.LoadedHorses[0]);
             Assert.Equal("N. Hendzel", _viewModel.LoadedJockeys[0]);
+        }
+
+        [Theory]
+        [InlineData("--Not found--", "")]
+        [InlineData("", "")]
+        [InlineData(" ", "")]
+        [InlineData(null, "")]
+        [InlineData("hereajam666", "Hereajam666")]
+        [InlineData("hereajam", "Hereajam")]
+        [InlineData("here aj am", "Here Aj Am")]
+        [InlineData("here aj am 666", "Here Aj Am 666")]
+        [InlineData("666", "666")]
+        public void MakeTitleCase_ShouldReturnString_True(string name, string expected)
+        {
+            var result = _viewModel.MakeTitleCase(name);
+
+            Assert.Equal(expected, result);
         }
     }
 }
