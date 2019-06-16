@@ -527,7 +527,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        //race distance
+        //prop race distance
         public string Distance
         {
             get
@@ -542,7 +542,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        //race category
+        //prop race category
         public string Category
         {
             get
@@ -557,7 +557,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        //race city
+        //prop race city
         public string City
         {
             get
@@ -572,7 +572,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        //race No
+        //prop race No
         public string RaceNo
         {
             get
@@ -587,7 +587,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        //date of the race
+        //prop date of the race
         public DateTime RaceDate
         {
             get
