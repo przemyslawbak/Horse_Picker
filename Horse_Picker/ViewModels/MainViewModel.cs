@@ -284,7 +284,7 @@ namespace Horse_Picker.ViewModels
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        private string MakeTitleCase(string name)
+        public string MakeTitleCase(string name)
         {
             if (!string.IsNullOrEmpty(name) && name != "--Not found--")
             {
@@ -318,7 +318,7 @@ namespace Horse_Picker.ViewModels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void HorseListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        public void HorseListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             ValidateButtons();
         }
@@ -1020,7 +1020,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="horseFromList"></param>
         /// <param name="date"></param>
         /// <returns>returns TI</returns>
-        private double ComputeTiredIndex(LoadedHorse horseFromList, DateTime date)
+        public double ComputeTiredIndex(LoadedHorse horseFromList, DateTime date)
         {
             double finalResult = 0;
             int raceCounter = 0;
@@ -1073,7 +1073,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="horseFromList"></param>
         /// <param name="date"></param>
         /// <returns>returns RI</returns>
-        private double ComputeRestIndex(LoadedHorse horseFromList, DateTime date)
+        public double ComputeRestIndex(LoadedHorse horseFromList, DateTime date)
         {
             double finalResult = 0;
             double breakDays = 0;
@@ -1115,7 +1115,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="horseFromList"></param>
         /// <param name="date"></param>
         /// <returns>returns PI</returns>
-        private double ComputePercentageIndex(LoadedHorse horseFromList, DateTime date)
+        public double ComputePercentageIndex(LoadedHorse horseFromList, DateTime date)
         {
             int winCounter = 0;
             double finalResult = 0;
@@ -1162,7 +1162,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="horseFromList"></param>
         /// <param name="date"></param>
         /// <returns>returns AI</returns>
-        private double ComputeAgeIndex(LoadedHorse horseFromList, DateTime date)
+        public double ComputeAgeIndex(LoadedHorse horseFromList, DateTime date)
         {
             int yearsDifference = DateTime.Now.Year - date.Year; //how many years passed since race
 
@@ -1187,7 +1187,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns CI</returns>
-        private double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date)
+        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date)
         {
             Dictionary<string, int> categoryFactorDict = GetRaceDictionary();
             int dictValue = 1;
@@ -1256,7 +1256,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns WI</returns>
-        private double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList)
+        public double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList)
         {
             Dictionary<string, int> categoryFactorDict = GetRaceDictionary();
             int dictValue = 1;
@@ -1351,7 +1351,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="jockeyFromList">name of the jockey</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns JI</returns>
-        private double ComputeJockeyIndex(LoadedJockey jockeyFromList, DateTime date)
+        public double ComputeJockeyIndex(LoadedJockey jockeyFromList, DateTime date)
         {
             double finalResult = 0;
             double result = 0;
@@ -1398,7 +1398,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="fatherFromList">data of horses father</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns SI</returns>
-        private double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date)
+        public double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date)
         {
             double finalResult = 0;
             double result = 0;
@@ -1461,7 +1461,7 @@ namespace Horse_Picker.ViewModels
         /// list of race categories and values of them
         /// </summary>
         /// <returns>category dictionary with string key and int value</returns>
-        private Dictionary<string, int> GetRaceDictionary()
+        public Dictionary<string, int> GetRaceDictionary()
         {
             Dictionary<string, int> categoryFactorDict = new Dictionary<string, int>();
             categoryFactorDict.Add("G1 A", 11);
@@ -1591,7 +1591,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="stopIndex">page to finish loop</param>
         /// <param name="dataType">what site to use</param>
         /// <returns></returns>
-        private async Task ScrapHistoricalRaces(int startIndex, int stopIndex, string dataType)
+        public async Task ScrapHistoricalRaces(int startIndex, int stopIndex, string dataType)
         {
             //init values and controls
             Races.Clear(); //method does not remove doublers
@@ -1661,7 +1661,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="stopIndex">page to finish loop</param>
         /// <param name="dataType">what site to use</param>
         /// <returns></returns>
-        private async Task ScrapJockeys(int startIndex, int stopIndex, string dataType)
+        public async Task ScrapJockeys(int startIndex, int stopIndex, string dataType)
         {
             //init values and controls
             CommandStartedControlsSetup("UpdateDataCommand");
@@ -1745,7 +1745,7 @@ namespace Horse_Picker.ViewModels
         /// </summary>
         /// <param name="doubledJockey">jockey for Jockeys</param>
         /// <param name="jockey">found doubler</param>
-        private void MergeJockeysData(LoadedJockey doubledJockey, LoadedJockey jockey)
+        public void MergeJockeysData(LoadedJockey doubledJockey, LoadedJockey jockey)
         {
             doubledJockey.AllRaces = doubledJockey.AllRaces.Union(jockey.AllRaces).ToList();
             Jockeys.Add(doubledJockey);
@@ -1758,7 +1758,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="stopIndex">page to finish loop</param>
         /// <param name="dataType">what site to use</param>
         /// <returns></returns>
-        private async Task ScrapHorses(int startIndex, int stopIndex, string dataType)
+        public async Task ScrapHorses(int startIndex, int stopIndex, string dataType)
         {
             //init values and controls
             CommandStartedControlsSetup("UpdateDataCommand");
@@ -1851,7 +1851,7 @@ namespace Horse_Picker.ViewModels
         /// <param name="loopCounter">current counter in the loop</param>
         /// <param name="stopIndex">when loop finishes</param>
         /// <param name="startIndex">when loop starts</param>
-        private void ProgressBarTick(string workStatus, int loopCounter, int stopIndex, int startIndex)
+        public void ProgressBarTick(string workStatus, int loopCounter, int stopIndex, int startIndex)
         {
             WorkStatus = workStatus;
             UpdateStatusBar = loopCounter * 100 / (stopIndex - startIndex);
@@ -1863,7 +1863,7 @@ namespace Horse_Picker.ViewModels
         /// </summary>
         /// <param name="doubledHorse">horse from Horses</param>
         /// <param name="horse">scrapped new horse</param>
-        private void MergeHorsesData(LoadedHorse doubledHorse, LoadedHorse horse)
+        public void MergeHorsesData(LoadedHorse doubledHorse, LoadedHorse horse)
         {
             doubledHorse.AllChildren = doubledHorse.AllChildren.Union(horse.AllChildren).ToList();
             doubledHorse.AllRaces = doubledHorse.AllRaces.Union(horse.AllRaces).ToList();
@@ -1874,7 +1874,7 @@ namespace Horse_Picker.ViewModels
         /// changes some display props on starting long running tasks
         /// </summary>
         /// <param name="command"></param>
-        private void CommandStartedControlsSetup(string command)
+        public void CommandStartedControlsSetup(string command)
         {
             TaskCancellation = false;
             AllControlsEnabled = false;
