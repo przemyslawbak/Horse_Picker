@@ -196,5 +196,27 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.True(_viewModel.ProgressDisplay == "");
             Assert.True(_viewModel.WorkStatus == "");
         }
+
+        [Fact]
+        public void OnClearDataExecute_ClearsRaceProps_True()
+        {
+            _viewModel.HorseList.Add(new HorseDataWrapper { HorseName = "Eugeniusz", Age = 1, Father = "Żytomir", Comments = "No comment" });
+            _viewModel.HorseList.Add(new HorseDataWrapper { HorseName = "Eustachy", Age = 1, Father = "Dobrosława", Comments = "No comment" });
+            _viewModel.Category = "I";
+            _viewModel.City = "Waw";
+            _viewModel.Distance = "1600";
+            _viewModel.RaceNo = "1";
+            _viewModel.RaceDate = new DateTime(2018, 11, 11);
+
+            _viewModel.ClearDataCommand.Execute(null);
+
+            Assert.Empty(_viewModel.HorseList);
+            Assert.Equal("fill up", _viewModel.Category);
+            Assert.Equal("-", _viewModel.City);
+            Assert.Equal("0", _viewModel.Distance);
+            Assert.Equal("0", _viewModel.RaceNo);
+            Assert.Equal(DateTime.Now, _viewModel.RaceDate);
+
+        }
     }
 }
