@@ -70,7 +70,7 @@ namespace Horse_Picker.ViewModels
             LoadAllData();
             PopulateLists();
 
-            HorseList.CollectionChanged += HorseListCollectionChanged;
+            HorseList.CollectionChanged += OnHorseListCollectionChanged;
         }
 
         /// <summary>
@@ -287,6 +287,16 @@ namespace Horse_Picker.ViewModels
             return name;
         }
 
+        /// <summary>
+        /// on horse collection change validates buttons again
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void OnHorseListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            ValidateButtons();
+        }
+
         //commands
         public ICommand NewHorseCommand { get; private set; }
         public ICommand ClearDataCommand { get; private set; }
@@ -306,16 +316,6 @@ namespace Horse_Picker.ViewModels
         public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
         public List<string> LoadedHorses { get; }
         public List<string> LoadedJockeys { get; }
-
-        /// <summary>
-        /// on horse collection change validates buttons again
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void HorseListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            ValidateButtons();
-        }
 
         //prop for scrap PL jockeys from ID int
         public int JPlFrom
