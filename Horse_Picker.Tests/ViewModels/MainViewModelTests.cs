@@ -110,6 +110,12 @@ namespace Horse_Picker.Tests.ViewModels
                 });
 
             _viewModel = new MainViewModel(_dataServices.Object, _scrapServices.Object, _messageDialogServicesMock.Object);
+
+            _viewModel.Category = "I";
+            _viewModel.City = "Waw";
+            _viewModel.Distance = "1600";
+            _viewModel.RaceNo = "1";
+            _viewModel.RaceDate = new DateTime(2018, 11, 11);
         }
 
         [Fact]
@@ -222,11 +228,6 @@ namespace Horse_Picker.Tests.ViewModels
             _viewModel.HorseList.Clear();
             _viewModel.HorseList.Add(new HorseDataWrapper { HorseName = "Eugeniusz", Age = 1, Father = "Żytomir", Comments = "No comment" });
             _viewModel.HorseList.Add(new HorseDataWrapper { HorseName = "Eustachy", Age = 2, Father = "Dobrosława", Comments = "Some comment" });
-            _viewModel.Category = "I";
-            _viewModel.City = "Waw";
-            _viewModel.Distance = "1600";
-            _viewModel.RaceNo = "1";
-            _viewModel.RaceDate = new DateTime(2018, 11, 11);
 
             _viewModel.ClearDataCommand.Execute(null);
 
@@ -236,6 +237,7 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal("0", _viewModel.Distance);
             Assert.Equal("0", _viewModel.RaceNo);
             Assert.Equal(DateTime.Now.Date, _viewModel.RaceDate.Date);
+            Assert.False(_viewModel.IsSaveEnabled);
         }
 
         [Fact]
@@ -276,6 +278,18 @@ namespace Horse_Picker.Tests.ViewModels
             var result = _viewModel.MakeTitleCase(name);
 
             Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        private void HorseList_CollectionChangedEventValidatesSaveBtn_True()
+        {
+            _viewModel.HorseList.Clear();
+            _viewModel.IsSaveEnabled = false;
+            _viewModel.AllControlsEnabled = true;
+
+            _viewModel.HorseList.Add(new HorseDataWrapper { });
+
+            Assert.True(_viewModel.IsSaveEnabled);
         }
     }
 }
