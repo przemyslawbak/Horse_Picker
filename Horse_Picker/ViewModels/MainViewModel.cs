@@ -275,6 +275,7 @@ namespace Horse_Picker.ViewModels
         public ICommand PickHorseDataCommand { get; private set; }
 
         //properties
+        public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
         public ObservableCollection<bool> UpdateModules { get; private set; }
         public HorseDataWrapper HorseWrapper { get; private set; }
         public CancellationToken CancellationToken { get; private set; }
@@ -282,8 +283,8 @@ namespace Horse_Picker.ViewModels
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
         public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
         public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
-        public List<string> LoadedHorses { get; set; }
-        public List<string> LoadedJockeys { get; set; }
+        public List<string> LoadedHorses { get; }
+        public List<string> LoadedJockeys { get; }
 
         /// <summary>
         /// makes title case for horse name
@@ -305,23 +306,6 @@ namespace Horse_Picker.ViewModels
 
             return name;
         }
-
-        /// <summary>
-        /// dictionary of race categories/groups
-        /// </summary>
-        public Dictionary<string, int> CategoryFactorDict
-        {
-            get
-            {
-                Dictionary<string, int> _categoryFactorDict = GetRaceDictionary();
-                return _categoryFactorDict;
-            }
-        }
-
-        /// <summary>
-        /// collection of displayed horses
-        /// </summary>
-        public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
 
         /// <summary>
         /// on horse collection change validates buttons again
