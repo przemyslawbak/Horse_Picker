@@ -72,6 +72,11 @@ namespace Horse_Picker.ViewModels
             HorseList.CollectionChanged += HorseListCollectionChanged;
         }
 
+        /// <summary>
+        /// on `Test results` btn click,
+        /// is testing strategy on historic results
+        /// </summary>
+        /// <returns></returns>
         public async Task OnTestResultExecuteAsync()
         {
             TokenSource = new CancellationTokenSource();
@@ -80,6 +85,12 @@ namespace Horse_Picker.ViewModels
             await TestHistoricalResultsAsync();
         }
 
+        /// <summary>
+        /// on `Find` horse btn click,
+        /// on `AutoComplete` of the horse name / jockey TextBoxes,
+        /// is parsing horse with horses from data files
+        /// </summary>
+        /// <param name="obj"></param>
         public void OnPickHorseDataExecute(object obj)
         {
             HorseWrapper = (HorseDataWrapper)obj;
@@ -87,6 +98,11 @@ namespace Horse_Picker.ViewModels
             Task.Run(() => HorseWrapper = ParseHorseData(HorseWrapper, date)); //consumes time
         }
 
+        /// <summary>
+        /// on `Update data` btn click,
+        /// is scraping data from www
+        /// </summary>
+        /// <returns></returns>
         public async Task OnUpdateDataExecuteAsync()
         {
             UpdateModules = new ObservableCollection<bool>();
@@ -134,6 +150,12 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        /// <summary>
+        /// on `cancel` btn click,
+        /// is canceling TokenSource for every single Task,
+        /// `TaskCancellation` property is breaking every single loop in Tasks
+        /// </summary>
+        /// <param name="obj"></param>
         public void OnTaskCancellationExecute(object obj)
         {
             TaskCancellation = true;
@@ -143,6 +165,12 @@ namespace Horse_Picker.ViewModels
             CommandCompletedControlsSetup();
         }
 
+        /// <summary>
+        /// on `Clear race` btn click,
+        /// resets all rece properties,
+        /// clears list of horses for the race
+        /// </summary>
+        /// <param name="obj"></param>
         public void OnClearDataExecute(object obj)
         {
             HorseList.Clear();
@@ -153,6 +181,11 @@ namespace Horse_Picker.ViewModels
             RaceDate = DateTime.Now;
         }
 
+        /// <summary>
+        /// on `Add new horse (+)` btn click,
+        /// is adding new blank horse to the list
+        /// </summary>
+        /// <param name="obj"></param>
         public void OnNewHorseExecute(object obj)
         {
             HorseWrapper = new HorseDataWrapper();
@@ -160,7 +193,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// loading horses from the list in web
+        /// loads horses from the file data services
         /// </summary>
         public void LoadAllData()
         {
@@ -205,6 +238,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //commands
         public ICommand NewHorseCommand { get; private set; }
         public ICommand ClearDataCommand { get; private set; }
         public ICommand TaskCancellationCommand { get; private set; }
@@ -212,6 +246,7 @@ namespace Horse_Picker.ViewModels
         public IAsyncCommand UpdateDataCommand { get; private set; }
         public ICommand PickHorseDataCommand { get; private set; }
 
+        //properties
         public ObservableCollection<bool> UpdateModules { get; private set; }
         public HorseDataWrapper HorseWrapper { get; private set; }
         public CancellationToken CancellationToken { get; private set; }
@@ -257,6 +292,11 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        /// <summary>
+        /// makes title case for horse name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         private string MakeTitleCase(string name)
         {
             if (!string.IsNullOrEmpty(name) && name != "--Not found--")
@@ -270,7 +310,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// dictionary of race categories
+        /// dictionary of race categories/groups
         /// </summary>
         public Dictionary<string, int> CategoryFactorDict
         {
@@ -282,12 +322,12 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// pcollection of displayed horses
+        /// collection of displayed horses
         /// </summary>
         public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
 
         /// <summary>
-        /// changes Save btn IsEnabled prop when collection changes
+        /// on horse collection change validates buttons again
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -296,6 +336,7 @@ namespace Horse_Picker.ViewModels
             ValidateButtons();
         }
 
+        //prop for scrap PL jockeys from ID int
         public int JPlFrom
         {
             get
@@ -309,6 +350,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for scrap PL jockeys to ID int
         public int JPlTo
         {
             get
@@ -322,6 +364,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for scrap CZ jockeys from ID int
         public int JCzFrom
         {
             get
@@ -335,6 +378,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for scrap CZ jockeys to ID int
         public int JCzTo
         {
             get
@@ -348,6 +392,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for scrap PL horses from ID int
         public int HPlFrom
         {
             get
@@ -361,6 +406,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for scrap PL horses to ID int
         public int HPlTo
         {
             get
@@ -374,6 +420,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for scrap CZ horses from ID int
         public int HCzFrom
         {
             get
@@ -387,6 +434,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for scrap CZ horses to ID int
         public int HCzTo
         {
             get
@@ -400,6 +448,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for scrap PL historic races from ID int
         public int HistPlFrom
         {
             get
@@ -413,6 +462,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for scrap PL historic races to ID int
         public int HistPlTo
         {
             get
@@ -426,6 +476,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for update jockeys PL checkbox
         public bool UpdateJockeysPl
         {
             get
@@ -439,6 +490,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for update jockeys CZ checkbox
         public bool UpdateJockeysCz
         {
             get
@@ -452,6 +504,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for update horses CZ checkbox
         public bool UpdateHorsesCz
         {
             get
@@ -465,6 +518,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for update horses PL checkbox
         public bool UpdateHorsesPl
         {
             get
@@ -478,6 +532,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //prop for update historic data PL checkbox
         public bool UpdateRacesPl
         {
             get
@@ -491,6 +546,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //race distance
         public string Distance
         {
             get
@@ -505,6 +561,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //race category
         public string Category
         {
             get
@@ -519,6 +576,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //race city
         public string City
         {
             get
@@ -533,6 +591,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //race No
         public string RaceNo
         {
             get
@@ -547,6 +606,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //date of the race
         public DateTime RaceDate
         {
             get
@@ -561,7 +621,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// IsEnabled prop for all controls during data updates / tests
+        /// IsEnabled prop for some controls during data updates / tests
         /// </summary>
         private bool _allControlsEnabled;
         public bool AllControlsEnabled
@@ -578,7 +638,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// Add Horse btn IsEnabled prop
+        /// `Add Horse` btn IsEnabled prop
         /// </summary>
         private bool _isNewHorseEnabled;
         public bool IsNewHorseEnabled
@@ -595,7 +655,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// Save btn IsEnabled prop
+        /// `Save` btn IsEnabled prop
         /// </summary>
         private bool _isSaveEnabled;
         public bool IsSaveEnabled
@@ -612,7 +672,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// ProgressBar Value
+        /// `ProgressBar` Value
         /// </summary>
         private int _updateStatusBar;
         public int UpdateStatusBar
@@ -646,7 +706,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// name of the work currently done
+        /// name of the work (update/test) currently done
         /// </summary>
         private string _workStatus;
         public string WorkStatus
@@ -662,6 +722,9 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        /// <summary>
+        /// validates buttons being enabled
+        /// </summary>
         private void ValidateButtons()
         {
             int n;
@@ -702,8 +765,9 @@ namespace Horse_Picker.ViewModels
                 IsSaveEnabled = false;
             }
         }
+
         /// <summary>
-        /// display status bar or not?
+        /// display `status bar` or not?
         /// </summary>
         private Visibility _visibilityStatusBar;
         public Visibility VisibilityStatusBar
@@ -720,7 +784,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// display "cancel updates" btn or not
+        /// display `cancel updates` btn or not
         /// </summary>
         private Visibility _visibilityCancelUpdatesBtn;
         public Visibility VisibilityCancelUpdatingBtn
@@ -737,7 +801,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// display "cancel tests" btn or not
+        /// display `cancel tests` btn or not
         /// </summary>
         private Visibility _visibilityCancelTestingBtn;
         public Visibility VisibilityCancelTestingBtn
@@ -754,7 +818,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// display "tests" btn or not
+        /// display `tests` btn or not
         /// </summary>
         private Visibility _visibilityTestingBtn;
         public Visibility VisibilityTestingBtn
@@ -771,7 +835,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// display "tests" btn or not
+        /// display `tests` btn or not
         /// </summary>
         private Visibility _visibilityUpdatingBtn;
         public Visibility VisibilityUpdatingBtn
@@ -788,7 +852,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// display "cancel tests" btn or not
+        /// display `cancel tests` btn or not
         /// </summary>
         private Visibility _visibilityCancellingMsg;
         public Visibility VisibilityCancellingMsg
@@ -819,32 +883,6 @@ namespace Horse_Picker.ViewModels
                 _taskCancellation = value;
                 OnPropertyChanged();
             }
-        }
-
-        /// <summary>
-        /// checks if race data is filled up
-        /// credits: https://stackoverflow.com/questions/22683040/how-to-check-all-properties-of-an-object-whether-null-or-empty
-        /// </summary>
-        /// <param name="myObject"></param>
-        /// <returns></returns>
-        bool IsAnyNullOrEmptyOrWhiteSpace(object myObject)
-        {
-            foreach (PropertyInfo pi in myObject.GetType().GetProperties())
-            {
-                if (pi.PropertyType == typeof(string))
-                {
-                    string value = (string)pi.GetValue(myObject);
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        return true;
-                    }
-                    if (string.IsNullOrWhiteSpace(value))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         /// <summary>
@@ -989,6 +1027,12 @@ namespace Horse_Picker.ViewModels
             return horseWrapper;
         }
 
+        /// <summary>
+        /// calculated TI factor
+        /// </summary>
+        /// <param name="horseFromList"></param>
+        /// <param name="date"></param>
+        /// <returns>returns TI</returns>
         private double ComputeTiredIndex(LoadedHorse horseFromList, DateTime date)
         {
             double finalResult = 0;
@@ -1036,6 +1080,12 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        /// <summary>
+        /// calculated RI factor
+        /// </summary>
+        /// <param name="horseFromList"></param>
+        /// <param name="date"></param>
+        /// <returns>returns RI</returns>
         private double ComputeRestIndex(LoadedHorse horseFromList, DateTime date)
         {
             double finalResult = 0;
@@ -1072,6 +1122,12 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        /// <summary>
+        /// calculated PI factor
+        /// </summary>
+        /// <param name="horseFromList"></param>
+        /// <param name="date"></param>
+        /// <returns>returns PI</returns>
         private double ComputePercentageIndex(LoadedHorse horseFromList, DateTime date)
         {
             int winCounter = 0;
@@ -1113,6 +1169,12 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        /// <summary>
+        /// calculated AI factor
+        /// </summary>
+        /// <param name="horseFromList"></param>
+        /// <param name="date"></param>
+        /// <returns>returns AI</returns>
         private double ComputeAgeIndex(LoadedHorse horseFromList, DateTime date)
         {
             int yearsDifference = DateTime.Now.Year - date.Year; //how many years passed since race
@@ -1133,11 +1195,11 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// calculates category index for the horse
+        /// calculated CI factor
         /// </summary>
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
-        /// <returns></returns>
+        /// <returns>returns CI</returns>
         private double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date)
         {
             Dictionary<string, int> categoryFactorDict = GetRaceDictionary();
@@ -1202,11 +1264,11 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// calculates win index for the horse
+        /// calculated WI factor
         /// </summary>
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
-        /// <returns></returns>
+        /// <returns>returns WI</returns>
         private double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList)
         {
             Dictionary<string, int> categoryFactorDict = GetRaceDictionary();
@@ -1297,11 +1359,11 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// calculates index for the jockey
+        /// calculated JI factor
         /// </summary>
         /// <param name="jockeyFromList">name of the jockey</param>
         /// <param name="date">day of the race</param>
-        /// <returns></returns>
+        /// <returns>returns JI</returns>
         private double ComputeJockeyIndex(LoadedJockey jockeyFromList, DateTime date)
         {
             double finalResult = 0;
@@ -1344,11 +1406,11 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// calculates index for horses siblings
+        /// calculated SI factor
         /// </summary>
         /// <param name="fatherFromList">data of horses father</param>
         /// <param name="date">day of the race</param>
-        /// <returns></returns>
+        /// <returns>returns SI</returns>
         private double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date)
         {
             double finalResult = 0;
@@ -1460,7 +1522,7 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// is parsing race stats with every single horse from all historic races
+        /// parsing race stats with every single horse from all historic races
         /// </summary>
         /// <returns></returns>
         public async Task TestHistoricalResultsAsync()
@@ -1821,6 +1883,10 @@ namespace Horse_Picker.ViewModels
             Horses.Add(doubledHorse);
         }
 
+        /// <summary>
+        /// changes some display props on starting long running tasks
+        /// </summary>
+        /// <param name="command"></param>
         private void CommandStartedControlsSetup(string command)
         {
             TaskCancellation = false;
@@ -1842,6 +1908,9 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        /// <summary>
+        /// changes some display props on stopped long running tasks
+        /// </summary>
         public void CommandCompletedControlsSetup()
         {
             TokenSource.Dispose();
