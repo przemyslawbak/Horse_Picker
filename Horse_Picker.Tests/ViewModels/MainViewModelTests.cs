@@ -291,5 +291,7 @@ namespace Horse_Picker.Tests.ViewModels
 
             Assert.True(_viewModel.IsSaveEnabled);
         }
+
+        //ValidateButtons tests now
     }
 }

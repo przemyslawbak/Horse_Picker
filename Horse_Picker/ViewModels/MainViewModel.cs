@@ -69,6 +69,7 @@ namespace Horse_Picker.ViewModels
 
             LoadAllData();
             PopulateLists();
+            CategoryFactorDict = GetRaceDictionary();
 
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
         }
@@ -316,6 +317,7 @@ namespace Horse_Picker.ViewModels
         public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
         public List<string> LoadedHorses { get; }
         public List<string> LoadedJockeys { get; }
+        public Dictionary<string, int> CategoryFactorDict { get; set; }
 
         //prop for scrap PL jockeys from ID int
         public int JPlFrom
