@@ -231,5 +231,17 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal(2, _viewModel.HorseList.Count);
             Assert.False(_viewModel.HorseList[0] == null);
         }
+
+        [Fact]
+        public void PopulateLists_PopulatesThem_True()
+        {
+            _viewModel.LoadAllData();
+            _viewModel.PopulateLists();
+
+            Assert.Equal(2, _viewModel.LoadedHorses.Count);
+            Assert.Equal(2, _viewModel.LoadedJockeys.Count);
+            Assert.Equal("Trim, 7", _viewModel.LoadedHorses[0]);
+            Assert.Equal("N. Hendzel", _viewModel.LoadedJockeys[0]);
+        }
     }
 }
