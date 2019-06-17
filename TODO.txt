@@ -1,3 +1,6 @@
+async file services-> JsonConvert ? https://4programmers.net/Forum/Oceny_i_recenzje/327979-roast_me_czyli_co_byscie_zmienili_w_mojej_solucji?p=1599422#id1599422
+serwisy https://4programmers.net/Forum/Oceny_i_recenzje/327979-roast_me_czyli_co_byscie_zmienili_w_mojej_solucji?p=1599422#id1599422
+
 
 globalne zmienne przy computing
 przy scrapowaniu koni i dzokejow, jesli jest 0 startow, i tak dodajemy
