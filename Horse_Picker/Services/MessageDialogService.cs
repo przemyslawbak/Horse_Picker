@@ -6,8 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
-namespace Horse_Picker.Dialogs
+namespace Horse_Picker.Services
 {
     public class MessageDialogService : IMessageDialogService
     {

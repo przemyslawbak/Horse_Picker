@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using Horse_Picker.Dialogs;
 using Horse_Picker.Models;
-using Horse_Picker.NewModels;
-using LumenWorks.Framework.IO.Csv;
 using Newtonsoft.Json;
 
-namespace Horse_Picker.DataProvider
+namespace Horse_Picker.Services
 {
     public class FileDataServices : IFileDataServices
     {

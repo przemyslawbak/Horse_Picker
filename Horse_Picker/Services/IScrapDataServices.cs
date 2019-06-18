@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Horse_Picker.Models;
-using Horse_Picker.NewModels;
 
-namespace Horse_Picker.DataProvider
+namespace Horse_Picker.Services
 {
     public interface IScrapDataServices
     {

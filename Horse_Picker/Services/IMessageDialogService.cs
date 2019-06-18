@@ -1,11 +1,4 @@
-﻿using Horse_Picker.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Horse_Picker.Dialogs
+﻿namespace Horse_Picker.Services
 {
     public interface IMessageDialogService
     {

@@ -1,12 +1,8 @@
 ﻿using Horse_Picker.Models;
-using Horse_Picker.NewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Horse_Picker.DataProvider
+namespace Horse_Picker.Services
 {
     public interface IFileDataServices
     {

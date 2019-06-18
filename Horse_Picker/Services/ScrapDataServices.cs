@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Horse_Picker.Models;
-using Horse_Picker.NewModels;
 using Horse_Picker.Wrappers;
 using HtmlAgilityPack;
-using MSHTML;
 
-namespace Horse_Picker.DataProvider
+namespace Horse_Picker.Services
 {
     public class ScrapDataServices : IScrapDataServices
     {
