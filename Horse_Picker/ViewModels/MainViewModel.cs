@@ -24,13 +24,15 @@ namespace Horse_Picker.ViewModels
         private IComputeDataServices _computeDataService;
         private IFileDataServices _dataServices;
         private IScrapDataServices _scrapServices;
-        private RaceData _raceDataModel;
+        private IRaceModelProvider _raceModelProvider;
         private UpdateModules _updateModulesModel;
         int _degreeOfParallelism;
+
         public MainViewModel(IFileDataServices dataServices,
             IScrapDataServices scrapServices,
             IMessageDialogService messageDialogServices,
-            IComputeDataServices computeDataService)
+            IComputeDataServices computeDataService,
+            IRaceModelProvider raceServices)
         {
             Horses = new ObservableCollection<LoadedHorse>();
             Jockeys = new ObservableCollection<LoadedJockey>();
@@ -39,12 +41,12 @@ namespace Horse_Picker.ViewModels
             LoadedJockeys = new List<string>();
 
             //_eventAggregator = eventAggregator; //prism events
-            _dataServices = dataServices; //data files
-            _computeDataService = computeDataService; //data files
-            _scrapServices = scrapServices; //data scrap
-            _messageDialogService = messageDialogServices; //dialogs
+            _dataServices = dataServices;
+            _raceModelProvider = raceServices;
+            _computeDataService = computeDataService;
+            _scrapServices = scrapServices;
+            _messageDialogService = messageDialogServices;
             HorseList = new ObservableCollection<HorseDataWrapper>();
-            _raceDataModel = new RaceData();
             _updateModulesModel = new UpdateModules();
             _degreeOfParallelism = 100;
 
@@ -73,7 +75,7 @@ namespace Horse_Picker.ViewModels
 
             LoadAllData();
             PopulateLists();
-            CategoryFactorDict = GetRaceDictionary();
+            CategoryFactorDict = _computeDataService.GetRaceCategoryDictionary(_raceModelProvider);
 
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
         }
@@ -545,11 +547,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _raceDataModel.Distance;
+                return _raceModelProvider.Distance;
             }
             set
             {
-                _raceDataModel.Distance = value;
+                _raceModelProvider.Distance = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -560,11 +562,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _raceDataModel.Category;
+                return _raceModelProvider.Category;
             }
             set
             {
-                _raceDataModel.Category = value;
+                _raceModelProvider.Category = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -575,11 +577,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _raceDataModel.City;
+                return _raceModelProvider.City;
             }
             set
             {
-                _raceDataModel.City = value;
+                _raceModelProvider.City = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -590,11 +592,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _raceDataModel.RaceNo;
+                return _raceModelProvider.RaceNo;
             }
             set
             {
-                _raceDataModel.RaceNo = value;
+                _raceModelProvider.RaceNo = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -605,11 +607,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _raceDataModel.RaceDate;
+                return _raceModelProvider.RaceDate;
             }
             set
             {
-                _raceDataModel.RaceDate = value;
+                _raceModelProvider.RaceDate = value;
                 OnPropertyChanged();
             }
         }
@@ -970,12 +972,12 @@ namespace Horse_Picker.ViewModels
 
                     //win index
                     if (jockeyFromList != null)
-                        horseWrapper.WinIndex = _computeDataService.ComputeWinIndex(horseFromList, date, jockeyFromList);
+                        horseWrapper.WinIndex = _computeDataService.ComputeWinIndex(horseFromList, date, jockeyFromList, _raceModelProvider);
                     else
-                        horseWrapper.WinIndex = _computeDataService.ComputeWinIndex(horseFromList, date, null);
+                        horseWrapper.WinIndex = _computeDataService.ComputeWinIndex(horseFromList, date, null, _raceModelProvider);
 
                     //category index
-                    horseWrapper.CategoryIndex = _computeDataService.ComputeCategoryIndex(horseFromList, date);
+                    horseWrapper.CategoryIndex = _computeDataService.ComputeCategoryIndex(horseFromList, date, _raceModelProvider);
 
                     //age index
                     horseWrapper.AgeIndex = _computeDataService.ComputeAgeIndex(horseFromList, date);
@@ -1005,7 +1007,7 @@ namespace Horse_Picker.ViewModels
 
                     if (fatherFromList != null)
                     {
-                        horseWrapper.SiblingsIndex = _computeDataService.ComputeSiblingsIndex(fatherFromList, date);
+                        horseWrapper.SiblingsIndex = _computeDataService.ComputeSiblingsIndex(fatherFromList, date, _raceModelProvider, Horses);
                     }
                     else
                     {

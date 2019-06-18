@@ -98,8 +98,10 @@
     <Compile Include="Services\ComputeDataServices.cs" />
     <Compile Include="Services\FileDataServices.cs" />
     <Compile Include="Services\IComputeDataServices.cs" />
-    <Compile Include="Services\IFileDataProvider.cs" />
+    <Compile Include="Services\IFileDataServices.cs" />
+    <Compile Include="Services\IRaceModelProvider.cs" />
     <Compile Include="Services\IScrapDataServices.cs" />
+    <Compile Include="Services\RaceModelProvider.cs" />
     <Compile Include="Services\ScrapDataServices.cs" />
     <Compile Include="Services\IMessageDialogService.cs" />
     <Compile Include="Services\MessageDialogService.cs" />
@@ -122,7 +124,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\RaceData.cs" />
+    <Compile Include="Models\RaceModel.cs" />
     <Compile Include="Models\LoadedHorse.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
