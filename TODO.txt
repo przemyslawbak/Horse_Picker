@@ -1,5 +1,7 @@
 kancelacja tokenow - wyjatek
-scrap metody do serwisow
+scrap metody VM porzadek
+scrap metody VM do serwisow
+vm dla update
 
 
 globalne zmienne przy computing
