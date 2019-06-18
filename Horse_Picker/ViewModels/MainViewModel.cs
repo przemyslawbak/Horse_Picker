@@ -21,6 +21,20 @@ namespace Horse_Picker.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        //compute fields
+        private Dictionary<string, int> _categoryFactorDict;
+        private int _dictValue;
+        private double _finalResult;
+        private double _result;
+        private double _siblingIndex;
+        private int _counter;
+        private LoadedHorse _childFromList = new LoadedHorse();
+        //compute loop fields
+        private double _placeFactor = 0;
+        private double _distRaceIndex = 0;
+        private double _distFactor = 0;
+
+
         //private IEventAggregator _eventAggregator; //Prism
         private IMessageDialogService _messageDialogService;
         private IFileDataServices _dataServices;
@@ -1026,8 +1040,7 @@ namespace Horse_Picker.ViewModels
         /// <returns>returns TI</returns>
         public double ComputeTiredIndex(LoadedHorse horseFromList, DateTime date)
         {
-            double finalResult = 0;
-            int raceCounter = 0;
+            ResetComputeVariables();
 
             if (horseFromList.AllRaces.Count > 0)
             {
@@ -1050,20 +1063,20 @@ namespace Horse_Picker.ViewModels
                     //for all races 2 years back from this race
                     if (horseFromList.AllRaces[i].RaceDate < date && horseFromList.AllRaces[i].RaceDate > twoYearsBack)
                     {
-                        raceCounter++;
+                        _counter++;
                     }
                 }
 
-                if (raceCounter > 12)
+                if (_counter > 12)
                 {
-                    finalResult = 1 + (raceCounter - 12) * 0.1;
+                    _finalResult = 1 + (_counter - 12) * 0.1;
                 }
                 else
                 {
                     return 1;
                 }
 
-                return finalResult;
+                return _finalResult;
             }
             else
             {
@@ -1079,8 +1092,7 @@ namespace Horse_Picker.ViewModels
         /// <returns>returns RI</returns>
         public double ComputeRestIndex(LoadedHorse horseFromList, DateTime date)
         {
-            double finalResult = 0;
-            double breakDays = 0;
+            ResetComputeVariables();
 
             if (horseFromList.AllRaces.Count > 0)
             {
@@ -1090,22 +1102,22 @@ namespace Horse_Picker.ViewModels
                 if (horseFromList.AllRaces.Count == 0)
                     return 1;
 
-                breakDays = (date - horseFromList.AllRaces[0].RaceDate).TotalDays;
+                _result = (date - horseFromList.AllRaces[0].RaceDate).TotalDays;
 
-                if (breakDays > 90)
+                if (_result > 90)
                 {
-                    finalResult = 1 + (breakDays - 90) / 100;
+                    _finalResult = 1 + (_result - 90) / 100;
                 }
-                else if (breakDays < 60)
+                else if (_result < 60)
                 {
-                    finalResult = 1 + breakDays / 50;
+                    _finalResult = 1 + _result / 50;
                 }
                 else
                 {
-                    finalResult = 1;
+                    _finalResult = 1;
                 }
 
-                return finalResult;
+                return _finalResult;
             }
             else
             {
@@ -1121,8 +1133,7 @@ namespace Horse_Picker.ViewModels
         /// <returns>returns PI</returns>
         public double ComputePercentageIndex(LoadedHorse horseFromList, DateTime date)
         {
-            int winCounter = 0;
-            double finalResult = 0;
+            ResetComputeVariables();
 
             if (horseFromList.AllRaces.Count > 0)
             {
@@ -1137,22 +1148,22 @@ namespace Horse_Picker.ViewModels
 
                     if (horseFromList.AllRaces[i].WonPlace == 1 && horseFromList.AllRaces[i].RaceDate < date)
                     {
-                        winCounter++;
+                        _result++;
                     }
                 }
 
-                double percentage = (double)winCounter / horseFromList.AllRaces.Count * 100;
+                double percentage = (double)_result / horseFromList.AllRaces.Count * 100;
 
                 if (percentage > 20)
                 {
-                    finalResult = 1 + (percentage - 20) * 0.1;
+                    _finalResult = 1 + (percentage - 20) * 0.1;
                 }
                 else
                 {
-                    finalResult = 1;
+                    _finalResult = 1;
                 }
 
-                return finalResult;
+                return _finalResult;
             }
             else
             {
@@ -1193,18 +1204,13 @@ namespace Horse_Picker.ViewModels
         /// <returns>returns CI</returns>
         public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date)
         {
-            Dictionary<string, int> categoryFactorDict = GetRaceDictionary();
-            int dictValue = 1;
-            double finalResult;
-            double result = 0;
+            ResetComputeVariables();
 
             if (horseFromList.AllRaces.Count > 0)
             {
                 for (int i = 0; i < horseFromList.AllRaces.Count; i++)
                 {
-                    double distFactor = 0;
-                    double placeFactor = 0;
-                    double distRaceIndex = 0;
+                    ResetLoopVariables();
 
                     //if task cancelled by the user
                     if (TaskCancellation == true)
@@ -1214,39 +1220,39 @@ namespace Horse_Picker.ViewModels
 
                     if (horseFromList.AllRaces[i].WonPlace > 0 && horseFromList.AllRaces[i].RaceDate < date)
                     {
-                        placeFactor = (double)horseFromList.AllRaces[i].WonPlace / horseFromList.AllRaces[i].RaceCompetition * 10;
+                        _placeFactor = (double)horseFromList.AllRaces[i].WonPlace / horseFromList.AllRaces[i].RaceCompetition * 10;
 
                         //increase factor for races over 12 horses and place between 1-4
                         if (horseFromList.AllRaces[i].RaceCompetition > 12 && horseFromList.AllRaces[i].WonPlace < 5)
                         {
-                            placeFactor = placeFactor * 1.5;
+                            _placeFactor = _placeFactor * 1.5;
                         }
 
-                        bool foundKey = categoryFactorDict.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
+                        bool foundKey = _categoryFactorDict.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
                                       StringComparison.CurrentCultureIgnoreCase)
                         );
 
                         if (foundKey)
                         {
-                            dictValue = categoryFactorDict[horseFromList.AllRaces[i].RaceCategory];
+                            _dictValue = _categoryFactorDict[horseFromList.AllRaces[i].RaceCategory];
                         }
                         else
                         {
-                            dictValue = 5;
+                            _dictValue = 5;
                         }
 
-                        distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(Distance)) / 10000 * dictValue;
-                        distFactor = Math.Abs(distFactor);
+                        _distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(Distance)) / 10000 * _dictValue;
+                        _distFactor = Math.Abs(_distFactor);
 
-                        distRaceIndex = placeFactor * dictValue / 10;
+                        _distRaceIndex = _placeFactor * _dictValue / 10;
 
-                        result = result + distRaceIndex - distFactor;
+                        _result = _result + _distRaceIndex - _distFactor;
                     }
                 }
 
-                finalResult = result / horseFromList.AllRaces.Count;
+                _finalResult = _result / horseFromList.AllRaces.Count;
 
-                return finalResult;
+                return _finalResult;
             }
             else
             {
@@ -1262,19 +1268,14 @@ namespace Horse_Picker.ViewModels
         /// <returns>returns WI</returns>
         public double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList)
         {
-            Dictionary<string, int> categoryFactorDict = GetRaceDictionary();
-            int dictValue = 1;
-            double finalResult = 0;
-            double result = 0;
+            ResetComputeVariables();
 
             if (horseFromList.AllRaces.Count > 0)
             {
 
                 for (int i = 0; i < horseFromList.AllRaces.Count; i++)
                 {
-                    double distFactor = 0;
-                    double placeFactor = 0;
-                    double distRaceIndex = 0;
+                    ResetLoopVariables();
 
                     //get races only before race date, sort by race date from biggest to smallest
                     horseFromList.AllRaces = horseFromList.AllRaces.Where(l => l.RaceDate < date).OrderByDescending(l => l.RaceDate).ToList();
@@ -1291,9 +1292,9 @@ namespace Horse_Picker.ViewModels
                     if (horseFromList.AllRaces[i].WonPlace < 3 && horseFromList.AllRaces[i].WonPlace > 0 && horseFromList.AllRaces[i].RaceDate < date)
                     {
                         if (horseFromList.AllRaces[i].WonPlace == 1)
-                            placeFactor = 1;
+                            _placeFactor = 1;
                         if (horseFromList.AllRaces[i].WonPlace == 2)
-                            placeFactor = 0.7;
+                            _placeFactor = 0.7;
 
                         if (jockeyFromList != null)
                         {
@@ -1301,47 +1302,47 @@ namespace Horse_Picker.ViewModels
                             if (!string.IsNullOrEmpty(jockeyFromList.Name) && !string.IsNullOrEmpty(horseFromList.AllRaces[i].RacersName))
                             {
                                 if (horseFromList.AllRaces[i].RacersName.Contains(jockeyFromList.Name))
-                                    placeFactor = placeFactor * 1.5;
+                                    _placeFactor = _placeFactor * 1.5;
                             }
                         }
 
                         //bonus for place factor if won race in last 3 races
                         if (i < 3)
                         {
-                            placeFactor = placeFactor * 1.5;
+                            _placeFactor = _placeFactor * 1.5;
                         }
 
                         //increase factor for races over 12 horses and place between 1-4
                         if (horseFromList.AllRaces[i].RaceCompetition > 12 && horseFromList.AllRaces[i].WonPlace < 5)
                         {
-                            placeFactor = placeFactor * 1.5;
+                            _placeFactor = _placeFactor * 1.5;
                         }
 
-                        bool foundKey = categoryFactorDict.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
+                        bool foundKey = _categoryFactorDict.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
                                       StringComparison.CurrentCultureIgnoreCase)
                         );
 
                         if (foundKey)
                         {
-                            dictValue = categoryFactorDict[horseFromList.AllRaces[i].RaceCategory];
+                            _dictValue = _categoryFactorDict[horseFromList.AllRaces[i].RaceCategory];
                         }
                         else
                         {
-                            dictValue = 5;
+                            _dictValue = 5;
                         }
 
-                        distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(Distance)) / 10000 * dictValue;
-                        distFactor = Math.Abs(distFactor);
+                        _distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(Distance)) / 10000 * _dictValue;
+                        _distFactor = Math.Abs(_distFactor);
 
-                        distRaceIndex = placeFactor * horseFromList.AllRaces[i].RaceCompetition * dictValue / 10;
+                        _distRaceIndex = _placeFactor * horseFromList.AllRaces[i].RaceCompetition * _dictValue / 10;
 
-                        result = result + distRaceIndex - distFactor;
+                        _result = _result + _distRaceIndex - _distFactor;
                     }
                 }
 
-                finalResult = result / horseFromList.AllRaces.Count;
+                _finalResult = _result / horseFromList.AllRaces.Count;
 
-                return finalResult;
+                return _finalResult;
             }
             else
             {
@@ -1357,15 +1358,13 @@ namespace Horse_Picker.ViewModels
         /// <returns>returns JI</returns>
         public double ComputeJockeyIndex(LoadedJockey jockeyFromList, DateTime date)
         {
-            double finalResult = 0;
-            double result = 0;
+            ResetComputeVariables();
 
             if (jockeyFromList.AllRaces.Count > 0)
             {
                 for (int i = 0; i < jockeyFromList.AllRaces.Count; i++)
                 {
-                    double placeFactor = 0;
-                    double distRaceIndex = 0;
+                    ResetLoopVariables();
 
                     //if task cancelled by the user
                     if (TaskCancellation == true)
@@ -1376,19 +1375,19 @@ namespace Horse_Picker.ViewModels
                     if (jockeyFromList.AllRaces[i].WonPlace > 0 && jockeyFromList.AllRaces[i].RaceDate < date)
                     {
                         if (jockeyFromList.AllRaces[i].WonPlace == 1)
-                            placeFactor = 1;
+                            _placeFactor = 1;
                         if (jockeyFromList.AllRaces[i].WonPlace == 2)
-                            placeFactor = 0.7;
+                            _placeFactor = 0.7;
 
-                        distRaceIndex = placeFactor * jockeyFromList.AllRaces[i].RaceCompetition / 10;
+                        _distRaceIndex = _placeFactor * jockeyFromList.AllRaces[i].RaceCompetition / 10;
 
-                        result = result + distRaceIndex;
+                        _result = _result + _distRaceIndex;
                     }
                 }
 
-                finalResult = result / jockeyFromList.AllRaces.Count;
+                _finalResult = _result / jockeyFromList.AllRaces.Count;
 
-                return finalResult;
+                return _finalResult;
             }
             else
             {
@@ -1404,11 +1403,7 @@ namespace Horse_Picker.ViewModels
         /// <returns>returns SI</returns>
         public double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date)
         {
-            double finalResult = 0;
-            double result = 0;
-            double siblingIndex = 0;
-            int childCounter = 0;
-            LoadedHorse childFromList;
+            ResetComputeVariables();
 
             for (int i = 0; i < fatherFromList.AllChildren.Count; i++)
             {
@@ -1423,42 +1418,60 @@ namespace Horse_Picker.ViewModels
 
                 if (child.ChildAge == 0)
                 {
-                    childFromList = Horses
+                    _childFromList = Horses
                                 .Where(h => h.Name.ToLower() == child
                                 .ChildName.ToLower())
                                 .FirstOrDefault();
                 }
                 else
                 {
-                    childFromList = Horses
+                    _childFromList = Horses
                                 .Where(h => h.Name.ToLower() == child.ChildName.ToLower())
                                 .Where(h => h.Age == child.ChildAge)
                                 .FirstOrDefault();
                 }
 
-                if (childFromList != null && childFromList.AllRaces.Count > 0)
+                if (_childFromList != null && _childFromList.AllRaces.Count > 0)
                 {
-                    siblingIndex = ComputeWinIndex(childFromList, date, null);
-                    childCounter++;
+                    _siblingIndex = ComputeWinIndex(_childFromList, date, null);
+                    _counter++;
                 }
                 else
                 {
-                    siblingIndex = 0;
+                    _siblingIndex = 0;
                 }
 
-                result = result + siblingIndex;
+                _result = _result + _siblingIndex;
             }
 
-            if (childCounter != 0)
+            if (_counter != 0)
             {
-                finalResult = result / childCounter;
+                _finalResult = _result / _counter;
             }
             else
             {
-                finalResult = 0;
+                _finalResult = 0;
             }
 
-            return finalResult;
+            return _finalResult;
+        }
+
+        private void ResetComputeVariables()
+        {
+            _categoryFactorDict = GetRaceDictionary();
+            _dictValue = 1;
+            _finalResult = 0;
+            _result = 0;
+            _siblingIndex = 0;
+            _counter = 0;
+            _childFromList = new LoadedHorse();
+        }
+
+        private void ResetLoopVariables()
+        {
+            _placeFactor = 0;
+            _distRaceIndex = 0;
+            _distFactor = 0;
         }
 
         /// <summary>
