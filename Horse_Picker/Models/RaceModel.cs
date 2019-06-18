@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.Models
 {
-    public class RaceData
+    public class RaceModel
     {
         public DateTime RaceDate { get; set; } //
         public string RaceNo { get; set; } //
