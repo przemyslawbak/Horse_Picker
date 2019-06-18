@@ -1,3 +1,6 @@
+kancelacja tokenow - wyjatek
+scrap metody do serwisow
+
 
 globalne zmienne przy computing
 przy scrapowaniu koni i dzokejow, jesli jest 0 startow, i tak dodajemy
