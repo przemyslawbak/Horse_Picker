@@ -1,6 +1,5 @@
 ﻿using Autofac;
-using Horse_Picker.DataProvider;
-using Horse_Picker.Dialogs;
+using Horse_Picker.Services;
 using Horse_Picker.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,6 +17,9 @@ namespace Horse_Picker.Startup
 
             builder.RegisterType<FileDataServices>()
               .As<IFileDataServices>().SingleInstance();
+
+            builder.RegisterType<ComputeDataServices>()
+              .As<IComputeDataServices>().SingleInstance();
 
             builder.RegisterType<ScrapDataServices>()
               .As<IScrapDataServices>().SingleInstance();
