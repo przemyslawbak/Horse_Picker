@@ -1,7 +1,5 @@
-﻿using Horse_Picker.DataProvider;
-using Horse_Picker.Dialogs;
-using Horse_Picker.Models;
-using Horse_Picker.NewModels;
+﻿using Horse_Picker.Models;
+using Horse_Picker.Services;
 using Horse_Picker.ViewModels;
 using Horse_Picker.Wrappers;
 using Moq;
@@ -21,17 +19,21 @@ namespace Horse_Picker.Tests.ViewModels
     {
         private MainViewModel _viewModel;
         private Mock<IMessageDialogService> _messageDialogServicesMock;
-        private Mock<IFileDataServices> _dataServices;
-        private Mock<IScrapDataServices> _scrapServices;
+        private Mock<IFileDataServices> _dataServicesMock;
+        private Mock<IScrapDataServices> _scrapServicesMock;
+        private Mock<IComputeDataServices> _computeServicesMock;
+        private Mock<IRaceModelProvider> _raceModelProviderMock;
 
         public MainViewModelTests()
         {
             _messageDialogServicesMock = new Mock<IMessageDialogService>();
-            _dataServices = new Mock<IFileDataServices>();
-            _scrapServices = new Mock<IScrapDataServices>();
+            _dataServicesMock = new Mock<IFileDataServices>();
+            _scrapServicesMock = new Mock<IScrapDataServices>();
+            _computeServicesMock = new Mock<IComputeDataServices>();
+            _raceModelProviderMock = new Mock<IRaceModelProvider>();
 
             //moq setup
-            _dataServices.Setup(ds => ds.GetAllHorses())
+            _dataServicesMock.Setup(ds => ds.GetAllHorses())
                 .Returns(new List<LoadedHorse>
                 {
                     new LoadedHorse
@@ -66,7 +68,7 @@ namespace Horse_Picker.Tests.ViewModels
                     }
                 });
 
-            _dataServices.Setup(ds => ds.GetAllJockeys())
+            _dataServicesMock.Setup(ds => ds.GetAllJockeys())
                 .Returns(new List<LoadedJockey>
                 {
                     new LoadedJockey
@@ -88,7 +90,7 @@ namespace Horse_Picker.Tests.ViewModels
                         AllRaces = { }
                     }
                 });
-            _dataServices.Setup(ds => ds.GetAllRaces())
+            _dataServicesMock.Setup(ds => ds.GetAllRaces())
                 .Returns(new List<LoadedHistoricalRace>
                 {
                     new LoadedHistoricalRace
@@ -109,7 +111,11 @@ namespace Horse_Picker.Tests.ViewModels
                     }
                 });
 
-            _viewModel = new MainViewModel(_dataServices.Object, _scrapServices.Object, _messageDialogServicesMock.Object);
+            _viewModel = new MainViewModel(_dataServicesMock.Object,
+                _scrapServicesMock.Object,
+                _messageDialogServicesMock.Object,
+                _computeServicesMock.Object,
+                _raceModelProviderMock.Object);
 
             _viewModel.Category = "I";
             _viewModel.City = "Waw";
