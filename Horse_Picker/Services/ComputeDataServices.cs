@@ -8,7 +8,6 @@ namespace Horse_Picker.Services
     public class ComputeDataServices : IComputeDataServices
     {
         //compute fields
-        private Dictionary<string, int> _categoryFactorDict;
         private int _dictValue;
         private double _finalResult;
         private double _result;
@@ -19,9 +18,11 @@ namespace Horse_Picker.Services
         private double _placeFactor = 0;
         private double _distRaceIndex = 0;
         private double _distFactor = 0;
+
+        public Dictionary<string, int> RaceCategoryDictionary => GetRaceDictionary();
+
         private void ResetComputeVariables()
         {
-            _categoryFactorDict = GetRaceDictionary();
             _dictValue = 1;
             _finalResult = 0;
             _result = 0;
@@ -139,13 +140,13 @@ namespace Horse_Picker.Services
                             _placeFactor = _placeFactor * 1.5;
                         }
 
-                        bool foundKey = _categoryFactorDict.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
+                        bool foundKey = RaceCategoryDictionary.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
                                       StringComparison.CurrentCultureIgnoreCase)
                         );
 
                         if (foundKey)
                         {
-                            _dictValue = _categoryFactorDict[horseFromList.AllRaces[i].RaceCategory];
+                            _dictValue = RaceCategoryDictionary[horseFromList.AllRaces[i].RaceCategory];
                         }
                         else
                         {
@@ -444,13 +445,13 @@ namespace Horse_Picker.Services
                             _placeFactor = _placeFactor * 1.5;
                         }
 
-                        bool foundKey = _categoryFactorDict.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
+                        bool foundKey = RaceCategoryDictionary.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
                                       StringComparison.CurrentCultureIgnoreCase)
                         );
 
                         if (foundKey)
                         {
-                            _dictValue = _categoryFactorDict[horseFromList.AllRaces[i].RaceCategory];
+                            _dictValue = RaceCategoryDictionary[horseFromList.AllRaces[i].RaceCategory];
                         }
                         else
                         {

@@ -1,5 +1,6 @@
 ﻿using Horse_Picker.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Horse_Picker.Services
 {
@@ -13,6 +14,6 @@ namespace Horse_Picker.Services
         double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList);
         double ComputeJockeyIndex(LoadedJockey jockeyFromList, DateTime date);
         double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date);
-
+        Dictionary<string, int> RaceCategoryDictionary { get; }
     }
 }
