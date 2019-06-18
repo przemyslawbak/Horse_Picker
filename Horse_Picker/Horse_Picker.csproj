@@ -95,7 +95,9 @@
     <Compile Include="Commands\AsyncCommand.cs" />
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Services\ComputeDataServices.cs" />
     <Compile Include="Services\FileDataServices.cs" />
+    <Compile Include="Services\IComputeDataServices.cs" />
     <Compile Include="Services\IFileDataProvider.cs" />
     <Compile Include="Services\IScrapDataServices.cs" />
     <Compile Include="Services\ScrapDataServices.cs" />

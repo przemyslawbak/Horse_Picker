@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Horse_Picker.NewModels
+namespace Horse_Picker.Models
 {
     public class LoadedHistoricalRace
     {
