@@ -41,7 +41,7 @@ namespace Horse_Picker.Services
         /// list of race categories and values of them
         /// </summary>
         /// <returns>category dictionary with string key and int value</returns>
-        public Dictionary<string, int> GetRaceCategoryDictionary(IRaceModelProvider raceServices)
+        public Dictionary<string, int> GetRaceCategoryDictionary(IRaceModelProvider raceModelProvider)
         {
             Dictionary<string, int> categoryFactorDict = new Dictionary<string, int>();
             categoryFactorDict.Add("G1 A", 11);
@@ -62,7 +62,7 @@ namespace Horse_Picker.Services
             categoryFactorDict.Add("III", 2);
             categoryFactorDict.Add("IV", 1);
             categoryFactorDict.Add("V", 1);
-            if (raceServices.Category == "sulki" || raceServices.Category == "kłusaki")
+            if (raceModelProvider.Category == "sulki" || raceModelProvider.Category == "kłusaki")
             {
                 categoryFactorDict.Add("sulki", 9);
                 categoryFactorDict.Add("kłusaki", 9);
@@ -72,7 +72,7 @@ namespace Horse_Picker.Services
                 categoryFactorDict.Add("sulki", 2);
                 categoryFactorDict.Add("kłusaki", 2);
             }
-            if (raceServices.Category == "steeple" || raceServices.Category == "płoty")
+            if (raceModelProvider.Category == "steeple" || raceModelProvider.Category == "płoty")
             {
                 categoryFactorDict.Add("steeple", 9);
                 categoryFactorDict.Add("płoty", 9);
@@ -119,9 +119,9 @@ namespace Horse_Picker.Services
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns CI</returns>
-        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, IRaceModelProvider raceServices)
+        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, IRaceModelProvider raceModelProvider)
         {
-            Dictionary<string, int> _raceDictionary = GetRaceCategoryDictionary(raceServices);
+            Dictionary<string, int> _raceDictionary = GetRaceCategoryDictionary(raceModelProvider);
 
             ResetComputeVariables();
 
@@ -154,7 +154,7 @@ namespace Horse_Picker.Services
                             _dictValue = 5;
                         }
 
-                        _distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(raceServices.Distance)) / 10000 * _dictValue;
+                        _distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(raceModelProvider.Distance)) / 10000 * _dictValue;
                         _distFactor = Math.Abs(_distFactor);
 
                         _distRaceIndex = _placeFactor * _dictValue / 10;
@@ -299,7 +299,7 @@ namespace Horse_Picker.Services
         /// <param name="fatherFromList">data of horses father</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns SI</returns>
-        public double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date, IRaceModelProvider raceServices, ObservableCollection<LoadedHorse> horses)
+        public double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date, IRaceModelProvider raceModelProvider, ObservableCollection<LoadedHorse> horses)
         {
             ResetComputeVariables();
 
@@ -325,7 +325,7 @@ namespace Horse_Picker.Services
 
                 if (_childFromList != null && _childFromList.AllRaces.Count > 0)
                 {
-                    _siblingIndex = ComputeWinIndex(_childFromList, date, null, raceServices);
+                    _siblingIndex = ComputeWinIndex(_childFromList, date, null, raceModelProvider);
                     _counter++;
                 }
                 else
@@ -400,9 +400,9 @@ namespace Horse_Picker.Services
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns WI</returns>
-        public double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList, IRaceModelProvider raceServices)
+        public double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList, IRaceModelProvider raceModelProvider)
         {
-            Dictionary<string, int> _raceDictionary = GetRaceCategoryDictionary(raceServices);
+            Dictionary<string, int> _raceDictionary = GetRaceCategoryDictionary(raceModelProvider);
 
             ResetComputeVariables();
 
@@ -461,7 +461,7 @@ namespace Horse_Picker.Services
                             _dictValue = 5;
                         }
 
-                        _distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(raceServices.Distance)) / 10000 * _dictValue;
+                        _distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(raceModelProvider.Distance)) / 10000 * _dictValue;
                         _distFactor = Math.Abs(_distFactor);
 
                         _distRaceIndex = _placeFactor * horseFromList.AllRaces[i].RaceCompetition * _dictValue / 10;

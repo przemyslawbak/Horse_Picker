@@ -15,6 +15,6 @@ namespace Horse_Picker.Services
         double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList, IRaceModelProvider raceServices);
         double ComputeJockeyIndex(LoadedJockey jockeyFromList, DateTime date);
         double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date, IRaceModelProvider raceServices, ObservableCollection<LoadedHorse> horses);
-        Dictionary<string, int> GetRaceCategoryDictionary(IRaceModelProvider raceServices);
+        Dictionary<string, int> GetRaceCategoryDictionary(IRaceModelProvider raceModelProvider);
     }
 }
