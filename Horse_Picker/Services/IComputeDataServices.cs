@@ -1,6 +1,7 @@
 ﻿using Horse_Picker.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Horse_Picker.Services
 {
@@ -10,10 +11,10 @@ namespace Horse_Picker.Services
         double ComputeRestIndex(LoadedHorse horseFromList, DateTime date);
         double ComputePercentageIndex(LoadedHorse horseFromList, DateTime date);
         double ComputeAgeIndex(LoadedHorse horseFromList, DateTime date);
-        double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date);
-        double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList);
+        double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, IRaceModelProvider raceServices);
+        double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList, IRaceModelProvider raceServices);
         double ComputeJockeyIndex(LoadedJockey jockeyFromList, DateTime date);
-        double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date);
-        Dictionary<string, int> RaceCategoryDictionary { get; }
+        double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date, IRaceModelProvider raceServices, ObservableCollection<LoadedHorse> horses);
+        Dictionary<string, int> GetRaceCategoryDictionary(IRaceModelProvider raceServices);
     }
 }
