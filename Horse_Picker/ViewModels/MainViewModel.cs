@@ -164,7 +164,7 @@ namespace Horse_Picker.ViewModels
                 if (UpdateHorsesCz)
                     await UpdateDataAsync(Horses, HCzFrom, HCzTo, "updateHorsesCz");
                 if (UpdateRacesPl)
-                    await UpdateDataAsync(Horses, HistPlFrom, HistPlTo, "updateHistoricPl");
+                    await UpdateDataAsync(Races, HistPlFrom, HistPlTo, "updateHistoricPl");
 
                 stopwatch.Stop();//stopwatch
                 MessageBox.Show(stopwatch.Elapsed.ToString());//stopwatch
@@ -1121,8 +1121,26 @@ namespace Horse_Picker.ViewModels
             }
             finally
             {
-                //tutaj zależnie od typu
-                await _dataServices.SaveAllJockeysAsync(Jockeys.ToList()); //???????
+                //save when finish
+                if (typeof(T) == typeof(LoadedJockey))
+                {
+                    await _dataServices.SaveAllJockeysAsync(Jockeys.ToList());
+                }
+                else if (typeof(T) == typeof(LoadedHorse))
+                {
+                    await _dataServices.SaveAllHorsesAsync(Horses.ToList());
+                }
+                else if (typeof(T) == typeof(LoadedHistoricalRace))
+                {
+                    if (jobType.Contains("Historic"))
+                    {
+                        _dataServices.SaveAllRaces(Races.ToList());
+                    }
+                    else if (jobType.Contains("testRaces"))
+                    {
+                        await _dataServices.SaveRaceTestResultsAsync(Races.ToList());
+                    }
+                }
 
                 AllControlsEnabled = true;
 
