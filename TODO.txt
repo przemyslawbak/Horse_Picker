@@ -2,6 +2,7 @@ kancelacja tokenow - wyjatek
 scrap metody VM porzadek
 scrap metody VM do serwisow
 vm dla update
+scrap service porzadek
 
 
 globalne zmienne przy computing
