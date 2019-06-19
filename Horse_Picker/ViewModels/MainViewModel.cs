@@ -91,7 +91,7 @@ namespace Horse_Picker.ViewModels
             TokenSource = new CancellationTokenSource();
             CancellationToken = TokenSource.Token;
 
-            await TestHistoricalResultsAsync();
+            await UpdateDataAsync(Races, 0, Races.Count, "testRaces");
 
             stopwatch.Stop();
             MessageBox.Show(stopwatch.Elapsed.ToString());
@@ -150,18 +150,24 @@ namespace Horse_Picker.ViewModels
 
             if (result == MessageDialogResult.Update && isAnyTrue)
             {
-                var stopwatch = Stopwatch.StartNew();
                 TokenSource = new CancellationTokenSource();
                 CancellationToken = TokenSource.Token;
 
-                if (UpdateJockeysPl) await ScrapJockeys(JPlFrom, JPlTo + 1, "jockeysPl"); //1 - 1049
-                if (UpdateJockeysCz) await ScrapJockeys(JCzFrom, JCzTo + 1, "jockeysCz"); //4000 - 31049
-                if (UpdateHorsesPl) await ScrapHorses(HPlFrom, HPlTo + 1, "horsesPl"); //1 - 25049
-                if (UpdateHorsesCz) await ScrapHorses(HCzFrom, HCzTo + 1, "horsesCz"); // 8000 - 150049
-                if (UpdateRacesPl) await ScrapHistoricalRaces(HistPlFrom, HistPlTo + 1, "racesPl"); // 1 - 17049
+                var stopwatch = Stopwatch.StartNew(); //stopwatch
 
-                stopwatch.Stop();
-                MessageBox.Show(stopwatch.Elapsed.ToString());
+                if (UpdateJockeysPl)
+                    await UpdateDataAsync(Jockeys, JPlFrom, JPlTo, "updateJockeysPl");
+                if (UpdateJockeysCz)
+                    await UpdateDataAsync(Jockeys, JCzFrom, JCzTo, "updateJockeysCz");
+                if (UpdateHorsesPl)
+                    await UpdateDataAsync(Horses, HPlFrom, HPlTo, "updateHorsesPl");
+                if (UpdateHorsesCz)
+                    await UpdateDataAsync(Horses, HCzFrom, HCzTo, "updateHorsesCz");
+                if (UpdateRacesPl)
+                    await UpdateDataAsync(Horses, HistPlFrom, HistPlTo, "updateHistoricPl");
+
+                stopwatch.Stop();//stopwatch
+                MessageBox.Show(stopwatch.Elapsed.ToString());//stopwatch
 
                 PopulateLists();
             }
@@ -320,6 +326,7 @@ namespace Horse_Picker.ViewModels
         public ICommand PickHorseDataCommand { get; private set; }
 
         //properties
+        public ObservableCollection<object> SomeCollection { get; set; }
         public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
         public ObservableCollection<bool> UpdateModules { get; private set; }
         public HorseDataWrapper HorseWrapper { get; private set; }
@@ -881,6 +888,8 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //passing RaceModel to the services credits: https://stackoverflow.com/questions/56646346/should-i-pass-view-model-to-my-service-and-if-yes-how-to-do-it/
+
         /// <summary>
         /// parses the horse from Horses with providen data
         /// </summary>
@@ -1027,114 +1036,30 @@ namespace Horse_Picker.ViewModels
         //SemaphoreSlim corrections: https://stackoverflow.com/questions/56640694/why-my-code-is-throwing-the-semaphore-has-been-disposed-exception/
         //Task.Run corrections: https://stackoverflow.com/questions/56628009/how-should-i-use-task-run-in-my-code-for-proper-scalability-and-performance/
 
-        /// <summary>
-        /// parsing race stats with every single horse from all historic races
-        /// </summary>
-        /// <returns></returns>
-        public async Task TestHistoricalResultsAsync()
+        public async Task UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int idFrom, int idTo, string jobType)
         {
-            //init values and controls
-            CommandStartedControlsSetup("TestResultsCommand");
-
+            //variables
             SemaphoreSlim throttler = new SemaphoreSlim(_degreeOfParallelism);
             List<Task> tasks = new List<Task>();
             int loopCounter = 0;
-            ProgressBarTick("Testing on historic data", loopCounter, Races.Count, 0);
-            //for all races in the file
-            for (int i = 0; i < Races.Count; i++)
+            string jobDescription = "";
+            ProgressBarTick(jobDescription, loopCounter, idTo, idFrom); //init display
+
+            //controls setup
+            string[] updates = { "Horses", "Jockeys", "Historic" };
+            if (updates.Any(jobType.Contains))
             {
-                int j = i;
-
-                if (TaskCancellation == true)
-                {
-                    break;
-                }
-
-                await throttler.WaitAsync(TokenSource.Token);
-
-                tasks.Add(Task.Run(() =>
-                {
-                    try
-                    {
-                        CancellationToken.ThrowIfCancellationRequested();
-
-                        //if the race is from 2018
-                        if (Races[j].RaceDate.Year == 2018)
-                        {
-                            Category = Races[j].RaceCategory;
-                            Distance = Races[j].RaceDistance.ToString();
-
-                            //for all horses in the race
-                            for (int h = 0; h < Races[j].HorseList.Count; h++)
-                            {
-                                if (TaskCancellation == true)
-                                {
-                                    break;
-                                }
-                                CancellationToken.ThrowIfCancellationRequested();
-                                HorseDataWrapper horse = new HorseDataWrapper();
-                                horse = ParseHorseData(Races[j].HorseList[h], Races[j].RaceDate);
-                                Races[j].HorseList[h] = horse; //get all indexes
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        //
-                    }
-                    finally
-                    {
-                        loopCounter++;
-
-                        ProgressBarTick("Testing on historic data", loopCounter, Races.Count, 0);
-
-                        throttler.Release();
-                    }
-                }));
+                CommandStartedControlsSetup("UpdateDataCommand");
             }
-            try
+            else
             {
-                await Task.WhenAll(tasks);
+                CommandStartedControlsSetup("TestResultsCommand");
             }
-            catch (OperationCanceledException)
+
+            //run loop
+            for (int i = 0; i < genericCollection.Count; i++)
             {
-                //
-            }
-            finally
-            {
-                await _dataServices.SaveRaceTestResultsAsync(Races.ToList()); //save the analysis to the file
-
-                AllControlsEnabled = true;
-
-                CommandCompletedControlsSetup();
-
-                VisibilityCancellingMsg = Visibility.Collapsed;
-
-                throttler.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// scraps historic races
-        /// </summary>
-        /// <param name="startIndex">page to start loop</param>
-        /// <param name="stopIndex">page to finish loop</param>
-        /// <param name="dataType">what site to use</param>
-        /// <returns></returns>
-        public async Task ScrapHistoricalRaces(int startIndex, int stopIndex, string dataType)
-        {
-            //init values and controls
-            Races.Clear(); //method does not remove doublers
-            CommandStartedControlsSetup("UpdateDataCommand");
-
-            SemaphoreSlim throttler = new SemaphoreSlim(_degreeOfParallelism);
-            List<Task> tasks = new List<Task>();
-            int loopCounter = 0;
-            ProgressBarTick("Looking for historic races", loopCounter, stopIndex, startIndex);
-
-            for (int i = startIndex; i < stopIndex; i++)
-            {
-                int j = i;
+                int id = i;
 
                 if (TaskCancellation == true)
                 {
@@ -1147,19 +1072,28 @@ namespace Horse_Picker.ViewModels
                 {
                     try
                     {
-                        LoadedHistoricalRace race = new LoadedHistoricalRace();
-
                         CancellationToken.ThrowIfCancellationRequested();
 
-                        if (dataType == "racesPl") race = await _scrapServices.ScrapSingleRacePlAsync(j);
-
-                        //if the race is from 2018
-                        if (race.RaceDate.Year == 2018)
+                        //exe method
+                        if (jobType.Contains("Horses"))
                         {
-                            lock (((ICollection)Races).SyncRoot)
-                            {
-                                Races.Add(race);
-                            }
+                            jobDescription = "Updating horse data";
+                            await UpdateHorsesAsync(jobType, id);
+                        }
+                        else if (jobType.Contains("Jockeys"))
+                        {
+                            jobDescription = "Updating jockey data";
+                            await UpdateJockeysAsync(jobType, id);
+                        }
+                        else if (jobType.Contains("Historic"))
+                        {
+                            jobDescription = "Updating historic data";
+                            await UpdateRacesAsync(jobType, id);
+                        }
+                        else if (jobType.Contains("testRaces"))
+                        {
+                            jobDescription = "Testing on historic data";
+                            TestRacesAsync(jobType, id);
                         }
                     }
                     catch (Exception e)
@@ -1170,7 +1104,7 @@ namespace Horse_Picker.ViewModels
                     {
                         loopCounter++;
 
-                        ProgressBarTick("Looking for historic data", loopCounter, stopIndex, startIndex);
+                        ProgressBarTick(jobDescription, loopCounter, idTo, idFrom);
 
                         throttler.Release();
                     }
@@ -1187,7 +1121,8 @@ namespace Horse_Picker.ViewModels
             }
             finally
             {
-                _dataServices.SaveAllRaces(Races.ToList()); //saves everything to JSON file
+                //tutaj zależnie od typu
+                await _dataServices.SaveAllJockeysAsync(Jockeys.ToList()); //???????
 
                 AllControlsEnabled = true;
 
@@ -1199,102 +1134,101 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        /// <summary>
-        /// scraps jockey data from the website
-        /// </summary>
-        /// <param name="startIndex">page to start loop</param>
-        /// <param name="stopIndex">page to finish loop</param>
-        /// <param name="dataType">what site to use</param>
-        /// <returns></returns>
-        public async Task ScrapJockeys(int startIndex, int stopIndex, string dataType)
+        private void TestRacesAsync(string jobType, int id)
         {
-            //init values and controls
-            CommandStartedControlsSetup("UpdateDataCommand");
 
-            SemaphoreSlim throttler = new SemaphoreSlim(_degreeOfParallelism);
-            List<Task> tasks = new List<Task>();
-            int loopCounter = 0;
-            ProgressBarTick("Looking for jockeys", loopCounter, stopIndex, startIndex);
-
-            for (int i = startIndex; i < stopIndex; i++)
+            if (Races[id].RaceDate.Year == 2018)
             {
-                int j = i;
+                Category = Races[id].RaceCategory;
+                Distance = Races[id].RaceDistance.ToString();
 
-                if (TaskCancellation == true)
+                //for all horses in the race
+                for (int h = 0; h < Races[id].HorseList.Count; h++)
                 {
-                    break;
+                    if (TaskCancellation == true)
+                    {
+                        break;
+                    }
+                    CancellationToken.ThrowIfCancellationRequested();
+                    HorseDataWrapper horse = new HorseDataWrapper();
+                    horse = ParseHorseData(Races[id].HorseList[h], Races[id].RaceDate);
+                    Races[id].HorseList[h] = horse; //get all indexes
                 }
+            }
+        }
 
-                await throttler.WaitAsync(TokenSource.Token);
+        private async Task UpdateRacesAsync(string jobType, int id)
+        {
+            LoadedHistoricalRace race = new LoadedHistoricalRace();
 
-                tasks.Add(Task.Run(async () =>
+            if (jobType == "updateHistoricPl") race = await _scrapServices.ScrapSingleRacePlAsync(id);
+
+            //if the race is from 2018
+            if (race.RaceDate.Year == 2018)
+            {
+                lock (((ICollection)Races).SyncRoot)
                 {
-                    try
+                    Races.Add(race);
+                }
+            }
+        }
+
+        private async Task UpdateJockeysAsync(string jobType, int id)
+        {
+            LoadedJockey jockey = new LoadedJockey();
+
+            if (jobType == "updateJockeysPl") jockey = await _scrapServices.ScrapSingleJockeyPlAsync(id);
+            if (jobType == "updateJockeysCz") jockey = await _scrapServices.ScrapSingleJockeyCzAsync(id);
+
+            if (jockey.Name != null)
+            {
+                lock (((ICollection)Jockeys).SyncRoot)
+                {
+                    //if objects are already in the List
+                    if (Jockeys.Any(h => h.Name.ToLower() == jockey.Name.ToLower()))
                     {
-                        LoadedJockey jockey = new LoadedJockey();
+                        LoadedJockey doubledJockey = Jockeys.Where(h => h.Name.ToLower() == jockey.Name.ToLower()).FirstOrDefault();
+                        Jockeys.Remove(doubledJockey);
+                        MergeJockeysData(doubledJockey, jockey);
+                    }
+                    else
+                    {
+                        Jockeys.Add(jockey);
+                    }
+                }
+            }
+        }
 
-                        CancellationToken.ThrowIfCancellationRequested();
+        private async Task UpdateHorsesAsync(string jobType, int id)
+        {
+            LoadedHorse horse = new LoadedHorse();
 
-                        if (dataType == "jockeysPl") jockey = await _scrapServices.ScrapSingleJockeyPlAsync(j);
-                        if (dataType == "jockeysCz") jockey = await _scrapServices.ScrapSingleJockeyCzAsync(j);
+            if (jobType == "updateHorsesPl") horse = await _scrapServices.ScrapSingleHorsePlAsync(id);
+            if (jobType == "updateHorsesCz") horse = await _scrapServices.ScrapSingleHorseCzAsync(id);
 
-                        if (jockey.Name != null)
+            if (horse.Name != null)
+            {
+                lock (((ICollection)Horses).SyncRoot)
+                {
+                    //if objects are already in the List
+                    if (Horses.Any(h => h.Name.ToLower() == horse.Name.ToLower()))
+                    {
+                        LoadedHorse doubledHorse = Horses.Where(h => h.Name.ToLower() == horse.Name.ToLower()).Where(h => h.Age == horse.Age).FirstOrDefault();
+                        if (doubledHorse != null)
                         {
-                            lock (((ICollection)Jockeys).SyncRoot)
-                            {
-                                //if objects are already in the List
-                                if (Jockeys.Any(h => h.Name.ToLower() == jockey.Name.ToLower()))
-                                {
-                                    LoadedJockey doubledJockey = Jockeys.Where(h => h.Name.ToLower() == jockey.Name.ToLower()).FirstOrDefault();
-                                    Jockeys.Remove(doubledJockey);
-                                    MergeJockeysData(doubledJockey, jockey);
-                                }
-                                else
-                                {
-                                    Jockeys.Add(jockey);
-                                }
-                            }
+                            Horses.Remove(doubledHorse);
+                            MergeHorsesData(doubledHorse, horse);
+                        }
+                        else
+                        {
+                            Horses.Add(horse);
                         }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        //
+                        Horses.Add(horse);
                     }
-                    finally
-                    {
-                        loopCounter++;
-
-                        if (loopCounter % 1000 == 0)
-                        {
-                            await _dataServices.SaveAllJockeysAsync(Jockeys.ToList());
-                        }
-
-                        ProgressBarTick("Looking for jockeys", loopCounter, stopIndex, startIndex);
-
-                        throttler.Release();
-                    }
-                }));
-            }
-
-            try
-            {
-                await Task.WhenAll(tasks);
-            }
-            catch (OperationCanceledException)
-            {
-                //
-            }
-            finally
-            {
-                await _dataServices.SaveAllJockeysAsync(Jockeys.ToList()); //saves everything to JSON file
-
-                AllControlsEnabled = true;
-
-                CommandCompletedControlsSetup();
-
-                VisibilityCancellingMsg = Visibility.Collapsed;
-
-                throttler.Dispose();
+                }
             }
         }
 
@@ -1310,110 +1244,15 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
-        /// scraps horse data from the website
+        /// updates list of horses races and children, if found some new
         /// </summary>
-        /// <param name="startIndex">page to start loop</param>
-        /// <param name="stopIndex">page to finish loop</param>
-        /// <param name="dataType">what site to use</param>
-        /// <returns></returns>
-        public async Task ScrapHorses(int startIndex, int stopIndex, string dataType)
+        /// <param name="doubledHorse">horse from Horses</param>
+        /// <param name="horse">scrapped new horse</param>
+        public void MergeHorsesData(LoadedHorse doubledHorse, LoadedHorse horse)
         {
-            //init values and controls
-            CommandStartedControlsSetup("UpdateDataCommand");
-
-            SemaphoreSlim throttler = new SemaphoreSlim(_degreeOfParallelism);
-            List<Task> tasks = new List<Task>();
-            int loopCounter = 0;
-            ProgressBarTick("Looking for horses", loopCounter, stopIndex, startIndex);
-
-            for (int i = startIndex; i < stopIndex; i++)
-            {
-                int j = i;
-
-                if (TaskCancellation == true)
-                {
-                    break;
-                }
-
-                await throttler.WaitAsync(TokenSource.Token);
-
-                tasks.Add(Task.Run(async () =>
-                {
-                    try
-                    {
-                        LoadedHorse horse = new LoadedHorse();
-
-                        CancellationToken.ThrowIfCancellationRequested();
-
-                        if (dataType == "horsesPl") horse = await _scrapServices.ScrapSingleHorsePlAsync(j);
-                        if (dataType == "horsesCz") horse = await _scrapServices.ScrapSingleHorseCzAsync(j);
-
-                        if (horse.Name != null)
-                        {
-                            lock (((ICollection)Horses).SyncRoot)
-                            {
-                                //if objects are already in the List
-                                if (Horses.Any(h => h.Name.ToLower() == horse.Name.ToLower()))
-                                {
-                                    LoadedHorse doubledHorse = Horses.Where(h => h.Name.ToLower() == horse.Name.ToLower()).Where(h => h.Age == horse.Age).FirstOrDefault();
-                                    if (doubledHorse != null)
-                                    {
-                                        Horses.Remove(doubledHorse);
-                                        MergeHorsesData(doubledHorse, horse);
-                                    }
-                                    else
-                                    {
-                                        Horses.Add(horse);
-                                    }
-                                }
-                                else
-                                {
-                                    Horses.Add(horse);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        //
-                    }
-                    finally
-                    {
-                        loopCounter++;
-
-                        //saves all every 1000 records, just in case
-                        if (loopCounter % 1000 == 0)
-                        {
-                            await _dataServices.SaveAllHorsesAsync(Horses.ToList());
-                        }
-
-                        ProgressBarTick("Looking for horses", loopCounter, stopIndex, startIndex);
-
-                        throttler.Release();
-                    }
-                }));
-            }
-
-            try
-            {
-                await Task.WhenAll(tasks);
-            }
-            catch (OperationCanceledException)
-            {
-                //
-            }
-            finally
-            {
-                await _dataServices.SaveAllHorsesAsync(Horses.ToList()); //saves everything to JSON file
-
-                AllControlsEnabled = true;
-
-                CommandCompletedControlsSetup();
-
-                VisibilityCancellingMsg = Visibility.Collapsed;
-
-                throttler.Dispose();
-            }
+            doubledHorse.AllChildren = doubledHorse.AllChildren.Union(horse.AllChildren).ToList();
+            doubledHorse.AllRaces = doubledHorse.AllRaces.Union(horse.AllRaces).ToList();
+            Horses.Add(doubledHorse);
         }
 
         /// <summary>
@@ -1428,18 +1267,6 @@ namespace Horse_Picker.ViewModels
             WorkStatus = workStatus;
             UpdateStatusBar = loopCounter * 100 / (stopIndex - startIndex);
             ProgressDisplay = loopCounter + " / " + (stopIndex - startIndex);
-        }
-
-        /// <summary>
-        /// updates list of horses races and children, if found some new
-        /// </summary>
-        /// <param name="doubledHorse">horse from Horses</param>
-        /// <param name="horse">scrapped new horse</param>
-        public void MergeHorsesData(LoadedHorse doubledHorse, LoadedHorse horse)
-        {
-            doubledHorse.AllChildren = doubledHorse.AllChildren.Union(horse.AllChildren).ToList();
-            doubledHorse.AllRaces = doubledHorse.AllRaces.Union(horse.AllRaces).ToList();
-            Horses.Add(doubledHorse);
         }
 
         /// <summary>
