@@ -101,6 +101,8 @@
     <Compile Include="Services\IFileDataService.cs" />
     <Compile Include="Services\IRaceModelProvider.cs" />
     <Compile Include="Services\IScrapDataService.cs" />
+    <Compile Include="Services\ISimulateDataService.cs" />
+    <Compile Include="Services\IUpdateDataService.cs" />
     <Compile Include="Services\RaceModelProvider.cs" />
     <Compile Include="Services\ScrapDataService.cs" />
     <Compile Include="Services\IMessageDialogService.cs" />
@@ -111,6 +113,8 @@
     <Compile Include="Models\LoadedHistoricalRace.cs" />
     <Compile Include="Models\LoadedJockey.cs" />
     <Compile Include="Models\UpdateModules.cs" />
+    <Compile Include="Services\SimulateDataService.cs" />
+    <Compile Include="Services\UpdateDataService.cs" />
     <Compile Include="Startup\BootStrapper.cs" />
     <Compile Include="Views\UpdateWindow.xaml.cs">
       <DependentUpon>UpdateWindow.xaml</DependentUpon>

@@ -15,6 +15,12 @@ namespace Horse_Picker.Startup
         {
             var builder = new ContainerBuilder();
 
+            builder.RegisterType<SimulateDataService>()
+              .As<ISimulateDataService>().SingleInstance();
+
+            builder.RegisterType<UpdateDataService>()
+              .As<IUpdateDataService>().SingleInstance();
+
             builder.RegisterType<RaceModelProvider>()
               .As<IRaceModelProvider>().SingleInstance();
 

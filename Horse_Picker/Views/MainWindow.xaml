@@ -461,12 +461,12 @@
                 IsEnabled="{Binding AllControlsEnabled}">
             </Button>
             <Button
-                Content="Test results"
+                Content="Simulate results"
                 HorizontalAlignment="Center"
                 Height="40"
                 Width="100"
                 Style="{StaticResource appbtn}"
-                Command="{Binding TestResultsCommand}"
+                Command="{Binding SimulateResultsCommand}"
                 IsEnabled="{Binding AllControlsEnabled}"
                 Visibility="{Binding VisibilityTestingBtn}">
             </Button>
@@ -476,7 +476,7 @@
                 Height="40"
                 Width="100"
                 Style="{StaticResource cancelbtn}"
-                Command="{Binding TaskCancellationCommand}"
+                Command="{Binding SimulateCancellationCommand}"
                 Visibility="{Binding VisibilityCancelTestingBtn}">
             </Button>
             <Button
@@ -496,7 +496,7 @@
                 Height="40"
                 Width="100"
                 Style="{StaticResource cancelbtn}"
-                Command="{Binding TaskCancellationCommand}"
+                Command="{Binding UpdateCancellationCommand}"
                 Visibility="{Binding VisibilityCancelUpdatingBtn}">
             </Button>
         </StackPanel>

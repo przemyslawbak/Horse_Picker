@@ -129,7 +129,7 @@ namespace Horse_Picker.Services
             }
         }
 
-        public async Task SaveRaceTestResultsAsync(List<LoadedHistoricalRace> allRaces)
+        public async Task SaveRaceSimulatedResultsAsync(List<LoadedHistoricalRace> allRaces)
         {
             string line;
             if (allRaces.Count != 0)

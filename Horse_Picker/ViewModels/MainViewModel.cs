@@ -3,14 +3,12 @@ using Horse_Picker.Models;
 using Horse_Picker.Services;
 using Horse_Picker.Wrappers;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -21,18 +19,17 @@ namespace Horse_Picker.ViewModels
     {
         //private IEventAggregator _eventAggregator; //Prism
         private IMessageDialogService _messageDialogService;
-        private IComputeDataService _computeDataService;
+        private IUpdateDataService _updateDataService;
+        private ISimulateDataService _simulateDataService;
         private IFileDataService _dataServices;
-        private IScrapDataService _scrapServices;
         private IRaceModelProvider _raceModelProvider;
         private UpdateModules _updateModulesModel;
-        int _degreeOfParallelism;
 
         public MainViewModel(IFileDataService dataServices,
-            IScrapDataService scrapServices,
             IMessageDialogService messageDialogServices,
-            IComputeDataService computeDataService,
-            IRaceModelProvider raceServices)
+            IRaceModelProvider raceServices,
+            IUpdateDataService updateDataService,
+            ISimulateDataService simulateDataService)
         {
             Horses = new ObservableCollection<LoadedHorse>();
             Jockeys = new ObservableCollection<LoadedJockey>();
@@ -42,22 +39,13 @@ namespace Horse_Picker.ViewModels
 
             //_eventAggregator = eventAggregator; //prism events
             _dataServices = dataServices;
+            _updateDataService = updateDataService;
+            _simulateDataService = simulateDataService;
             _raceModelProvider = raceServices;
-            _computeDataService = computeDataService;
-            _scrapServices = scrapServices;
             _messageDialogService = messageDialogServices;
             HorseList = new ObservableCollection<HorseDataWrapper>();
             _updateModulesModel = new UpdateModules();
-            _degreeOfParallelism = 100;
 
-            HorseList.Clear();
-            Category = "fill up";
-            City = "-";
-            Distance = "0";
-            RaceNo = "0";
-            RaceDate = DateTime.Now;
-
-            TaskCancellation = false;
             AllControlsEnabled = true;
             VisibilityStatusBar = Visibility.Hidden;
             VisibilityCancellingMsg = Visibility.Collapsed;
@@ -68,16 +56,38 @@ namespace Horse_Picker.ViewModels
 
             NewHorseCommand = new DelegateCommand(OnNewHorseExecute);
             ClearDataCommand = new DelegateCommand(OnClearDataExecute);
-            TaskCancellationCommand = new DelegateCommand(OnTaskCancellationExecute);
-            TestResultsCommand = new AsyncCommand(async () => await OnTestResultExecuteAsync());
+            UpdateCancellationCommand = new DelegateCommand(OnUpdateCancellationExecute);
+            SimulateCancellationCommand = new DelegateCommand(OnSimulateCancellationExecute);
+            SimulateResultsCommand = new AsyncCommand(async () => await OnSimulateResultsExecuteAsync());
             PickHorseDataCommand = new DelegateCommand(OnPickHorseDataExecute);
             UpdateDataCommand = new AsyncCommand(async () => await OnUpdateDataExecuteAsync());
 
+            ClearDataCommand.Execute(null);
             LoadAllData();
             PopulateLists();
-            CategoryFactorDict = _computeDataService.GetRaceCategoryDictionary(_raceModelProvider);
+            CategoryFactorDict = _updateDataService.GetRaceCategoryDictionary(_raceModelProvider);
 
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
+        }
+
+        private void OnSimulateCancellationExecute(object obj)
+        {
+            _simulateDataService.CancelUpdates();
+
+            CommandCompletedControlsSetup();
+        }
+
+        /// <summary>
+        /// on `cancel` btn click,
+        /// is canceling TokenSource for every single Task,
+        /// `TaskCancellation` property is breaking every single loop in Tasks
+        /// </summary>
+        /// <param name="obj"></param>
+        public void OnUpdateCancellationExecute(object obj)
+        {
+            _updateDataService.CancelUpdates();
+
+            CommandCompletedControlsSetup();
         }
 
         /// <summary>
@@ -85,13 +95,13 @@ namespace Horse_Picker.ViewModels
         /// is testing strategy on historic results
         /// </summary>
         /// <returns></returns>
-        public async Task OnTestResultExecuteAsync()
+        public async Task OnSimulateResultsExecuteAsync()
         {
             var stopwatch = Stopwatch.StartNew();
-            TokenSource = new CancellationTokenSource();
-            CancellationToken = TokenSource.Token;
 
-            await UpdateDataAsync(Races, 0, Races.Count, "testRaces");
+            CommandStartedControlsSetup("SimulateResultsCommand");
+
+            Races = await _simulateDataService.SimulateResultsAsync(0, Races.Count, Races, Horses, Jockeys, _raceModelProvider);
 
             stopwatch.Stop();
             MessageBox.Show(stopwatch.Elapsed.ToString());
@@ -107,7 +117,7 @@ namespace Horse_Picker.ViewModels
         {
             HorseWrapper = (HorseDataWrapper)obj;
             DateTime date = DateTime.Now;
-            Task.Run(() => HorseWrapper = ParseHorseData(HorseWrapper, date)); //consumes time
+            Task.Run(() => HorseWrapper = _updateDataService.GetParsedHorseData(HorseWrapper, date, Horses, Jockeys, _raceModelProvider)); //consumes time
         }
 
         /// <summary>
@@ -150,42 +160,41 @@ namespace Horse_Picker.ViewModels
 
             if (result == MessageDialogResult.Update && isAnyTrue)
             {
-                TokenSource = new CancellationTokenSource();
-                CancellationToken = TokenSource.Token;
+                //ProgressBarTick(jobDescription, loopCounter, idTo, idFrom); //init display ???????????????????????????????
+
+                CommandStartedControlsSetup("UpdateDataCommand");
 
                 var stopwatch = Stopwatch.StartNew(); //stopwatch
 
+                _updateDataService._updateProgressEventHandler += (sender, e) => ProgressBarTick(sender, e, workStatus, loopCounter, stopIndex, startIndex);
+
                 if (UpdateJockeysPl)
-                    await UpdateDataAsync(Jockeys, JPlFrom, JPlTo, "updateJockeysPl");
+                    Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, JPlFrom, JPlTo, "updateJockeysPl");
                 if (UpdateJockeysCz)
-                    await UpdateDataAsync(Jockeys, JCzFrom, JCzTo, "updateJockeysCz");
+                    Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, JCzFrom, JCzTo, "updateJockeysCz");
                 if (UpdateHorsesPl)
-                    await UpdateDataAsync(Horses, HPlFrom, HPlTo, "updateHorsesPl");
+                    Horses = await _updateDataService.UpdateDataAsync(Horses, HPlFrom, HPlTo, "updateHorsesPl");
                 if (UpdateHorsesCz)
-                    await UpdateDataAsync(Horses, HCzFrom, HCzTo, "updateHorsesCz");
+                    Horses =  await _updateDataService.UpdateDataAsync(Horses, HCzFrom, HCzTo, "updateHorsesCz");
                 if (UpdateRacesPl)
-                    await UpdateDataAsync(Races, HistPlFrom, HistPlTo, "updateHistoricPl");
+                    Races = await _updateDataService.UpdateDataAsync(Races, HistPlFrom, HistPlTo, "updateHistoricPl");
 
                 stopwatch.Stop();//stopwatch
                 MessageBox.Show(stopwatch.Elapsed.ToString());//stopwatch
+
+                AllControlsEnabled = true;
+
+                CommandCompletedControlsSetup();
+
+                VisibilityCancellingMsg = Visibility.Collapsed;
 
                 PopulateLists();
             }
         }
 
-        /// <summary>
-        /// on `cancel` btn click,
-        /// is canceling TokenSource for every single Task,
-        /// `TaskCancellation` property is breaking every single loop in Tasks
-        /// </summary>
-        /// <param name="obj"></param>
-        public void OnTaskCancellationExecute(object obj)
+        private EventHandler ProgressBarTick(object v1, object sender, EventArgs eventArgs, object e, string v2, object workStatus, int v3, object loopCounter, int v4, object stopIndex, int v5, object startIndex)
         {
-            TaskCancellation = true;
-
-            TokenSource.Cancel();
-
-            CommandCompletedControlsSetup();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -320,18 +329,16 @@ namespace Horse_Picker.ViewModels
         //commands
         public ICommand NewHorseCommand { get; private set; }
         public ICommand ClearDataCommand { get; private set; }
-        public ICommand TaskCancellationCommand { get; private set; }
-        public IAsyncCommand TestResultsCommand { get; private set; }
+        public ICommand UpdateCancellationCommand { get; private set; }
+        public ICommand SimulateCancellationCommand { get; private set; }
+        public IAsyncCommand SimulateResultsCommand { get; private set; }
         public IAsyncCommand UpdateDataCommand { get; private set; }
         public ICommand PickHorseDataCommand { get; private set; }
 
         //properties
-        public ObservableCollection<object> SomeCollection { get; set; }
         public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
         public ObservableCollection<bool> UpdateModules { get; private set; }
         public HorseDataWrapper HorseWrapper { get; private set; }
-        public CancellationToken CancellationToken { get; private set; }
-        public CancellationTokenSource TokenSource { get; set; }
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
         public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
         public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
@@ -871,408 +878,7 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        /// <summary>
-        /// for update/test cancellation
-        /// </summary>
-        private bool _taskCancellation;
-        public bool TaskCancellation
-        {
-            get
-            {
-                return _taskCancellation;
-            }
-            set
-            {
-                _taskCancellation = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //passing RaceModel to the services credits: https://stackoverflow.com/questions/56646346/should-i-pass-view-model-to-my-service-and-if-yes-how-to-do-it/
-
-        /// <summary>
-        /// parses the horse from Horses with providen data
-        /// </summary>
-        /// <param name="horseWrapper">horse data</param>
-        /// <param name="date">day of the race</param>
-        /// <returns></returns>
-        public HorseDataWrapper ParseHorseData(HorseDataWrapper horseWrapper, DateTime date)
-        {
-            LoadedJockey jockeyFromList = new LoadedJockey();
-            LoadedHorse horseFromList = new LoadedHorse();
-            LoadedHorse fatherFromList = new LoadedHorse();
-            //if name is entered
-            if (!string.IsNullOrEmpty(horseWrapper.HorseName))
-            {
-                Horses = new ObservableCollection<LoadedHorse>(Horses.OrderBy(l => l.Age)); //from smallest to biggest
-
-                //if age is from AutoCompleteBox
-                if (horseWrapper.HorseName.Contains(", "))
-                {
-                    string theAge = horseWrapper.HorseName.Split(',')[1].Trim(' ');
-                    string theName = horseWrapper.HorseName.Split(',')[0].Trim(' ');
-
-                    int n;
-
-                    bool parseTest = int.TryParse(theAge, out n);
-                    if (parseTest)
-                    {
-                        horseWrapper.Age = int.Parse(theAge); //age
-                    }
-                    horseWrapper.HorseName = theName;
-                }
-
-                //if age is not written
-                if (horseWrapper.Age == 0)
-                {
-                    horseFromList = Horses
-                    .Where(h => h.Name.ToLower() == horseWrapper.HorseName.ToLower())
-                    .FirstOrDefault();
-                }
-
-                //if age is written
-                else
-                {
-                    horseFromList = Horses
-                    .Where(h => h.Name.ToLower() == horseWrapper.HorseName.ToLower())
-                    .Where(h => h.Age == horseWrapper.Age)
-                    .FirstOrDefault();
-                }
-
-                //case when previous horse is replaced in Horse collection item
-                if (horseFromList == null)
-                {
-                    horseWrapper.Age = 0;
-
-                    horseFromList = Horses
-                    .Where(i => i.Name.ToLower() == horseWrapper
-                    .HorseName.ToLower())
-                    .FirstOrDefault();
-                }
-
-                Horses = new ObservableCollection<LoadedHorse>(Horses.OrderByDescending(l => l.Age)); //from biggest to smallest
-
-                //jockey index
-                if (!string.IsNullOrEmpty(horseWrapper.Jockey))
-                {
-                    jockeyFromList = Jockeys
-                    .Where(i => i.Name.ToLower() == horseWrapper
-                    .Jockey.ToLower())
-                    .FirstOrDefault();
-
-                    if (jockeyFromList != null)
-                    {
-                        horseWrapper.JockeyIndex = _computeDataService.ComputeJockeyIndex(jockeyFromList, date);
-                    }
-                    else
-                    {
-                        horseWrapper.Jockey = "--Not found--";
-                        horseWrapper.JockeyIndex = 0; //clear
-                    }
-                }
-
-                if (horseFromList != null)
-                {
-                    horseWrapper.HorseName = horseFromList.Name; //displayed name
-                    horseWrapper.Age = horseFromList.Age; //displayed age
-                    horseWrapper.Father = horseFromList.Father; //displayed father
-                    horseWrapper.TotalRaces = horseFromList.AllRaces.Count(); //how many races
-                    horseWrapper.Comments = "";
-
-                    //win index
-                    if (jockeyFromList != null)
-                        horseWrapper.WinIndex = _computeDataService.ComputeWinIndex(horseFromList, date, jockeyFromList, _raceModelProvider);
-                    else
-                        horseWrapper.WinIndex = _computeDataService.ComputeWinIndex(horseFromList, date, null, _raceModelProvider);
-
-                    //category index
-                    horseWrapper.CategoryIndex = _computeDataService.ComputeCategoryIndex(horseFromList, date, _raceModelProvider);
-
-                    //age index
-                    horseWrapper.AgeIndex = _computeDataService.ComputeAgeIndex(horseFromList, date);
-
-                    //tired index
-                    horseWrapper.TiredIndex = _computeDataService.ComputeTiredIndex(horseFromList, date);
-
-                    //win percentage
-                    horseWrapper.PercentageIndex = _computeDataService.ComputePercentageIndex(horseFromList, date);
-
-                    //days of rest
-                    horseWrapper.RestIndex = _computeDataService.ComputeRestIndex(horseFromList, date);
-                }
-                else
-                {
-                    horseWrapper.Age = 0; //clear
-                    horseWrapper.TotalRaces = 0; //clear
-                    horseWrapper.Comments = "--Data missing--";
-                    horseWrapper.WinIndex = 0; //clear
-                    horseWrapper.CategoryIndex = 0; //clear
-                }
-
-                //siblings index
-                if (!string.IsNullOrEmpty(horseWrapper.Father))
-                {
-                    fatherFromList = Horses.Where(i => i.Name.ToLower() == horseWrapper.Father.ToLower()).FirstOrDefault();
-
-                    if (fatherFromList != null)
-                    {
-                        horseWrapper.SiblingsIndex = _computeDataService.ComputeSiblingsIndex(fatherFromList, date, _raceModelProvider, Horses);
-                    }
-                    else
-                    {
-                        horseWrapper.Father = "--Not found--";
-                        horseWrapper.SiblingsIndex = 0; //clear
-                    }
-                }
-
-                //comments = score
-                horseWrapper.Comments = horseWrapper.HorseScore.ToString("0.000");
-            }
-
-            return horseWrapper;
-        }
-
-        //SemaphoreSlim credits: https://blog.briandrupieski.com/throttling-asynchronous-methods-in-csharp
-        //SemaphoreSlim corrections: https://stackoverflow.com/questions/56640694/why-my-code-is-throwing-the-semaphore-has-been-disposed-exception/
-        //Task.Run corrections: https://stackoverflow.com/questions/56628009/how-should-i-use-task-run-in-my-code-for-proper-scalability-and-performance/
-
-        public async Task UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int idFrom, int idTo, string jobType)
-        {
-            //variables
-            SemaphoreSlim throttler = new SemaphoreSlim(_degreeOfParallelism);
-            List<Task> tasks = new List<Task>();
-            int loopCounter = 0;
-            string jobDescription = "";
-            ProgressBarTick(jobDescription, loopCounter, idTo, idFrom); //init display
-
-            //controls setup
-            string[] updates = { "Horses", "Jockeys", "Historic" };
-            if (updates.Any(jobType.Contains))
-            {
-                CommandStartedControlsSetup("UpdateDataCommand");
-            }
-            else
-            {
-                CommandStartedControlsSetup("TestResultsCommand");
-            }
-
-            //run loop
-            for (int i = 0; i < genericCollection.Count; i++)
-            {
-                int id = i;
-
-                if (TaskCancellation == true)
-                {
-                    break;
-                }
-
-                await throttler.WaitAsync(TokenSource.Token);
-
-                tasks.Add(Task.Run(async () =>
-                {
-                    try
-                    {
-                        CancellationToken.ThrowIfCancellationRequested();
-
-                        //exe method
-                        if (jobType.Contains("Horses"))
-                        {
-                            jobDescription = "Updating horse data";
-                            await UpdateHorsesAsync(jobType, id);
-                        }
-                        else if (jobType.Contains("Jockeys"))
-                        {
-                            jobDescription = "Updating jockey data";
-                            await UpdateJockeysAsync(jobType, id);
-                        }
-                        else if (jobType.Contains("Historic"))
-                        {
-                            jobDescription = "Updating historic data";
-                            await UpdateRacesAsync(jobType, id);
-                        }
-                        else if (jobType.Contains("testRaces"))
-                        {
-                            jobDescription = "Testing on historic data";
-                            TestRacesAsync(jobType, id);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        //
-                    }
-                    finally
-                    {
-                        loopCounter++;
-
-                        ProgressBarTick(jobDescription, loopCounter, idTo, idFrom);
-
-                        throttler.Release();
-                    }
-                }));
-            }
-
-            try
-            {
-                await Task.WhenAll(tasks);
-            }
-            catch (OperationCanceledException)
-            {
-                //
-            }
-            finally
-            {
-                //save when finish
-                if (typeof(T) == typeof(LoadedJockey))
-                {
-                    await _dataServices.SaveAllJockeysAsync(Jockeys.ToList());
-                }
-                else if (typeof(T) == typeof(LoadedHorse))
-                {
-                    await _dataServices.SaveAllHorsesAsync(Horses.ToList());
-                }
-                else if (typeof(T) == typeof(LoadedHistoricalRace))
-                {
-                    if (jobType.Contains("Historic"))
-                    {
-                        _dataServices.SaveAllRaces(Races.ToList());
-                    }
-                    else if (jobType.Contains("testRaces"))
-                    {
-                        await _dataServices.SaveRaceTestResultsAsync(Races.ToList());
-                    }
-                }
-
-                AllControlsEnabled = true;
-
-                CommandCompletedControlsSetup();
-
-                VisibilityCancellingMsg = Visibility.Collapsed;
-
-                throttler.Dispose();
-            }
-        }
-
-        private void TestRacesAsync(string jobType, int id)
-        {
-
-            if (Races[id].RaceDate.Year == 2018)
-            {
-                Category = Races[id].RaceCategory;
-                Distance = Races[id].RaceDistance.ToString();
-
-                //for all horses in the race
-                for (int h = 0; h < Races[id].HorseList.Count; h++)
-                {
-                    if (TaskCancellation == true)
-                    {
-                        break;
-                    }
-                    CancellationToken.ThrowIfCancellationRequested();
-                    HorseDataWrapper horse = new HorseDataWrapper();
-                    horse = ParseHorseData(Races[id].HorseList[h], Races[id].RaceDate);
-                    Races[id].HorseList[h] = horse; //get all indexes
-                }
-            }
-        }
-
-        private async Task UpdateRacesAsync(string jobType, int id)
-        {
-            LoadedHistoricalRace race = new LoadedHistoricalRace();
-
-            if (jobType == "updateHistoricPl") race = await _scrapServices.ScrapSingleRacePlAsync(id);
-
-            //if the race is from 2018
-            if (race.RaceDate.Year == 2018)
-            {
-                lock (((ICollection)Races).SyncRoot)
-                {
-                    Races.Add(race);
-                }
-            }
-        }
-
-        private async Task UpdateJockeysAsync(string jobType, int id)
-        {
-            LoadedJockey jockey = new LoadedJockey();
-
-            if (jobType == "updateJockeysPl") jockey = await _scrapServices.ScrapSingleJockeyPlAsync(id);
-            if (jobType == "updateJockeysCz") jockey = await _scrapServices.ScrapSingleJockeyCzAsync(id);
-
-            if (jockey.Name != null)
-            {
-                lock (((ICollection)Jockeys).SyncRoot)
-                {
-                    //if objects are already in the List
-                    if (Jockeys.Any(h => h.Name.ToLower() == jockey.Name.ToLower()))
-                    {
-                        LoadedJockey doubledJockey = Jockeys.Where(h => h.Name.ToLower() == jockey.Name.ToLower()).FirstOrDefault();
-                        Jockeys.Remove(doubledJockey);
-                        MergeJockeysData(doubledJockey, jockey);
-                    }
-                    else
-                    {
-                        Jockeys.Add(jockey);
-                    }
-                }
-            }
-        }
-
-        private async Task UpdateHorsesAsync(string jobType, int id)
-        {
-            LoadedHorse horse = new LoadedHorse();
-
-            if (jobType == "updateHorsesPl") horse = await _scrapServices.ScrapSingleHorsePlAsync(id);
-            if (jobType == "updateHorsesCz") horse = await _scrapServices.ScrapSingleHorseCzAsync(id);
-
-            if (horse.Name != null)
-            {
-                lock (((ICollection)Horses).SyncRoot)
-                {
-                    //if objects are already in the List
-                    if (Horses.Any(h => h.Name.ToLower() == horse.Name.ToLower()))
-                    {
-                        LoadedHorse doubledHorse = Horses.Where(h => h.Name.ToLower() == horse.Name.ToLower()).Where(h => h.Age == horse.Age).FirstOrDefault();
-                        if (doubledHorse != null)
-                        {
-                            Horses.Remove(doubledHorse);
-                            MergeHorsesData(doubledHorse, horse);
-                        }
-                        else
-                        {
-                            Horses.Add(horse);
-                        }
-                    }
-                    else
-                    {
-                        Horses.Add(horse);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// updates list of jockey races, if found some new
-        /// </summary>
-        /// <param name="doubledJockey">jockey for Jockeys</param>
-        /// <param name="jockey">found doubler</param>
-        public void MergeJockeysData(LoadedJockey doubledJockey, LoadedJockey jockey)
-        {
-            doubledJockey.AllRaces = doubledJockey.AllRaces.Union(jockey.AllRaces).ToList();
-            Jockeys.Add(doubledJockey);
-        }
-
-        /// <summary>
-        /// updates list of horses races and children, if found some new
-        /// </summary>
-        /// <param name="doubledHorse">horse from Horses</param>
-        /// <param name="horse">scrapped new horse</param>
-        public void MergeHorsesData(LoadedHorse doubledHorse, LoadedHorse horse)
-        {
-            doubledHorse.AllChildren = doubledHorse.AllChildren.Union(horse.AllChildren).ToList();
-            doubledHorse.AllRaces = doubledHorse.AllRaces.Union(horse.AllRaces).ToList();
-            Horses.Add(doubledHorse);
-        }
-
+        /*
         /// <summary>
         /// updates data on progress bar for any task
         /// </summary>
@@ -1286,6 +892,7 @@ namespace Horse_Picker.ViewModels
             UpdateStatusBar = loopCounter * 100 / (stopIndex - startIndex);
             ProgressDisplay = loopCounter + " / " + (stopIndex - startIndex);
         }
+        */
 
         /// <summary>
         /// changes some display props on starting long running tasks
@@ -1293,13 +900,12 @@ namespace Horse_Picker.ViewModels
         /// <param name="command"></param>
         public void CommandStartedControlsSetup(string command)
         {
-            TaskCancellation = false;
             AllControlsEnabled = false;
             ValidateButtons();
             VisibilityStatusBar = Visibility.Visible;
             UpdateStatusBar = 0;
 
-            if (command == "TestResultsCommand")
+            if (command == "SimulateResultsCommand")
             {
                 VisibilityCancelTestingBtn = Visibility.Visible;
                 VisibilityTestingBtn = Visibility.Collapsed;
@@ -1318,7 +924,6 @@ namespace Horse_Picker.ViewModels
         public void CommandCompletedControlsSetup()
         {
             //TokenSource.Dispose();
-            TaskCancellation = false;
             UpdateStatusBar = 0;
             VisibilityStatusBar = Visibility.Hidden;
             ValidateButtons();

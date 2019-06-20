@@ -38,57 +38,6 @@ namespace Horse_Picker.Services
         }
 
         /// <summary>
-        /// list of race categories and values of them
-        /// </summary>
-        /// <returns>category dictionary with string key and int value</returns>
-        public Dictionary<string, int> GetRaceCategoryDictionary(IRaceModelProvider raceModelProvider)
-        {
-            Dictionary<string, int> categoryFactorDict = new Dictionary<string, int>();
-            categoryFactorDict.Add("G1 A", 11);
-            categoryFactorDict.Add("G3 A", 10);
-            categoryFactorDict.Add("LR A", 9);
-            categoryFactorDict.Add("LR B", 8);
-            categoryFactorDict.Add("L A", 7);
-            categoryFactorDict.Add("B", 5);
-            categoryFactorDict.Add("A", 4);
-            categoryFactorDict.Add("Gd 3", 11);
-            categoryFactorDict.Add("Gd 1", 10);
-            categoryFactorDict.Add("L", 8);
-            categoryFactorDict.Add("F", 7);
-            categoryFactorDict.Add("C", 6);
-            categoryFactorDict.Add("D", 5);
-            categoryFactorDict.Add("I", 4);
-            categoryFactorDict.Add("II", 3);
-            categoryFactorDict.Add("III", 2);
-            categoryFactorDict.Add("IV", 1);
-            categoryFactorDict.Add("V", 1);
-            if (raceModelProvider.Category == "sulki" || raceModelProvider.Category == "kłusaki")
-            {
-                categoryFactorDict.Add("sulki", 9);
-                categoryFactorDict.Add("kłusaki", 9);
-            }
-            else
-            {
-                categoryFactorDict.Add("sulki", 2);
-                categoryFactorDict.Add("kłusaki", 2);
-            }
-            if (raceModelProvider.Category == "steeple" || raceModelProvider.Category == "płoty")
-            {
-                categoryFactorDict.Add("steeple", 9);
-                categoryFactorDict.Add("płoty", 9);
-            }
-            else
-            {
-                categoryFactorDict.Add("steeple", 2);
-                categoryFactorDict.Add("płoty", 2);
-            }
-            categoryFactorDict.Add("-", 6);
-            categoryFactorDict.Add(" ", 6);
-            categoryFactorDict.Add("", 6);
-            return categoryFactorDict;
-        }
-
-        /// <summary>
         /// calculated AI factor
         /// </summary>
         /// <param name="horseFromList"></param>
@@ -119,9 +68,9 @@ namespace Horse_Picker.Services
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns CI</returns>
-        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, IRaceModelProvider raceModelProvider)
+        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, IRaceModelProvider raceModelProvider, Dictionary<string, int> racecategoryDictionary)
         {
-            Dictionary<string, int> _raceDictionary = GetRaceCategoryDictionary(raceModelProvider);
+            Dictionary<string, int> raceDictionary = racecategoryDictionary;
 
             ResetComputeVariables();
 
@@ -141,13 +90,13 @@ namespace Horse_Picker.Services
                             _placeFactor = _placeFactor * 1.5;
                         }
 
-                        bool foundKey = _raceDictionary.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
+                        bool foundKey = raceDictionary.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
                                       StringComparison.CurrentCultureIgnoreCase)
                         );
 
                         if (foundKey)
                         {
-                            _dictValue = _raceDictionary[horseFromList.AllRaces[i].RaceCategory];
+                            _dictValue = raceDictionary[horseFromList.AllRaces[i].RaceCategory];
                         }
                         else
                         {
@@ -299,7 +248,11 @@ namespace Horse_Picker.Services
         /// <param name="fatherFromList">data of horses father</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns SI</returns>
-        public double ComputeSiblingsIndex(LoadedHorse fatherFromList, DateTime date, IRaceModelProvider raceModelProvider, ObservableCollection<LoadedHorse> horses)
+        public double ComputeSiblingsIndex(LoadedHorse fatherFromList,
+            DateTime date,
+            IRaceModelProvider raceModelProvider,
+            ObservableCollection<LoadedHorse> horses,
+            Dictionary<string, int> raceCategoryDictionary)
         {
             ResetComputeVariables();
 
@@ -325,7 +278,7 @@ namespace Horse_Picker.Services
 
                 if (_childFromList != null && _childFromList.AllRaces.Count > 0)
                 {
-                    _siblingIndex = ComputeWinIndex(_childFromList, date, null, raceModelProvider);
+                    _siblingIndex = ComputeWinIndex(_childFromList, date, null, raceModelProvider, raceCategoryDictionary);
                     _counter++;
                 }
                 else
@@ -400,9 +353,12 @@ namespace Horse_Picker.Services
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns WI</returns>
-        public double ComputeWinIndex(LoadedHorse horseFromList, DateTime date, LoadedJockey jockeyFromList, IRaceModelProvider raceModelProvider)
+        public double ComputeWinIndex(LoadedHorse horseFromList,
+            DateTime date, LoadedJockey jockeyFromList,
+            IRaceModelProvider raceModelProvider,
+            Dictionary<string, int> racecategoryDictionary)
         {
-            Dictionary<string, int> _raceDictionary = GetRaceCategoryDictionary(raceModelProvider);
+            Dictionary<string, int> raceDictionary = racecategoryDictionary;
 
             ResetComputeVariables();
 
@@ -448,13 +404,13 @@ namespace Horse_Picker.Services
                             _placeFactor = _placeFactor * 1.5;
                         }
 
-                        bool foundKey = _raceDictionary.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
+                        bool foundKey = raceDictionary.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
                                       StringComparison.CurrentCultureIgnoreCase)
                         );
 
                         if (foundKey)
                         {
-                            _dictValue = _raceDictionary[horseFromList.AllRaces[i].RaceCategory];
+                            _dictValue = raceDictionary[horseFromList.AllRaces[i].RaceCategory];
                         }
                         else
                         {
