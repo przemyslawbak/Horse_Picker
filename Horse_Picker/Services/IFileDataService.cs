@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.Services
 {
-    public interface IFileDataServices
+    public interface IFileDataService
     {
         List<LoadedHorse> GetAllHorses();
         Task SaveAllHorsesAsync(List<LoadedHorse> horses);

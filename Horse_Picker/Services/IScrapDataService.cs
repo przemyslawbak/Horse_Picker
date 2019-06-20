@@ -3,7 +3,7 @@ using Horse_Picker.Models;
 
 namespace Horse_Picker.Services
 {
-    public interface IScrapDataServices
+    public interface IScrapDataService
     {
         Task<LoadedHorse> ScrapSingleHorsePlAsync(int index);
         Task<LoadedHorse> ScrapSingleHorseCzAsync(int index);

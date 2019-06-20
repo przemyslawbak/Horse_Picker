@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace Horse_Picker.Services
 {
-    public interface IComputeDataServices
+    public interface IComputeDataService
     {
         double ComputeTiredIndex(LoadedHorse horseFromList, DateTime date);
         double ComputeRestIndex(LoadedHorse horseFromList, DateTime date);

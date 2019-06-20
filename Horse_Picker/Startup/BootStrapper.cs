@@ -18,14 +18,14 @@ namespace Horse_Picker.Startup
             builder.RegisterType<RaceModelProvider>()
               .As<IRaceModelProvider>().SingleInstance();
 
-            builder.RegisterType<FileDataServices>()
-              .As<IFileDataServices>().SingleInstance();
+            builder.RegisterType<FileDataService>()
+              .As<IFileDataService>().SingleInstance();
 
-            builder.RegisterType<ComputeDataServices>()
-              .As<IComputeDataServices>().SingleInstance();
+            builder.RegisterType<ComputeDataService>()
+              .As<IComputeDataService>().SingleInstance();
 
-            builder.RegisterType<ScrapDataServices>()
-              .As<IScrapDataServices>().SingleInstance();
+            builder.RegisterType<ScrapDataService>()
+              .As<IScrapDataService>().SingleInstance();
 
             builder.RegisterType<MessageDialogService>()
               .As<IMessageDialogService>().SingleInstance();

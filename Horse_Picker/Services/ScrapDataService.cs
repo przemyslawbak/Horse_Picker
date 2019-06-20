@@ -10,7 +10,7 @@ using HtmlAgilityPack;
 
 namespace Horse_Picker.Services
 {
-    public class ScrapDataServices : IScrapDataServices
+    public class ScrapDataService : IScrapDataService
     {
 
         public async Task<LoadedHorse> ScrapSingleHorsePlAsync(int index)

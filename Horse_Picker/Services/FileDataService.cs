@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Horse_Picker.Services
 {
-    public class FileDataServices : IFileDataServices
+    public class FileDataService : IFileDataService
     {
         string _horsesFileName = "_horses_list.json";
         string _jockeysFileName = "_jockeys_list.json";

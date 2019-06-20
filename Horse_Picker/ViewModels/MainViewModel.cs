@@ -21,17 +21,17 @@ namespace Horse_Picker.ViewModels
     {
         //private IEventAggregator _eventAggregator; //Prism
         private IMessageDialogService _messageDialogService;
-        private IComputeDataServices _computeDataService;
-        private IFileDataServices _dataServices;
-        private IScrapDataServices _scrapServices;
+        private IComputeDataService _computeDataService;
+        private IFileDataService _dataServices;
+        private IScrapDataService _scrapServices;
         private IRaceModelProvider _raceModelProvider;
         private UpdateModules _updateModulesModel;
         int _degreeOfParallelism;
 
-        public MainViewModel(IFileDataServices dataServices,
-            IScrapDataServices scrapServices,
+        public MainViewModel(IFileDataService dataServices,
+            IScrapDataService scrapServices,
             IMessageDialogService messageDialogServices,
-            IComputeDataServices computeDataService,
+            IComputeDataService computeDataService,
             IRaceModelProvider raceServices)
         {
             Horses = new ObservableCollection<LoadedHorse>();

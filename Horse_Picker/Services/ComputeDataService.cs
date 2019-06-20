@@ -6,7 +6,7 @@ using Horse_Picker.Models;
 
 namespace Horse_Picker.Services
 {
-    public class ComputeDataServices : IComputeDataServices
+    public class ComputeDataService : IComputeDataService
     {
         //compute fields
         private int _dictValue;

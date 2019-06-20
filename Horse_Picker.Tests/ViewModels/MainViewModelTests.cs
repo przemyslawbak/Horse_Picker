@@ -19,17 +19,17 @@ namespace Horse_Picker.Tests.ViewModels
     {
         private MainViewModel _viewModel;
         private Mock<IMessageDialogService> _messageDialogServicesMock;
-        private Mock<IFileDataServices> _dataServicesMock;
-        private Mock<IScrapDataServices> _scrapServicesMock;
-        private Mock<IComputeDataServices> _computeServicesMock;
+        private Mock<IFileDataService> _dataServicesMock;
+        private Mock<IScrapDataService> _scrapServicesMock;
+        private Mock<IComputeDataService> _computeServicesMock;
         private Mock<IRaceModelProvider> _raceModelProviderMock;
 
         public MainViewModelTests()
         {
             _messageDialogServicesMock = new Mock<IMessageDialogService>();
-            _dataServicesMock = new Mock<IFileDataServices>();
-            _scrapServicesMock = new Mock<IScrapDataServices>();
-            _computeServicesMock = new Mock<IComputeDataServices>();
+            _dataServicesMock = new Mock<IFileDataService>();
+            _scrapServicesMock = new Mock<IScrapDataService>();
+            _computeServicesMock = new Mock<IComputeDataService>();
             _raceModelProviderMock = new Mock<IRaceModelProvider>();
 
             //moq setup
