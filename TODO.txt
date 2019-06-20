@@ -1,7 +1,8 @@
+skonczyc ListEventArgs
 kancelacja tokenow - wyjatek
-scrap metody VM do serwisow
 vm dla update
 scrap service porzadek
+validacja do serwisu
 
 
 globalne zmienne przy computing
