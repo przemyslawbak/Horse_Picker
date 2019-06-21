@@ -57,28 +57,26 @@ namespace Horse_Picker.Services
             {
                 int id = i;
 
-                await throttler.WaitAsync(TokenSource.Token);
-
-                tasks.Add(Task.Run(() =>
+                tasks.Add(Task.Run(async () =>
                 {
                     try
                     {
-                        CancellationToken.ThrowIfCancellationRequested();
+                        if (CancellationToken.IsCancellationRequested)
+                            return;
 
-                        for (id = 0; id < races.Count; id++)
+                        await throttler.WaitAsync(TokenSource.Token);
+
+                        if (races[id].RaceDate.Year == 2018)
                         {
-                            if (races[id].RaceDate.Year == 2018)
-                            {
-                                raceModelProvider.Category = races[id].RaceCategory;
-                                raceModelProvider.Distance = races[id].RaceDistance.ToString();
+                            raceModelProvider.Category = races[id].RaceCategory;
+                            raceModelProvider.Distance = races[id].RaceDistance.ToString();
 
-                                //for all horses in the race
-                                for (int h = 0; h < races[id].HorseList.Count; h++)
-                                {
-                                    HorseDataWrapper horse = new HorseDataWrapper();
-                                    horse = _updateDataService.GetParsedHorseData(races[id].HorseList[h], races[id].RaceDate, horses, jockeys, raceModelProvider);
-                                    races[id].HorseList[h] = horse; //get all indexes
-                                }
+                            //for all horses in the race
+                            for (int h = 0; h < races[id].HorseList.Count; h++)
+                            {
+                                HorseDataWrapper horse = new HorseDataWrapper();
+                                horse = _updateDataService.GetParsedHorseData(races[id].HorseList[h], races[id].RaceDate, horses, jockeys, raceModelProvider);
+                                races[id].HorseList[h] = horse; //get all indexes
                             }
                         }
                     }

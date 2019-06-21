@@ -1,8 +1,7 @@
-skonczyc ListEventArgs
-kancelacja tokenow - wyjatek
 vm dla update
 scrap service porzadek
 validacja do serwisu
+async file data
 
 
 globalne zmienne przy computing

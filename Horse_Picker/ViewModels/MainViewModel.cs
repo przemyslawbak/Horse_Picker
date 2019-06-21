@@ -98,7 +98,7 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         public async Task OnSimulateResultsExecuteAsync()
         {
-            var stopwatch = Stopwatch.StartNew();
+            var stopwatch = Stopwatch.StartNew();//stopwatch
 
             _simulateDataService._simulateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
@@ -108,8 +108,13 @@ namespace Horse_Picker.ViewModels
 
             _simulateDataService._simulateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
-            stopwatch.Stop();
-            MessageBox.Show(stopwatch.Elapsed.ToString());
+            stopwatch.Stop();//stopwatch
+            MessageBox.Show(stopwatch.Elapsed.ToString());//stopwatch
+
+            CommandCompletedControlsSetup();
+            AllControlsEnabled = true;
+            VisibilityCancellingMsg = Visibility.Collapsed;
+
         }
 
         /// <summary>
@@ -189,10 +194,8 @@ namespace Horse_Picker.ViewModels
                 stopwatch.Stop();//stopwatch
                 MessageBox.Show(stopwatch.Elapsed.ToString());//stopwatch
 
-                AllControlsEnabled = true;
-
                 CommandCompletedControlsSetup();
-
+                AllControlsEnabled = true;
                 VisibilityCancellingMsg = Visibility.Collapsed;
 
                 PopulateLists();

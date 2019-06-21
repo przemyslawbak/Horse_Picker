@@ -85,17 +85,18 @@ namespace Horse_Picker.Services
             OnProgressBarTick();
 
             //run loop
-            for (int i = 0; i < genericCollection.Count; i++)
+            for (int i = idFrom; i < idTo; i++)
             {
                 int id = i;
-
-                await throttler.WaitAsync(TokenSource.Token);
 
                 tasks.Add(Task.Run(async () =>
                 {
                     try
                     {
-                        CancellationToken.ThrowIfCancellationRequested();
+                        if (CancellationToken.IsCancellationRequested)
+                            return;
+
+                        await throttler.WaitAsync(TokenSource.Token);
 
                         if (jobType.Contains("Horses"))
                         {
@@ -112,7 +113,7 @@ namespace Horse_Picker.Services
                     }
                     catch (Exception e)
                     {
-                        //
+
                     }
                     finally
                     {
@@ -133,7 +134,7 @@ namespace Horse_Picker.Services
             }
             catch (OperationCanceledException)
             {
-                //
+
             }
             finally
             {
@@ -158,7 +159,7 @@ namespace Horse_Picker.Services
                     }
                 }
 
-                throttler.Dispose();
+                //throttler.Dispose();
             }
 
             return genericCollection;
