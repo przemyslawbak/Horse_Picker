@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Horse_Picker.Models;
 using System.Threading;
 using Horse_Picker.Wrappers;
+using Horse_Picker.Events;
 
 namespace Horse_Picker.Services
 {
@@ -14,6 +15,10 @@ namespace Horse_Picker.Services
     {
         private IFileDataService _dataServices;
         private IUpdateDataService _updateDataService;
+        int _idTo;
+        int _idFrom;
+        int _loopCounter;
+        string _jobType;
         int _degreeOfParallelism;
 
         public SimulateDataService(IUpdateDataService updateDataService, IFileDataService dataServices)
@@ -27,6 +32,8 @@ namespace Horse_Picker.Services
         public CancellationTokenSource TokenSource { get; set; }
         public CancellationToken CancellationToken { get; set; }
 
+        public event EventHandler<UpdateBarEventArgs> _simulateProgressEventHandler;
+
         public async Task<ObservableCollection<LoadedHistoricalRace>> SimulateResultsAsync(int fromId,
             int toId,
             ObservableCollection<LoadedHistoricalRace> races,
@@ -37,9 +44,13 @@ namespace Horse_Picker.Services
             //variables
             SemaphoreSlim throttler = new SemaphoreSlim(_degreeOfParallelism);
             List<Task> tasks = new List<Task>();
-            int loopCounter = 0;
             TokenSource = new CancellationTokenSource();
             CancellationToken = TokenSource.Token;
+            _loopCounter = 0;
+            _idFrom = fromId;
+            _idTo = toId;
+            _jobType = "Simulating historic races";
+            OnProgressBarTick();
 
             //run loop
             for (int i = 0; i < races.Count; i++)
@@ -77,9 +88,11 @@ namespace Horse_Picker.Services
                     }
                     finally
                     {
-                        loopCounter++;
+                        _loopCounter++;
 
-                        //ProgressBarTick(jobDescription, loopCounter, idTo, idFrom); //????????????????????
+                        EventHandler<UpdateBarEventArgs> progressBarTick = _simulateProgressEventHandler;
+
+                        OnProgressBarTick();
 
                         throttler.Release();
                     }
@@ -102,6 +115,11 @@ namespace Horse_Picker.Services
             }
 
             return races;
+        }
+
+        protected void OnProgressBarTick()
+        {
+            _simulateProgressEventHandler(this, new UpdateBarEventArgs(_jobType, _loopCounter, _idTo, _idFrom));
         }
 
         public void CancelUpdates()

@@ -1,4 +1,5 @@
-﻿using Horse_Picker.Models;
+﻿using Horse_Picker.Events;
+using Horse_Picker.Models;
 using Horse_Picker.Wrappers;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,6 @@ namespace Horse_Picker.Services
 
         void CancelUpdates();
 
-        event EventHandler<ListEventArgs> _updateProgressEventHandler;
+        event EventHandler<UpdateBarEventArgs> _updateProgressEventHandler;
     }
 }

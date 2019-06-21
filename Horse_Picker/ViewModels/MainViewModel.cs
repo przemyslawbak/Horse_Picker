@@ -2,6 +2,7 @@
 using Horse_Picker.Models;
 using Horse_Picker.Services;
 using Horse_Picker.Wrappers;
+using Horse_Picker.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -99,9 +100,13 @@ namespace Horse_Picker.ViewModels
         {
             var stopwatch = Stopwatch.StartNew();
 
+            _simulateDataService._simulateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
+
             CommandStartedControlsSetup("SimulateResultsCommand");
 
             Races = await _simulateDataService.SimulateResultsAsync(0, Races.Count, Races, Horses, Jockeys, _raceModelProvider);
+
+            _simulateDataService._simulateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
             stopwatch.Stop();
             MessageBox.Show(stopwatch.Elapsed.ToString());
@@ -166,7 +171,7 @@ namespace Horse_Picker.ViewModels
 
                 var stopwatch = Stopwatch.StartNew(); //stopwatch
 
-                _updateDataService._updateProgressEventHandler += (sender, e) => ProgressBarTick(sender, e, workStatus, loopCounter, stopIndex, startIndex);
+                _updateDataService._updateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
                 if (UpdateJockeysPl)
                     Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, JPlFrom, JPlTo, "updateJockeysPl");
@@ -178,6 +183,8 @@ namespace Horse_Picker.ViewModels
                     Horses =  await _updateDataService.UpdateDataAsync(Horses, HCzFrom, HCzTo, "updateHorsesCz");
                 if (UpdateRacesPl)
                     Races = await _updateDataService.UpdateDataAsync(Races, HistPlFrom, HistPlTo, "updateHistoricPl");
+
+                _updateDataService._updateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //unsub from service event
 
                 stopwatch.Stop();//stopwatch
                 MessageBox.Show(stopwatch.Elapsed.ToString());//stopwatch
@@ -878,21 +885,19 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-        /*
+
         /// <summary>
         /// updates data on progress bar for any task
         /// </summary>
-        /// <param name="workStatus">name of commenced work</param>
-        /// <param name="loopCounter">current counter in the loop</param>
-        /// <param name="stopIndex">when loop finishes</param>
-        /// <param name="startIndex">when loop starts</param>
-        public void ProgressBarTick(string workStatus, int loopCounter, int stopIndex, int startIndex)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void ProgressBarTick(object sender, UpdateBarEventArgs e)
         {
-            WorkStatus = workStatus;
-            UpdateStatusBar = loopCounter * 100 / (stopIndex - startIndex);
-            ProgressDisplay = loopCounter + " / " + (stopIndex - startIndex);
+            WorkStatus = e.JobType;
+            UpdateStatusBar = e.LoopCouner * 100 / (e.ToId - e.FromId);
+            ProgressDisplay = e.LoopCouner + " / " + (e.ToId - e.FromId);
         }
-        */
+
 
         /// <summary>
         /// changes some display props on starting long running tasks

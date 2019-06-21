@@ -471,7 +471,7 @@
                 Visibility="{Binding VisibilityTestingBtn}">
             </Button>
             <Button
-                Content="Cancel testing"
+                Content="Cancel simulation"
                 HorizontalAlignment="Center"
                 Height="40"
                 Width="100"

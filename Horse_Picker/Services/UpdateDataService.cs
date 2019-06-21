@@ -1,4 +1,5 @@
-﻿using Horse_Picker.Models;
+﻿using Horse_Picker.Events;
+using Horse_Picker.Models;
 using Horse_Picker.Wrappers;
 using System;
 using System.Collections;
@@ -11,13 +12,7 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.Services
 {
-    //ListEventArgs credits: https://stackoverflow.com/questions/14058412/passing-parameter-to-an-event-handler
     //update progress bar question: https://stackoverflow.com/questions/56690258/is-there-any-way-that-my-service-layer-will-update-vm-properties-or-methods-res
-
-    public class ListEventArgs : EventArgs
-    {
-
-    }
 
     public class UpdateDataService : IUpdateDataService
     {
@@ -49,7 +44,7 @@ namespace Horse_Picker.Services
         public CancellationTokenSource TokenSource { get; set; }
         public CancellationToken CancellationToken { get; set; }
 
-        public event EventHandler<ListEventArgs> _updateProgressEventHandler;
+        public event EventHandler<UpdateBarEventArgs> _updateProgressEventHandler;
 
         //SemaphoreSlim credits: https://blog.briandrupieski.com/throttling-asynchronous-methods-in-csharp
         //SemaphoreSlim corrections: https://stackoverflow.com/questions/56640694/why-my-code-is-throwing-the-semaphore-has-been-disposed-exception/
@@ -61,12 +56,8 @@ namespace Horse_Picker.Services
             _loopCounter = 0;
             _idFrom = idFrom;
             _idTo = idTo;
-            _jobType = jobType;
-            SemaphoreSlim throttler = new SemaphoreSlim(_degreeOfParallelism);
-            List<Task> tasks = new List<Task>();
-            TokenSource = new CancellationTokenSource();
-            CancellationToken = TokenSource.Token;
 
+            //parse collections, display job
             if (jobType.Contains("Horses"))
             {
                 Horses.Clear();
@@ -85,6 +76,13 @@ namespace Horse_Picker.Services
                 Races = new ObservableCollection<LoadedHistoricalRace>(genericCollection.Cast<LoadedHistoricalRace>());
                 _jobType = "Updating historic data";
             }
+
+            //initial
+            SemaphoreSlim throttler = new SemaphoreSlim(_degreeOfParallelism);
+            List<Task> tasks = new List<Task>();
+            TokenSource = new CancellationTokenSource();
+            CancellationToken = TokenSource.Token;
+            OnProgressBarTick();
 
             //run loop
             for (int i = 0; i < genericCollection.Count; i++)
@@ -120,9 +118,9 @@ namespace Horse_Picker.Services
                     {
                         _loopCounter++;
 
-                        EventHandler<ListEventArgs> progressBarTick = _updateProgressEventHandler;
+                        EventHandler<UpdateBarEventArgs> progressBarTick = _updateProgressEventHandler;
 
-                        //ProgressBarTick(jobDescription, loopCounter, idTo, idFrom); //????????????????????
+                        OnProgressBarTick();
 
                         throttler.Release();
                     }
@@ -166,9 +164,9 @@ namespace Horse_Picker.Services
             return genericCollection;
         }
 
-        protected virtual void OnProgressBarTick(EventArgs e)
+        protected void OnProgressBarTick()
         {
-            _updateProgressEventHandler(_jobType, _loopCounter, _idTo, _idFrom);
+            _updateProgressEventHandler(this, new UpdateBarEventArgs(_jobType, _loopCounter, _idTo, _idFrom));
         }
 
         private async Task UpdateRacesAsync(string jobType, int id)
