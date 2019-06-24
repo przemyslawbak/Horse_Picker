@@ -1,7 +1,7 @@
-vm dla update
+eventaggregators main<->update
 scrap service porzadek
-validacja do serwisu
-async file data
+validacja - zmiana i do serwisu
+async file data - zapis i odczyt
 
 
 globalne zmienne przy computing

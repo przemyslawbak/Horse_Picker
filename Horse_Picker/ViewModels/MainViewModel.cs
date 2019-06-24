@@ -13,24 +13,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Horse_Picker.Services.Message;
+using Horse_Picker.Services.Update;
+using Horse_Picker.Services.Simulate;
+using Horse_Picker.Services.Files;
 
 namespace Horse_Picker.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
         //private IEventAggregator _eventAggregator; //Prism
-        private IMessageDialogService _messageDialogService;
-        private IUpdateDataService _updateDataService;
-        private ISimulateDataService _simulateDataService;
-        private IFileDataService _dataServices;
-        private IRaceModelProvider _raceModelProvider;
-        private UpdateModules _updateModulesModel;
+        private IMessageService _messageDialogService;
+        private IUpdateService _updateDataService;
+        private ISimulateService _simulateDataService;
+        private IFileService _dataServices;
+        private IRaceProvider _raceModelProvider;
 
-        public MainViewModel(IFileDataService dataServices,
-            IMessageDialogService messageDialogServices,
-            IRaceModelProvider raceServices,
-            IUpdateDataService updateDataService,
-            ISimulateDataService simulateDataService)
+        public MainViewModel(IFileService dataServices,
+            IMessageService messageDialogServices,
+            IRaceProvider raceServices,
+            IUpdateService updateDataService,
+            ISimulateService simulateDataService)
         {
             Horses = new ObservableCollection<LoadedHorse>();
             Jockeys = new ObservableCollection<LoadedJockey>();
@@ -45,7 +48,6 @@ namespace Horse_Picker.ViewModels
             _raceModelProvider = raceServices;
             _messageDialogService = messageDialogServices;
             HorseList = new ObservableCollection<HorseDataWrapper>();
-            _updateModulesModel = new UpdateModules();
 
             AllControlsEnabled = true;
             VisibilityStatusBar = Visibility.Hidden;
@@ -137,28 +139,8 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         public async Task OnUpdateDataExecuteAsync()
         {
-            UpdateModules = new ObservableCollection<bool>();
-
-            UpdateHorsesCz = false;
-            UpdateHorsesPl = false;
-            UpdateJockeysCz = false;
-            UpdateJockeysPl = false;
-            UpdateRacesPl = false;
-
-            //default values
-            JPlFrom = 1;
-            JPlTo = 1049;
-            JCzFrom = 4000;
-            JCzTo = 31049;
-            HPlFrom = 1;
-            HPlTo = 25049;
-            HCzFrom = 8000;
-            HCzTo = 150049;
-            HistPlFrom = 1;
-            HistPlTo = 17049;
-
-
-            var result = _messageDialogService.ShowUpdateWindow();
+            _messageDialogService.ShowUpdateWindow();
+            /*
 
             UpdateModules.Add(UpdateHorsesCz);
             UpdateModules.Add(UpdateHorsesPl);
@@ -200,11 +182,7 @@ namespace Horse_Picker.ViewModels
 
                 PopulateLists();
             }
-        }
-
-        private EventHandler ProgressBarTick(object v1, object sender, EventArgs eventArgs, object e, string v2, object workStatus, int v3, object loopCounter, int v4, object stopIndex, int v5, object startIndex)
-        {
-            throw new NotImplementedException();
+                */
         }
 
         /// <summary>
@@ -239,45 +217,7 @@ namespace Horse_Picker.ViewModels
         /// </summary>
         public void LoadAllData()
         {
-            Horses.Clear();
-            Jockeys.Clear();
-            Races.Clear();
 
-            foreach (var horse in _dataServices.GetAllHorses())
-            {
-                Horses.Add(new LoadedHorse
-                {
-                    Name = horse.Name,
-                    Age = horse.Age,
-                    AllRaces = horse.AllRaces,
-                    AllChildren = horse.AllChildren,
-                    Father = horse.Father,
-                    Link = horse.Link,
-                    FatherLink = horse.FatherLink
-                });
-            }
-
-            foreach (var jockey in _dataServices.GetAllJockeys())
-            {
-                Jockeys.Add(new LoadedJockey
-                {
-                    Name = jockey.Name,
-                    AllRaces = jockey.AllRaces,
-                    Link = jockey.Link
-                });
-            }
-
-            foreach (var race in _dataServices.GetAllRaces())
-            {
-                Races.Add(new LoadedHistoricalRace
-                {
-                    RaceCategory = race.RaceCategory,
-                    RaceDate = race.RaceDate,
-                    RaceDistance = race.RaceDistance,
-                    RaceLink = race.RaceLink,
-                    HorseList = race.HorseList
-                });
-            }
         }
 
         /// <summary>
@@ -355,216 +295,6 @@ namespace Horse_Picker.ViewModels
         public List<string> LoadedHorses { get; }
         public List<string> LoadedJockeys { get; }
         public Dictionary<string, int> CategoryFactorDict { get; set; }
-
-        //prop for scrap PL jockeys from ID int
-        public int JPlFrom
-        {
-            get
-            {
-                return _updateModulesModel.JPlFrom;
-            }
-            set
-            {
-                _updateModulesModel.JPlFrom = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for scrap PL jockeys to ID int
-        public int JPlTo
-        {
-            get
-            {
-                return _updateModulesModel.JPlTo;
-            }
-            set
-            {
-                _updateModulesModel.JPlTo = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for scrap CZ jockeys from ID int
-        public int JCzFrom
-        {
-            get
-            {
-                return _updateModulesModel.JCzFrom;
-            }
-            set
-            {
-                _updateModulesModel.JCzFrom = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for scrap CZ jockeys to ID int
-        public int JCzTo
-        {
-            get
-            {
-                return _updateModulesModel.JCzTo;
-            }
-            set
-            {
-                _updateModulesModel.JCzTo = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for scrap PL horses from ID int
-        public int HPlFrom
-        {
-            get
-            {
-                return _updateModulesModel.HPlFrom;
-            }
-            set
-            {
-                _updateModulesModel.HPlFrom = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for scrap PL horses to ID int
-        public int HPlTo
-        {
-            get
-            {
-                return _updateModulesModel.HPlTo;
-            }
-            set
-            {
-                _updateModulesModel.HPlTo = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for scrap CZ horses from ID int
-        public int HCzFrom
-        {
-            get
-            {
-                return _updateModulesModel.HCzFrom;
-            }
-            set
-            {
-                _updateModulesModel.HCzFrom = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for scrap CZ horses to ID int
-        public int HCzTo
-        {
-            get
-            {
-                return _updateModulesModel.HCzTo;
-            }
-            set
-            {
-                _updateModulesModel.HCzTo = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for scrap PL historic races from ID int
-        public int HistPlFrom
-        {
-            get
-            {
-                return _updateModulesModel.HistPlFrom;
-            }
-            set
-            {
-                _updateModulesModel.HistPlFrom = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for scrap PL historic races to ID int
-        public int HistPlTo
-        {
-            get
-            {
-                return _updateModulesModel.HistPlTo;
-            }
-            set
-            {
-                _updateModulesModel.HistPlTo = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for update jockeys PL checkbox
-        public bool UpdateJockeysPl
-        {
-            get
-            {
-                return _updateModulesModel.JockeysPl;
-            }
-            set
-            {
-                _updateModulesModel.JockeysPl = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for update jockeys CZ checkbox
-        public bool UpdateJockeysCz
-        {
-            get
-            {
-                return _updateModulesModel.JockeysCz;
-            }
-            set
-            {
-                _updateModulesModel.JockeysCz = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for update horses CZ checkbox
-        public bool UpdateHorsesCz
-        {
-            get
-            {
-                return _updateModulesModel.HorsesCz;
-            }
-            set
-            {
-                _updateModulesModel.HorsesCz = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for update horses PL checkbox
-        public bool UpdateHorsesPl
-        {
-            get
-            {
-                return _updateModulesModel.HorsesPl;
-            }
-            set
-            {
-                _updateModulesModel.HorsesPl = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //prop for update historic data PL checkbox
-        public bool UpdateRacesPl
-        {
-            get
-            {
-                return _updateModulesModel.RacesPl;
-            }
-            set
-            {
-                _updateModulesModel.RacesPl = value;
-                OnPropertyChanged();
-            }
-        }
 
         //prop race distance
         public string Distance

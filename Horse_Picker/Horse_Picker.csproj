@@ -96,27 +96,29 @@
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Events\UpdateBarEventArgs.cs" />
-    <Compile Include="Services\ComputeDataService.cs" />
-    <Compile Include="Services\FileDataService.cs" />
-    <Compile Include="Services\IComputeDataService.cs" />
-    <Compile Include="Services\IFileDataService.cs" />
-    <Compile Include="Services\IRaceModelProvider.cs" />
-    <Compile Include="Services\IScrapDataService.cs" />
-    <Compile Include="Services\ISimulateDataService.cs" />
-    <Compile Include="Services\IUpdateDataService.cs" />
-    <Compile Include="Services\RaceModelProvider.cs" />
-    <Compile Include="Services\ScrapDataService.cs" />
-    <Compile Include="Services\IMessageDialogService.cs" />
-    <Compile Include="Services\MessageDialogService.cs" />
+    <Compile Include="Services\Compute\ComputeService.cs" />
+    <Compile Include="Services\Files\FileService.cs" />
+    <Compile Include="Services\Compute\IComputeService.cs" />
+    <Compile Include="Services\Files\IFileService.cs" />
+    <Compile Include="Services\IRaceProvider.cs" />
+    <Compile Include="Services\Scrap\IScrapService.cs" />
+    <Compile Include="Services\Simulate\ISimulateService.cs" />
+    <Compile Include="Services\Update\IUpdateService.cs" />
+    <Compile Include="Services\RaceProvider.cs" />
+    <Compile Include="Services\Scrap\ScrapService.cs" />
+    <Compile Include="Services\Message\IMessageService.cs" />
+    <Compile Include="Services\Message\MessageService.cs" />
     <Compile Include="Models\HorseRaceDetails.cs" />
     <Compile Include="Models\HorseChildData.cs" />
     <Compile Include="Models\JockeyRaceDetails.cs" />
     <Compile Include="Models\LoadedHistoricalRace.cs" />
     <Compile Include="Models\LoadedJockey.cs" />
     <Compile Include="Models\UpdateModules.cs" />
-    <Compile Include="Services\SimulateDataService.cs" />
-    <Compile Include="Services\UpdateDataService.cs" />
+    <Compile Include="Services\Simulate\SimulateService.cs" />
+    <Compile Include="Services\Update\UpdateService.cs" />
     <Compile Include="Startup\BootStrapper.cs" />
+    <Compile Include="ViewModels\UpdateViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\UpdateWindow.xaml.cs">
       <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
@@ -186,5 +188,6 @@
   <ItemGroup>
     <Resource Include="horseicon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

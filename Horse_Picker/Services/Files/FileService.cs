@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Horse_Picker.Models;
 using Newtonsoft.Json;
 
-namespace Horse_Picker.Services
+namespace Horse_Picker.Services.Files
 {
-    public class FileDataService : IFileDataService
+    public class FileService : IFileService
     {
         string _horsesFileName = "_horses_list.json";
         string _jockeysFileName = "_jockeys_list.json";

@@ -10,7 +10,6 @@ namespace Horse_Picker.Views
         public UpdateWindow()
         {
             InitializeComponent();
-            DataContext = Application.Current.MainWindow.DataContext;
         }
 
         private void ButtonUpdate_Click(object sender, RoutedEventArgs e)

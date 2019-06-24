@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Horse_Picker.Services
+namespace Horse_Picker.Services.Compute
 {
-    public interface IComputeDataService
+    public interface IComputeService
     {
         double ComputeTiredIndex(LoadedHorse horseFromList, DateTime date);
 
@@ -16,17 +16,17 @@ namespace Horse_Picker.Services
         double ComputeAgeIndex(LoadedHorse horseFromList, DateTime date);
 
         double ComputeCategoryIndex(LoadedHorse horseFromList,
-            DateTime date, IRaceModelProvider raceServices,
+            DateTime date, IRaceProvider raceServices,
             Dictionary<string, int> racecategoryDictionary);
 
         double ComputeWinIndex(LoadedHorse horseFromList,
             DateTime date, LoadedJockey jockeyFromList,
-            IRaceModelProvider raceServices,
+            IRaceProvider raceServices,
             Dictionary<string, int> racecategoryDictionary);
         double ComputeJockeyIndex(LoadedJockey jockeyFromList, DateTime date);
 
         double ComputeSiblingsIndex(LoadedHorse fatherFromList,
-            DateTime date, IRaceModelProvider raceServices,
+            DateTime date, IRaceProvider raceServices,
             ObservableCollection<LoadedHorse> horses,
             Dictionary<string, int> raceCategoryDictionary);
     }

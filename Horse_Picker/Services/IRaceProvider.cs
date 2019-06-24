@@ -2,7 +2,7 @@
 
 namespace Horse_Picker.Services
 {
-    public interface IRaceModelProvider
+    public interface IRaceProvider
     {
         DateTime RaceDate { get; set; }
         string RaceNo { get; set; }

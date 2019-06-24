@@ -1,9 +1,6 @@
-﻿using Autofac;
-using Horse_Picker.Startup;
-using Horse_Picker.ViewModels;
-using System.Windows;
+﻿using System.Windows;
 
-namespace Horse_Picker
+namespace Horse_Picker.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -12,11 +9,7 @@ namespace Horse_Picker
     {
         public MainWindow()
         {
-            var bootStrapper = new BootStrapper();
-            var container = bootStrapper.BootStrap();
-            MainViewModel vm = container.Resolve<MainViewModel>();
             InitializeComponent();
-            DataContext = vm;
         }
     }
 }

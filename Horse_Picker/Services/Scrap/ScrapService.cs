@@ -8,9 +8,9 @@ using Horse_Picker.Models;
 using Horse_Picker.Wrappers;
 using HtmlAgilityPack;
 
-namespace Horse_Picker.Services
+namespace Horse_Picker.Services.Scrap
 {
-    public class ScrapDataService : IScrapDataService
+    public class ScrapService : IScrapService
     {
 
         public async Task<LoadedHorse> ScrapSingleHorsePlAsync(int index)

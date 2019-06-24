@@ -1,43 +1,47 @@
 ﻿using Autofac;
 using Horse_Picker.Services;
+using Horse_Picker.Services.Compute;
+using Horse_Picker.Services.Files;
+using Horse_Picker.Services.Message;
+using Horse_Picker.Services.Scrap;
+using Horse_Picker.Services.Simulate;
+using Horse_Picker.Services.Update;
 using Horse_Picker.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Horse_Picker.Views;
 
 namespace Horse_Picker.Startup
 {
     public class BootStrapper
     {
-        public IContainer BootStrap()
+        public static IContainer BootStrap()
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<SimulateDataService>()
-              .As<ISimulateDataService>().SingleInstance();
+            builder.RegisterType<SimulateService>()
+              .As<ISimulateService>().SingleInstance();
 
-            builder.RegisterType<UpdateDataService>()
-              .As<IUpdateDataService>().SingleInstance();
+            builder.RegisterType<UpdateService>()
+              .As<IUpdateService>().SingleInstance();
 
-            builder.RegisterType<RaceModelProvider>()
-              .As<IRaceModelProvider>().SingleInstance();
+            builder.RegisterType<RaceProvider>()
+              .As<IRaceProvider>().SingleInstance();
 
-            builder.RegisterType<FileDataService>()
-              .As<IFileDataService>().SingleInstance();
+            builder.RegisterType<FileService>()
+              .As<IFileService>().SingleInstance();
 
-            builder.RegisterType<ComputeDataService>()
-              .As<IComputeDataService>().SingleInstance();
+            builder.RegisterType<ComputeService>()
+              .As<IComputeService>().SingleInstance();
 
-            builder.RegisterType<ScrapDataService>()
-              .As<IScrapDataService>().SingleInstance();
+            builder.RegisterType<ScrapService>()
+              .As<IScrapService>().SingleInstance();
 
-            builder.RegisterType<MessageDialogService>()
-              .As<IMessageDialogService>().SingleInstance();
+            builder.RegisterType<MessageService>()
+              .As<IMessageService>().SingleInstance();
 
             builder.RegisterType<MainWindow>().AsSelf();
+            builder.RegisterType<UpdateWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf().SingleInstance();
+            builder.RegisterType<UpdateViewModel>().AsSelf().SingleInstance();
 
             return builder.Build();
         }

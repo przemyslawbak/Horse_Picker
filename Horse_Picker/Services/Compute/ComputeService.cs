@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Horse_Picker.Models;
 
-namespace Horse_Picker.Services
+namespace Horse_Picker.Services.Compute
 {
-    public class ComputeDataService : IComputeDataService
+    public class ComputeService : IComputeService
     {
         //compute fields
         private int _dictValue;
@@ -68,7 +68,7 @@ namespace Horse_Picker.Services
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns CI</returns>
-        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, IRaceModelProvider raceModelProvider, Dictionary<string, int> racecategoryDictionary)
+        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, IRaceProvider raceModelProvider, Dictionary<string, int> racecategoryDictionary)
         {
             Dictionary<string, int> raceDictionary = racecategoryDictionary;
 
@@ -250,7 +250,7 @@ namespace Horse_Picker.Services
         /// <returns>returns SI</returns>
         public double ComputeSiblingsIndex(LoadedHorse fatherFromList,
             DateTime date,
-            IRaceModelProvider raceModelProvider,
+            IRaceProvider raceModelProvider,
             ObservableCollection<LoadedHorse> horses,
             Dictionary<string, int> raceCategoryDictionary)
         {
@@ -355,7 +355,7 @@ namespace Horse_Picker.Services
         /// <returns>returns WI</returns>
         public double ComputeWinIndex(LoadedHorse horseFromList,
             DateTime date, LoadedJockey jockeyFromList,
-            IRaceModelProvider raceModelProvider,
+            IRaceProvider raceModelProvider,
             Dictionary<string, int> racecategoryDictionary)
         {
             Dictionary<string, int> raceDictionary = racecategoryDictionary;

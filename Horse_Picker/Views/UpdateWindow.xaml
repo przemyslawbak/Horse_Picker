@@ -9,7 +9,8 @@
         ResizeMode="NoResize"
         Title="Update data"
         WindowStartupLocation="CenterOwner"
-        Background="#61445C">
+        Background="#61445C"
+        DataContext="{Binding UpdateViewModel, Source={StaticResource ViewModelLocator}}">
     <Window.Resources>
         <Style x:Key="ckbx" TargetType="CheckBox">
             <Setter Property="HorizontalAlignment" Value="Center"/>

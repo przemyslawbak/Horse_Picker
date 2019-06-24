@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.Services
 {
-    public class RaceModelProvider : IRaceModelProvider
+    public class RaceProvider : IRaceProvider
     {
         RaceModel _raceModel = new RaceModel();
         public DateTime RaceDate { get => _raceModel.RaceDate; set => _raceModel.RaceDate = value; }

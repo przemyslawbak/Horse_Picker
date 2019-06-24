@@ -1,6 +1,8 @@
-﻿namespace Horse_Picker.Services
+﻿using System.Collections.ObjectModel;
+
+namespace Horse_Picker.Services.Message
 {
-    public interface IMessageDialogService
+    public interface IMessageService
     {
         MessageDialogResult ShowUpdateWindow();
     }

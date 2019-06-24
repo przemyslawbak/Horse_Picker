@@ -8,20 +8,22 @@ using Horse_Picker.Models;
 using System.Threading;
 using Horse_Picker.Wrappers;
 using Horse_Picker.Events;
+using Horse_Picker.Services.Update;
+using Horse_Picker.Services.Files;
 
-namespace Horse_Picker.Services
+namespace Horse_Picker.Services.Simulate
 {
-    public class SimulateDataService : ISimulateDataService
+    public class SimulateService : ISimulateService
     {
-        private IFileDataService _dataServices;
-        private IUpdateDataService _updateDataService;
+        private IFileService _dataServices;
+        private IUpdateService _updateDataService;
         int _idTo;
         int _idFrom;
         int _loopCounter;
         string _jobType;
         int _degreeOfParallelism;
 
-        public SimulateDataService(IUpdateDataService updateDataService, IFileDataService dataServices)
+        public SimulateService(IUpdateService updateDataService, IFileService dataServices)
         {
             _degreeOfParallelism = 100;
 
@@ -39,7 +41,7 @@ namespace Horse_Picker.Services
             ObservableCollection<LoadedHistoricalRace> races,
             ObservableCollection<LoadedHorse> horses,
             ObservableCollection<LoadedJockey> jockeys,
-            IRaceModelProvider raceModelProvider)
+            IRaceProvider raceModelProvider)
         {
             //variables
             SemaphoreSlim throttler = new SemaphoreSlim(_degreeOfParallelism);

@@ -1,5 +1,8 @@
 ﻿using Horse_Picker.Events;
 using Horse_Picker.Models;
+using Horse_Picker.Services.Compute;
+using Horse_Picker.Services.Files;
+using Horse_Picker.Services.Scrap;
 using Horse_Picker.Wrappers;
 using System;
 using System.Collections;
@@ -10,22 +13,22 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Horse_Picker.Services
+namespace Horse_Picker.Services.Update
 {
     //update progress bar question: https://stackoverflow.com/questions/56690258/is-there-any-way-that-my-service-layer-will-update-vm-properties-or-methods-res
 
-    public class UpdateDataService : IUpdateDataService
+    public class UpdateService : IUpdateService
     {
         int _idTo;
         int _idFrom;
         int _loopCounter;
         string _jobType;
         int _degreeOfParallelism;
-        private IScrapDataService _scrapDataService;
-        private IFileDataService _dataServices;
-        private IComputeDataService _computeDataService;
+        private IScrapService _scrapDataService;
+        private IFileService _dataServices;
+        private IComputeService _computeDataService;
 
-        public UpdateDataService(IFileDataService dataServices, IScrapDataService scrapDataService, IComputeDataService computeDataService)
+        public UpdateService(IFileService dataServices, IScrapService scrapDataService, IComputeService computeDataService)
         {
             _degreeOfParallelism = 100;
 
@@ -281,7 +284,7 @@ namespace Horse_Picker.Services
         public HorseDataWrapper GetParsedHorseData(HorseDataWrapper horseWrapper,
             DateTime date, ObservableCollection<LoadedHorse> horses,
             ObservableCollection<LoadedJockey> jockeys,
-            IRaceModelProvider raceModelProvider)
+            IRaceProvider raceModelProvider)
         {
             Dictionary<string, int> raceCategoryDictionary = GetRaceCategoryDictionary(raceModelProvider);
             LoadedJockey jockeyFromList = new LoadedJockey();
@@ -423,7 +426,7 @@ namespace Horse_Picker.Services
         /// list of race categories and values of them
         /// </summary>
         /// <returns>category dictionary with string key and int value</returns>
-        public Dictionary<string, int> GetRaceCategoryDictionary(IRaceModelProvider raceModelProvider)
+        public Dictionary<string, int> GetRaceCategoryDictionary(IRaceProvider raceModelProvider)
         {
             Dictionary<string, int> categoryFactorDict = new Dictionary<string, int>();
             categoryFactorDict.Add("G1 A", 11);

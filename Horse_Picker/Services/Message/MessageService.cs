@@ -2,13 +2,14 @@
 using Horse_Picker.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-namespace Horse_Picker.Services
+namespace Horse_Picker.Services.Message
 {
-    public class MessageDialogService : IMessageDialogService
+    public class MessageService : IMessageService
     {
         public MessageDialogResult ShowUpdateWindow()
         {

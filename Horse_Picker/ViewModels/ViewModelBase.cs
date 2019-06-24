@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Autofac;
+using Horse_Picker.Startup;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;

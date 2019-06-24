@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Horse_Picker.Events;
 using Horse_Picker.Models;
 
-namespace Horse_Picker.Services
+namespace Horse_Picker.Services.Simulate
 {
-    public interface ISimulateDataService
+    public interface ISimulateService
     {
         event EventHandler<UpdateBarEventArgs> _simulateProgressEventHandler;
 
@@ -15,7 +15,7 @@ namespace Horse_Picker.Services
             ObservableCollection<LoadedHistoricalRace> races,
             ObservableCollection<LoadedHorse> horses,
             ObservableCollection<LoadedJockey> jockeys,
-            IRaceModelProvider _raceModelProvider);
+            IRaceProvider _raceModelProvider);
         void CancelUpdates();
     }
 }

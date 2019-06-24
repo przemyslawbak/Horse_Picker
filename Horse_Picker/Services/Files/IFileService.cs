@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Horse_Picker.Services
+namespace Horse_Picker.Services.Files
 {
-    public interface IFileDataService
+    public interface IFileService
     {
         List<LoadedHorse> GetAllHorses();
         Task SaveAllHorsesAsync(List<LoadedHorse> horses);
