@@ -17,12 +17,13 @@ using Horse_Picker.Services.Message;
 using Horse_Picker.Services.Update;
 using Horse_Picker.Services.Simulate;
 using Horse_Picker.Services.Files;
+using Prism.Events;
 
 namespace Horse_Picker.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        //private IEventAggregator _eventAggregator; //Prism
+        private IEventAggregator _eventAggregator;
         private IMessageService _messageDialogService;
         private IUpdateService _updateDataService;
         private ISimulateService _simulateDataService;
@@ -33,21 +34,22 @@ namespace Horse_Picker.ViewModels
             IMessageService messageDialogServices,
             IRaceProvider raceServices,
             IUpdateService updateDataService,
-            ISimulateService simulateDataService)
+            ISimulateService simulateDataService,
+            IEventAggregator eventAggregator)
         {
             Horses = new ObservableCollection<LoadedHorse>();
             Jockeys = new ObservableCollection<LoadedJockey>();
             Races = new ObservableCollection<LoadedHistoricalRace>();
+            HorseList = new ObservableCollection<HorseDataWrapper>();
             LoadedHorses = new List<string>();
             LoadedJockeys = new List<string>();
 
-            //_eventAggregator = eventAggregator; //prism events
+            _eventAggregator = eventAggregator;
             _dataServices = dataServices;
             _updateDataService = updateDataService;
             _simulateDataService = simulateDataService;
             _raceModelProvider = raceServices;
             _messageDialogService = messageDialogServices;
-            HorseList = new ObservableCollection<HorseDataWrapper>();
 
             AllControlsEnabled = true;
             VisibilityStatusBar = Visibility.Hidden;
@@ -71,6 +73,12 @@ namespace Horse_Picker.ViewModels
             CategoryFactorDict = _updateDataService.GetRaceCategoryDictionary(_raceModelProvider);
 
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
+            _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate);
+        }
+
+        private void OnDataUpdate(UpdateModules updateModules)
+        {
+            DataUpdateModules = updateModules;
         }
 
         private void OnSimulateCancellationExecute(object obj)
@@ -139,37 +147,35 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         public async Task OnUpdateDataExecuteAsync()
         {
-            _messageDialogService.ShowUpdateWindow();
-            /*
+            var result = _messageDialogService.ShowUpdateWindow();
 
-            UpdateModules.Add(UpdateHorsesCz);
-            UpdateModules.Add(UpdateHorsesPl);
-            UpdateModules.Add(UpdateJockeysCz);
-            UpdateModules.Add(UpdateJockeysPl);
-            UpdateModules.Add(UpdateRacesPl);
+            UpdateModules = new ObservableCollection<bool>();
+            UpdateModules.Add(DataUpdateModules.JockeysPl);
+            UpdateModules.Add(DataUpdateModules.JockeysCz);
+            UpdateModules.Add(DataUpdateModules.HorsesCz);
+            UpdateModules.Add(DataUpdateModules.HorsesPl);
+            UpdateModules.Add(DataUpdateModules.RacesPl);
 
             bool isAnyTrue = UpdateModules.Any(module => module == true);
 
             if (result == MessageDialogResult.Update && isAnyTrue)
             {
-                //ProgressBarTick(jobDescription, loopCounter, idTo, idFrom); //init display ???????????????????????????????
-
                 CommandStartedControlsSetup("UpdateDataCommand");
 
                 var stopwatch = Stopwatch.StartNew(); //stopwatch
 
                 _updateDataService._updateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
-                if (UpdateJockeysPl)
-                    Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, JPlFrom, JPlTo, "updateJockeysPl");
-                if (UpdateJockeysCz)
-                    Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, JCzFrom, JCzTo, "updateJockeysCz");
-                if (UpdateHorsesPl)
-                    Horses = await _updateDataService.UpdateDataAsync(Horses, HPlFrom, HPlTo, "updateHorsesPl");
-                if (UpdateHorsesCz)
-                    Horses =  await _updateDataService.UpdateDataAsync(Horses, HCzFrom, HCzTo, "updateHorsesCz");
-                if (UpdateRacesPl)
-                    Races = await _updateDataService.UpdateDataAsync(Races, HistPlFrom, HistPlTo, "updateHistoricPl");
+                if (DataUpdateModules.JockeysPl)
+                    Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JPlFrom, DataUpdateModules.JPlTo, "updateJockeysPl");
+                if (DataUpdateModules.JockeysCz)
+                    Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JCzFrom, DataUpdateModules.JCzTo, "updateJockeysCz");
+                if (DataUpdateModules.HorsesCz)
+                    Horses = await _updateDataService.UpdateDataAsync(Horses, DataUpdateModules.HPlFrom, DataUpdateModules.HPlTo, "updateHorsesPl");
+                if (DataUpdateModules.HorsesPl)
+                    Horses = await _updateDataService.UpdateDataAsync(Horses, DataUpdateModules.HCzFrom, DataUpdateModules.HCzTo, "updateHorsesCz");
+                if (DataUpdateModules.RacesPl)
+                    Races = await _updateDataService.UpdateDataAsync(Races, DataUpdateModules.HistPlFrom, DataUpdateModules.HistPlTo, "updateHistoricPl");
 
                 _updateDataService._updateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //unsub from service event
 
@@ -182,7 +188,6 @@ namespace Horse_Picker.ViewModels
 
                 PopulateLists();
             }
-                */
         }
 
         /// <summary>
@@ -217,7 +222,45 @@ namespace Horse_Picker.ViewModels
         /// </summary>
         public void LoadAllData()
         {
+            Horses.Clear();
+            Jockeys.Clear();
+            Races.Clear();
 
+            foreach (var horse in _dataServices.GetAllHorses())
+            {
+                Horses.Add(new LoadedHorse
+                {
+                    Name = horse.Name,
+                    Age = horse.Age,
+                    AllRaces = horse.AllRaces,
+                    AllChildren = horse.AllChildren,
+                    Father = horse.Father,
+                    Link = horse.Link,
+                    FatherLink = horse.FatherLink
+                });
+            }
+
+            foreach (var jockey in _dataServices.GetAllJockeys())
+            {
+                Jockeys.Add(new LoadedJockey
+                {
+                    Name = jockey.Name,
+                    AllRaces = jockey.AllRaces,
+                    Link = jockey.Link
+                });
+            }
+
+            foreach (var race in _dataServices.GetAllRaces())
+            {
+                Races.Add(new LoadedHistoricalRace
+                {
+                    RaceCategory = race.RaceCategory,
+                    RaceDate = race.RaceDate,
+                    RaceDistance = race.RaceDistance,
+                    RaceLink = race.RaceLink,
+                    HorseList = race.HorseList
+                });
+            }
         }
 
         /// <summary>
@@ -286,6 +329,7 @@ namespace Horse_Picker.ViewModels
         public ICommand PickHorseDataCommand { get; private set; }
 
         //properties
+        public UpdateModules DataUpdateModules { get; set; }
         public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
         public ObservableCollection<bool> UpdateModules { get; private set; }
         public HorseDataWrapper HorseWrapper { get; private set; }

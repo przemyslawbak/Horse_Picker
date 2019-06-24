@@ -14,12 +14,18 @@ namespace Horse_Picker.ViewModels
 
         public MainViewModel MainViewModel
         {
-            get { return container.Resolve<MainViewModel>(); }
+            get
+            {
+                return container.Resolve<MainViewModel>();
+            }
         }
 
         public UpdateViewModel UpdateViewModel
         {
-            get { return container.Resolve<UpdateViewModel>(); }
+            get
+            {
+                return container.Resolve<UpdateViewModel>();
+            }
         }
     }
 }

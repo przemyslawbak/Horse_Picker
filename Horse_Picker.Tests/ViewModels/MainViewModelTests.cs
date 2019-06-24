@@ -7,6 +7,7 @@ using Horse_Picker.Services.Update;
 using Horse_Picker.ViewModels;
 using Horse_Picker.Wrappers;
 using Moq;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +23,7 @@ namespace Horse_Picker.Tests.ViewModels
     public class MainViewModelTests
     {
         private MainViewModel _viewModel;
+        private Mock<IEventAggregator> _eventAggregatorMock;
         private Mock<IMessageService> _messageDialogServicesMock;
         private Mock<IFileService> _dataServicesMock;
         private Mock<IRaceProvider> _raceModelProviderMock;
@@ -30,6 +32,7 @@ namespace Horse_Picker.Tests.ViewModels
 
         public MainViewModelTests()
         {
+            _eventAggregatorMock = new Mock<IEventAggregator>();
             _messageDialogServicesMock = new Mock<IMessageService>();
             _dataServicesMock = new Mock<IFileService>();
             _raceModelProviderMock = new Mock<IRaceProvider>();
@@ -119,7 +122,8 @@ namespace Horse_Picker.Tests.ViewModels
                 _messageDialogServicesMock.Object,
                 _raceModelProviderMock.Object,
                 _updateDataMock.Object,
-                _simulateDataMock.Object);
+                _simulateDataMock.Object,
+                _eventAggregatorMock.Object);
 
             _viewModel.Category = "I";
             _viewModel.City = "Waw";

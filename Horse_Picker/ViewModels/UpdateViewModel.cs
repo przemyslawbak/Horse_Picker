@@ -1,5 +1,7 @@
-﻿using Horse_Picker.Models;
+﻿using Horse_Picker.Events;
+using Horse_Picker.Models;
 using Horse_Picker.Views;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,28 +14,18 @@ namespace Horse_Picker.ViewModels
 {
     public class UpdateViewModel : ViewModelBase
     {
+        private IEventAggregator _eventAggregator;
         private UpdateModules _updateModulesModel;
-        public UpdateViewModel()
+        public UpdateViewModel(IEventAggregator eventAggregator)
         {
             Horses = new ObservableCollection<LoadedHorse>();
             Jockeys = new ObservableCollection<LoadedJockey>();
             Races = new ObservableCollection<LoadedHistoricalRace>();
 
+            _eventAggregator = eventAggregator;
             _updateModulesModel = new UpdateModules();
 
-            PopulateCollections();
-
             RunTheUpdate();
-        }
-
-        private void PopulateCollections()
-        {
-            MainWindow win = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            MainViewModel vm = (MainViewModel)win.DataContext;
-
-            Horses = vm.Horses;
-            Jockeys = vm.Jockeys;
-            Races = vm.Races;
         }
 
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
@@ -59,6 +51,8 @@ namespace Horse_Picker.ViewModels
             HCzTo = 150049;
             HistPlFrom = 1;
             HistPlTo = 17049;
+
+            _eventAggregator.GetEvent<DataUpdateEvent>().Publish(_updateModulesModel);
         }
 
         //prop for scrap PL jockeys from ID int

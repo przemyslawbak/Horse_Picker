@@ -95,6 +95,7 @@
     <Compile Include="Commands\AsyncCommand.cs" />
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Events\DataUpdateEvent.cs" />
     <Compile Include="Events\UpdateBarEventArgs.cs" />
     <Compile Include="Services\Compute\ComputeService.cs" />
     <Compile Include="Services\Files\FileService.cs" />

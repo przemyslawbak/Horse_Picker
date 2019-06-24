@@ -8,6 +8,7 @@ using Horse_Picker.Services.Simulate;
 using Horse_Picker.Services.Update;
 using Horse_Picker.ViewModels;
 using Horse_Picker.Views;
+using Prism.Events;
 
 namespace Horse_Picker.Startup
 {
@@ -16,6 +17,9 @@ namespace Horse_Picker.Startup
         public static IContainer BootStrap()
         {
             var builder = new ContainerBuilder();
+
+            builder.RegisterType<EventAggregator>()
+              .As<IEventAggregator>().SingleInstance();
 
             builder.RegisterType<SimulateService>()
               .As<ISimulateService>().SingleInstance();
@@ -41,7 +45,7 @@ namespace Horse_Picker.Startup
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<UpdateWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf().SingleInstance();
-            builder.RegisterType<UpdateViewModel>().AsSelf().SingleInstance();
+            builder.RegisterType<UpdateViewModel>().AsSelf();
 
             return builder.Build();
         }
