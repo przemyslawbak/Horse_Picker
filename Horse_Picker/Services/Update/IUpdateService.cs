@@ -17,10 +17,12 @@ namespace Horse_Picker.Services.Update
 
         Dictionary<string, int> GetRaceCategoryDictionary(IRaceProvider raceModelProvider);
 
-        Task<ObservableCollection<T>> UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int jPlFrom, int jPlTo, string v);
 
         void CancelUpdates();
 
         event EventHandler<UpdateBarEventArgs> _updateProgressEventHandler;
+
+        Task<ObservableCollection<T>> UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int jPlFrom, int jPlTo, string v);
+
     }
 }

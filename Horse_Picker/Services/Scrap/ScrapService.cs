@@ -7,11 +7,307 @@ using System.Threading.Tasks;
 using Horse_Picker.Models;
 using Horse_Picker.Wrappers;
 using HtmlAgilityPack;
+using PuppeteerSharp;
 
 namespace Horse_Picker.Services.Scrap
 {
     public class ScrapService : IScrapService
     {
+        string _linkBase;
+        string _htmlDocument;
+        string _jobType;
+
+        public async Task<T> ScrapGenericObject<T>(int id, string jobType)
+        {
+            if (jobType.Contains("JockeysPl"))
+            {
+                _linkBase = "https://koniewyscigowe.pl/dzokej?d=";
+            }
+            if (jobType.Contains("JockeysCz"))
+            {
+                _linkBase = "http://dostihyjc.cz/jezdec.php?IDTR=";
+            }
+            //add horse + race
+
+            _jobType = jobType;
+
+            if (typeof(T) == typeof(LoadedJockey))
+            {
+                Jockey = new LoadedJockey();
+
+                Jockey.Link = GetLink(_linkBase, id);
+
+                _htmlDocument = await GetHtmlDocumentAsync(Jockey.Link, "html"); //exceptions, kurła <- chrome wrapper sux
+
+                Jockey.Name = GetJockeyName(Jockey.Link);
+                Jockey.AllRaces = GetJockeyAllRaces();
+
+
+
+                return (T)Convert.ChangeType(Jockey, typeof(LoadedJockey));
+            }
+
+            ////////////////////////////////////////////////////////////////////////////
+
+            else if (typeof(T) == typeof(LoadedHorse))
+            {
+                Horse = new LoadedHorse();//XXXXXXXXXXXXX
+                return (T)Convert.ChangeType(Horse, typeof(LoadedHorse));
+            }
+            else if (typeof(T) == typeof(LoadedHistoricalRace))
+            {
+                Race = new LoadedHistoricalRace();//XXXXXXXXXXXXX
+                return (T)Convert.ChangeType(Race, typeof(LoadedHistoricalRace));
+            }
+            else { throw new ArgumentException(); }
+        }
+
+        /////////////////////////////////OK///////////////////////////////////////////
+
+        private string GetLink(string linkBase, int id)
+        {
+            return linkBase + id;
+        }
+
+        private string GetJockeyName(string name)
+        {
+            throw new NotImplementedException();
+        }
+        private List<JockeyRaceDetails> GetJockeyAllRaces()
+        {
+            throw new NotImplementedException();
+        }
+
+        ////////////////////////////////////////////////////////////////////////////
+
+        public LoadedJockey Jockey { get; set; }
+        public LoadedHorse Horse { get; set; }
+        public LoadedHistoricalRace Race { get; set; }
+
+        public async Task<LoadedJockey> ScrapSingleJockeyPlAsync(int index)
+        {
+            LoadedJockey jockey = new LoadedJockey();
+            await Task.Run(() =>
+            {
+                int n;
+                List<JockeyRaceDetails> allRaces = new List<JockeyRaceDetails>();
+
+                for (int year = DateTime.Now.Year; year > 2013; year--)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("https://koniewyscigowe.pl/dzokej?d=");
+                    sb.Append(index);
+                    sb.Append("&sezon=");
+                    sb.Append(year);
+                    sb.Append("#wyniki_koni");
+
+                    string link = sb.ToString();
+
+                    HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
+                    HtmlAgilityPack.HtmlDocument doc = web.Load(link);
+
+                    //gets the name of the jockey
+                    if (jockey.Name == null)
+                    {
+                        try
+                        {
+                            HtmlNode singleNode = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div[1]/h3");
+                            string racersName = singleNode.OuterHtml.ToString();
+                            if (racersName.Contains("Jeździec") && racersName.Length > 65)
+                            {
+                                racersName = racersName.Split('>')[1].Split(new string[] { " - " }, StringSplitOptions.None)[1].Split('<')[0].Trim(' ');
+                                if (racersName.Contains(" "))
+                                {
+                                    char letter = racersName[0];
+                                    racersName = racersName.Split(' ')[1].Trim(' ');
+                                    racersName = letter + ". " + racersName;
+                                }
+
+                                racersName = MakeTitleCase(racersName);
+
+                                jockey.Name = racersName; //jockeys name
+                            }
+                            else
+                            {
+                                racersName = "";
+                            }
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                    }
+
+                    //scrap races
+                    HtmlNode[] tableRow = doc.DocumentNode.SelectNodes("//*[@id=\"wykaz_list\"]/tbody/tr").ToArray();
+                    if (tableRow != null && tableRow.Length > 0)
+                    {
+                        foreach (var row in tableRow)
+                        {
+                            string stringTableRow = row.OuterHtml.ToString();
+
+                            //all races
+                            //if row not contains 'brak startow' and contains m (meters)
+                            if (!stringTableRow.Contains("Brak danych") && (stringTableRow.Contains("&nbsp;m") || stringTableRow.Contains(" m")))
+                            {
+                                try
+                                {
+                                    JockeyRaceDetails race = new JockeyRaceDetails();
+
+                                    string raceDate = stringTableRow.Split('>')[3].Split('<')[0].Trim(' ');
+                                    string raceDistance = stringTableRow.Split('>')[8].Split(' ')[0].Trim(' ');
+                                    string horsesName = stringTableRow.Split('>')[10].Split('<')[0].Trim(' ');
+                                    horsesName = MakeTitleCase(horsesName);
+                                    string raceScore = stringTableRow.Split('>')[12].Split('<')[0].Trim(' ');
+                                    string racePlace = raceScore.Split('/')[0].Trim(' ');
+                                    string raceCompetitors = raceScore.Split('/')[1].Trim(' ');
+
+                                    race = ParseJockeyRaceData(raceDate,
+                                        raceDistance,
+                                        horsesName,
+                                        raceScore,
+                                        racePlace,
+                                        raceCompetitors);
+
+                                    allRaces.Add(race);
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
+                            }
+                        }
+                    }
+                }
+                jockey.AllRaces = allRaces; //jockeys races between 2015-2019
+                jockey.Link = "https://koniewyscigowe.pl/dzokej?d=" + index; //racers link
+
+                if (jockey.AllRaces.Count == 0)
+                {
+                    jockey.Name = null;
+                }
+
+            });
+            return jockey;
+        }
+
+        public async Task<LoadedJockey> ScrapSingleJockeyCzAsync(int index)
+        {
+            LoadedJockey jockey = new LoadedJockey();
+            await Task.Run(() =>
+            {
+
+                int n;
+                List<JockeyRaceDetails> allRaces = new List<JockeyRaceDetails>();
+
+                for (int year = DateTime.Now.Year; year > 2013; year--)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("http://dostihyjc.cz/jezdec.php?IDTR=");
+                    sb.Append(index);
+                    sb.Append("&rok=");
+                    sb.Append(year);
+                    sb.Append("&pod=kariera");
+
+                    string link = sb.ToString();
+
+                    //to be sure if jockey was riding in our time period
+                    List<string> years = new List<string>();
+                    for (int check = DateTime.Now.Year; check > 2009; check--)
+                    {
+                        years.Add(check.ToString());
+                    }
+
+                    HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
+                    HtmlAgilityPack.HtmlDocument doc = web.Load(link);
+
+                    //check time period
+                    HtmlNode timePeriods = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[1]/table[1]");
+                    string timeTable = timePeriods.OuterHtml.ToString();
+
+                    if (years.Any(timeTable.Contains))
+                    {//gets the name of the jockey
+                        if (jockey.Name == null)
+                        {
+                            try
+                            {
+
+                                HtmlNode[] singleNode = doc.DocumentNode.Descendants("b").ToArray();
+                                string racersName = singleNode[2].OuterHtml.ToString();
+                                racersName = racersName.Split('>')[1].Split('<')[0].Trim(' ');
+                                char letter = racersName.Split(' ')[1][0];
+                                racersName = racersName.Split(' ')[0].Trim(' ');
+                                racersName = letter + ". " + racersName;
+
+                                racersName = MakeTitleCase(racersName);
+
+                                jockey.Name = racersName; //jockeys name
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                        }
+
+                        //scrap races
+                        HtmlNode[] tableRows = doc.DocumentNode.SelectNodes("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[4]/tr").ToArray();
+                        if (tableRows != null && tableRows.Length > 0)
+                        {
+                            foreach (var row in tableRows)
+                            {
+                                string stringTableRow = row.OuterHtml.ToString();
+
+                                //all races
+                                //if row not contains 'brak startow' and contains m (meters)
+                                if (!stringTableRow.Contains("nebyl nalezen žádný záznam"))
+                                {
+                                    try
+                                    {
+                                        JockeyRaceDetails race = new JockeyRaceDetails();
+
+                                        string raceDate = stringTableRow.Split('>')[3].Split('<')[0].Trim(' ');
+                                        string raceDistance = stringTableRow.Split('>')[19].Split('<')[0].Trim(' ');
+                                        string horsesName = stringTableRow.Split('>')[23].Split('<')[0].Trim(' ');
+                                        if (horsesName.Contains("("))
+                                        {
+                                            horsesName = horsesName.Split('(')[0].Trim(' ');
+                                        }
+                                        horsesName = MakeTitleCase(horsesName);
+                                        string raceScore = stringTableRow.Split('>')[31].Split('<')[0].Trim(' ');
+                                        string racePlace = raceScore.Split(' ')[0].Trim(' ');
+                                        string raceCompetitors = raceScore.Split(' ')[2].Trim(' ');
+
+                                        race = ParseJockeyRaceData(raceDate,
+                                        raceDistance,
+                                        horsesName,
+                                        raceScore,
+                                        racePlace,
+                                        raceCompetitors);
+
+                                        allRaces.Add(race);
+                                    }
+                                    catch (Exception e)
+                                    {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                jockey.AllRaces = allRaces; //jockeys races between 2015-2019
+                jockey.Link = "http://dostihyjc.cz/jezdec.php?IDTR=" + index; //racers link
+
+                if (jockey.AllRaces.Count == 0)
+                {
+                    jockey.Name = null;
+                }
+            });
+
+            return jockey;
+        }
+
+
 
         public async Task<LoadedHorse> ScrapSingleHorsePlAsync(int index)
         {
@@ -558,228 +854,7 @@ namespace Horse_Picker.Services.Scrap
             return race;
         }
 
-        public async Task<LoadedJockey> ScrapSingleJockeyPlAsync(int index)
-        {
-            LoadedJockey jockey = new LoadedJockey();
-            await Task.Run(() =>
-            {
-                int n;
-                List<JockeyRaceDetails> allRaces = new List<JockeyRaceDetails>();
 
-                for (int year = DateTime.Now.Year; year > 2013; year--)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("https://koniewyscigowe.pl/dzokej?d=");
-                    sb.Append(index);
-                    sb.Append("&sezon=");
-                    sb.Append(year);
-                    sb.Append("#wyniki_koni");
-
-                    string link = sb.ToString();
-
-                    HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
-                    HtmlAgilityPack.HtmlDocument doc = web.Load(link);
-
-                    //gets the name of the jockey
-                    if (jockey.Name == null)
-                    {
-                        try
-                        {
-                            HtmlNode singleNode = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div[1]/h3");
-                            string racersName = singleNode.OuterHtml.ToString();
-                            if (racersName.Contains("Jeździec") && racersName.Length > 65)
-                            {
-                                racersName = racersName.Split('>')[1].Split(new string[] { " - " }, StringSplitOptions.None)[1].Split('<')[0].Trim(' ');
-                                if (racersName.Contains(" "))
-                                {
-                                    char letter = racersName[0];
-                                    racersName = racersName.Split(' ')[1].Trim(' ');
-                                    racersName = letter + ". " + racersName;
-                                }
-
-                                racersName = MakeTitleCase(racersName);
-
-                                jockey.Name = racersName; //jockeys name
-                            }
-                            else
-                            {
-                                racersName = "";
-                            }
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-                    }
-
-                    //scrap races
-                    HtmlNode[] tableRow = doc.DocumentNode.SelectNodes("//*[@id=\"wykaz_list\"]/tbody/tr").ToArray();
-                    if (tableRow != null && tableRow.Length > 0)
-                    {
-                        foreach (var row in tableRow)
-                        {
-                            string stringTableRow = row.OuterHtml.ToString();
-
-                            //all races
-                            //if row not contains 'brak startow' and contains m (meters)
-                            if (!stringTableRow.Contains("Brak danych") && (stringTableRow.Contains("&nbsp;m") || stringTableRow.Contains(" m")))
-                            {
-                                try
-                                {
-                                    JockeyRaceDetails race = new JockeyRaceDetails();
-
-                                    string raceDate = stringTableRow.Split('>')[3].Split('<')[0].Trim(' ');
-                                    string raceDistance = stringTableRow.Split('>')[8].Split(' ')[0].Trim(' ');
-                                    string horsesName = stringTableRow.Split('>')[10].Split('<')[0].Trim(' ');
-                                    horsesName = MakeTitleCase(horsesName);
-                                    string raceScore = stringTableRow.Split('>')[12].Split('<')[0].Trim(' ');
-                                    string racePlace = raceScore.Split('/')[0].Trim(' ');
-                                    string raceCompetitors = raceScore.Split('/')[1].Trim(' ');
-
-                                    race = ParseJockeyRaceData(raceDate,
-                                        raceDistance,
-                                        horsesName,
-                                        raceScore,
-                                        racePlace,
-                                        raceCompetitors);
-
-                                    allRaces.Add(race);
-                                }
-                                catch (Exception e)
-                                {
-
-                                }
-                            }
-                        }
-                    }
-                }
-                jockey.AllRaces = allRaces; //jockeys races between 2015-2019
-                jockey.Link = "https://koniewyscigowe.pl/dzokej?d=" + index; //racers link
-
-                if (jockey.AllRaces.Count == 0)
-                {
-                    jockey.Name = null;
-                }
-
-            });
-            return jockey;
-        }
-
-        public async Task<LoadedJockey> ScrapSingleJockeyCzAsync(int index)
-        {
-            LoadedJockey jockey = new LoadedJockey();
-            await Task.Run(() =>
-            {
-
-                int n;
-                List<JockeyRaceDetails> allRaces = new List<JockeyRaceDetails>();
-
-                for (int year = DateTime.Now.Year; year > 2013; year--)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("http://dostihyjc.cz/jezdec.php?IDTR=");
-                    sb.Append(index);
-                    sb.Append("&rok=");
-                    sb.Append(year);
-                    sb.Append("&pod=kariera");
-
-                    string link = sb.ToString();
-
-                    //to be sure if jockey was riding in our time period
-                    List<string> years = new List<string>();
-                    for (int check = DateTime.Now.Year; check > 2009; check--)
-                    {
-                        years.Add(check.ToString());
-                    }
-
-                    HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
-                    HtmlAgilityPack.HtmlDocument doc = web.Load(link);
-
-                    //check time period
-                    HtmlNode timePeriods = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[1]/table[1]");
-                    string timeTable = timePeriods.OuterHtml.ToString();
-
-                    if (years.Any(timeTable.Contains))
-                    {//gets the name of the jockey
-                        if (jockey.Name == null)
-                        {
-                            try
-                            {
-
-                                HtmlNode[] singleNode = doc.DocumentNode.Descendants("b").ToArray();
-                                string racersName = singleNode[2].OuterHtml.ToString();
-                                racersName = racersName.Split('>')[1].Split('<')[0].Trim(' ');
-                                char letter = racersName.Split(' ')[1][0];
-                                racersName = racersName.Split(' ')[0].Trim(' ');
-                                racersName = letter + ". " + racersName;
-
-                                racersName = MakeTitleCase(racersName);
-
-                                jockey.Name = racersName; //jockeys name
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
-                        }
-
-                        //scrap races
-                        HtmlNode[] tableRows = doc.DocumentNode.SelectNodes("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[4]/tr").ToArray();
-                        if (tableRows != null && tableRows.Length > 0)
-                        {
-                            foreach (var row in tableRows)
-                            {
-                                string stringTableRow = row.OuterHtml.ToString();
-
-                                //all races
-                                //if row not contains 'brak startow' and contains m (meters)
-                                if (!stringTableRow.Contains("nebyl nalezen žádný záznam"))
-                                {
-                                    try
-                                    {
-                                        JockeyRaceDetails race = new JockeyRaceDetails();
-
-                                        string raceDate = stringTableRow.Split('>')[3].Split('<')[0].Trim(' ');
-                                        string raceDistance = stringTableRow.Split('>')[19].Split('<')[0].Trim(' ');
-                                        string horsesName = stringTableRow.Split('>')[23].Split('<')[0].Trim(' ');
-                                        if (horsesName.Contains("("))
-                                        {
-                                            horsesName = horsesName.Split('(')[0].Trim(' ');
-                                        }
-                                        horsesName = MakeTitleCase(horsesName);
-                                        string raceScore = stringTableRow.Split('>')[31].Split('<')[0].Trim(' ');
-                                        string racePlace = raceScore.Split(' ')[0].Trim(' ');
-                                        string raceCompetitors = raceScore.Split(' ')[2].Trim(' ');
-
-                                        race = ParseJockeyRaceData(raceDate,
-                                        raceDistance,
-                                        horsesName,
-                                        raceScore,
-                                        racePlace,
-                                        raceCompetitors);
-
-                                        allRaces.Add(race);
-                                    }
-                                    catch (Exception e)
-                                    {
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                jockey.AllRaces = allRaces; //jockeys races between 2015-2019
-                jockey.Link = "http://dostihyjc.cz/jezdec.php?IDTR=" + index; //racers link
-
-                if (jockey.AllRaces.Count == 0)
-                {
-                    jockey.Name = null;
-                }
-            });
-
-            return jockey;
-        }
 
         private JockeyRaceDetails ParseJockeyRaceData(string raceDate,
             string raceDistance,
@@ -1037,6 +1112,23 @@ namespace Horse_Picker.Services.Scrap
             });
 
             return race;
+        }
+
+        /////////////////////////////////////OK///////////////////////////////////////
+
+        private static async Task<string> GetHtmlDocumentAsync(string link, string selector)
+        {
+            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+            {
+                Headless = true,
+                ExecutablePath = @"c:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+            });
+            using (Page page = await browser.NewPageAsync())
+            {
+                await page.GoToAsync(link);
+                await page.WaitForSelectorAsync(selector);
+                return await page.GetContentAsync();
+            }
         }
 
         private string MakeTitleCase(string name)

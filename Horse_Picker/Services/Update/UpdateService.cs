@@ -19,10 +19,10 @@ namespace Horse_Picker.Services.Update
 
     public class UpdateService : IUpdateService
     {
-        int _idTo;
-        int _idFrom;
-        int _loopCounter;
-        string _jobType;
+        int _idToProgressBar;
+        int _idFromProgressBar;
+        int _loopCounterProgressBar;
+        string _jobTypeProgressBar;
         int _degreeOfParallelism;
         private IScrapService _scrapDataService;
         private IFileService _dataServices;
@@ -30,7 +30,7 @@ namespace Horse_Picker.Services.Update
 
         public UpdateService(IFileService dataServices, IScrapService scrapDataService, IComputeService computeDataService)
         {
-            _degreeOfParallelism = 100;
+            _degreeOfParallelism = 10;
 
             _dataServices = dataServices;
             _scrapDataService = scrapDataService;
@@ -56,28 +56,28 @@ namespace Horse_Picker.Services.Update
         public async Task<ObservableCollection<T>> UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int idFrom, int idTo, string jobType)
         {
             //variables
-            _loopCounter = 0;
-            _idFrom = idFrom;
-            _idTo = idTo;
+            _loopCounterProgressBar = 0;
+            _idFromProgressBar = idFrom;
+            _idToProgressBar = idTo;
 
             //parse collections, display job
-            if (jobType.Contains("Horses"))
+            if (typeof(T) == typeof(LoadedHorse))
             {
                 Horses.Clear();
                 Horses = new ObservableCollection<LoadedHorse>(genericCollection.Cast<LoadedHorse>());
-                _jobType = "Updating horse data";
+                _jobTypeProgressBar = "Updating horse data";
             }
-            else if (jobType.Contains("Jockeys"))
+            else if (typeof(T) == typeof(LoadedJockey))
             {
                 Jockeys.Clear();
                 Jockeys = new ObservableCollection<LoadedJockey>(genericCollection.Cast<LoadedJockey>());
-                _jobType = "Updating jockey data";
+                _jobTypeProgressBar = "Updating jockey data";
             }
-            else if (jobType.Contains("Historic"))
+            else if (typeof(T) == typeof(LoadedHistoricalRace))
             {
                 Races.Clear();
                 Races = new ObservableCollection<LoadedHistoricalRace>(genericCollection.Cast<LoadedHistoricalRace>());
-                _jobType = "Updating historic data";
+                _jobTypeProgressBar = "Updating historic data";
             }
 
             //initial
@@ -120,7 +120,7 @@ namespace Horse_Picker.Services.Update
                     }
                     finally
                     {
-                        _loopCounter++;
+                        _loopCounterProgressBar++;
 
                         EventHandler<UpdateBarEventArgs> progressBarTick = _updateProgressEventHandler;
 
@@ -161,16 +161,26 @@ namespace Horse_Picker.Services.Update
                         await _dataServices.SaveRaceSimulatedResultsAsync(Races.ToList());
                     }
                 }
-
-                //throttler.Dispose();
             }
 
-            return genericCollection;
+            if (typeof(T) == typeof(LoadedHorse))
+            {
+                return (ObservableCollection<T>)Convert.ChangeType(Horses, typeof(ObservableCollection<T>));
+            }
+            else if (typeof(T) == typeof(LoadedJockey))
+            {
+                return (ObservableCollection<T>)Convert.ChangeType(Jockeys, typeof(ObservableCollection<T>));
+            }
+            else if (typeof(T) == typeof(LoadedHistoricalRace))
+            {
+                return (ObservableCollection<T>)Convert.ChangeType(Races, typeof(ObservableCollection<T>));
+            }
+            else { throw new ArgumentException(); }
         }
 
         protected void OnProgressBarTick()
         {
-            _updateProgressEventHandler(this, new UpdateBarEventArgs(_jobType, _loopCounter, _idTo, _idFrom));
+            _updateProgressEventHandler(this, new UpdateBarEventArgs(_jobTypeProgressBar, _loopCounterProgressBar, _idToProgressBar, _idFromProgressBar));
         }
 
         private async Task UpdateRacesAsync(string jobType, int id)
@@ -193,8 +203,7 @@ namespace Horse_Picker.Services.Update
         {
             LoadedJockey jockey = new LoadedJockey();
 
-            if (jobType == "updateJockeysPl") jockey = await _scrapDataService.ScrapSingleJockeyPlAsync(id);
-            if (jobType == "updateJockeysCz") jockey = await _scrapDataService.ScrapSingleJockeyCzAsync(id);
+            jockey = await _scrapDataService.ScrapGenericObject<LoadedJockey>(id, jobType);
 
             if (jockey.Name != null)
             {

@@ -1,4 +1,4 @@
-eventaggregators main<->update
+w service scrap dodac node dictionary
 scrap service porzadek
 validacja - zmiana i do serwisu
 async file data - zapis i odczyt
@@ -11,6 +11,7 @@ utworzyc nowy VM dla update window
 testy
 
 NA PRZYSZLOSC:
+strategy pattern dla metod generycznych? w sumie czemu nie, dla zabawy https://www.dofactory.com/net/strategy-design-pattern
 wyjatki - obsluga
 testowanie SemaphoreSlim na szybszym necie
 SaveRaceTestResultsAsync -> StringBuilder

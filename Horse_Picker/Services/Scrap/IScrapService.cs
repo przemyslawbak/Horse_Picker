@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Horse_Picker.Models;
 
 namespace Horse_Picker.Services.Scrap
@@ -10,5 +11,6 @@ namespace Horse_Picker.Services.Scrap
         Task<LoadedJockey> ScrapSingleJockeyPlAsync(int index);
         Task<LoadedJockey> ScrapSingleJockeyCzAsync(int index);
         Task<LoadedHistoricalRace> ScrapSingleRacePlAsync(int index);
+        Task<T> ScrapGenericObject<T>(int id, string jobType);
     }
 }
