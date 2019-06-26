@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Horse_Picker.Models;
+using Horse_Picker.Services.Dictionary;
 using Horse_Picker.Wrappers;
 using HtmlAgilityPack;
 using PuppeteerSharp;
@@ -14,14 +15,23 @@ namespace Horse_Picker.Services.Scrap
 {
     public class ScrapService : IScrapService
     {
+        private IDictionariesService _dictionaryService;
+
+        public ScrapService(IDictionariesService dictionaryService)
+        {
+            _dictionaryService = dictionaryService;
+        }
+
         public async Task<T> ScrapGenericObject<T>(int id, string jobType)
         {
             LoadedJockey jockey = new LoadedJockey();
             LoadedHorse horse = new LoadedHorse();
             LoadedHistoricalRace race = new LoadedHistoricalRace();
+            Dictionary<string, string> nodeDictionary = new Dictionary<string, string>();
 
             string linkBase = "";
             string html = "";
+            HtmlDocument htmlAgility;
 
             if (jobType.Contains("JockeysPl"))
             {
@@ -39,7 +49,9 @@ namespace Horse_Picker.Services.Scrap
 
                 html = await GetHtmlDocumentAsync(jockey.Link);
 
-                jockey.Name = GetJockeyName(html);
+                htmlAgility = GetHtmlAgility(html);
+
+                jockey.Name = GetJockeyName(htmlAgility);
 
                 //jockey.AllRaces = GetJockeyAllRaces();
             }
@@ -62,14 +74,19 @@ namespace Horse_Picker.Services.Scrap
             else { throw new ArgumentException(); }
         }
 
-        /////////////////////////////////OK///////////////////////////////////////////
+        private HtmlDocument GetHtmlAgility(string html)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            return doc;
+        }
 
         private string GetLink(string linkBase, int id)
         {
             return linkBase + id;
         }
 
-        private string GetJockeyName(string html)
+        private string GetJockeyName(HtmlDocument html)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +96,9 @@ namespace Horse_Picker.Services.Scrap
             throw new NotImplementedException();
         }
 
-        ////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////--///////////////////////////////////////////////
+
+
 
         public async Task<LoadedJockey> ScrapSingleJockeyPlAsync(int index)
         {
@@ -108,7 +127,7 @@ namespace Horse_Picker.Services.Scrap
                     {
                         try
                         {
-                            HtmlNode singleNode = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div[1]/h3");
+                            HtmlNode singleNode = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div[1]/h3");//
                             string racersName = singleNode.OuterHtml.ToString();
                             if (racersName.Contains("Jeździec") && racersName.Length > 65)
                             {
@@ -136,7 +155,7 @@ namespace Horse_Picker.Services.Scrap
                     }
 
                     //scrap races
-                    HtmlNode[] tableRow = doc.DocumentNode.SelectNodes("//*[@id=\"wykaz_list\"]/tbody/tr").ToArray();
+                    HtmlNode[] tableRow = doc.DocumentNode.SelectNodes("//*[@id=\"wykaz_list\"]/tbody/tr").ToArray();//
                     if (tableRow != null && tableRow.Length > 0)
                     {
                         foreach (var row in tableRow)
@@ -219,7 +238,7 @@ namespace Horse_Picker.Services.Scrap
                     HtmlAgilityPack.HtmlDocument doc = web.Load(link);
 
                     //check time period
-                    HtmlNode timePeriods = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[1]/table[1]");
+                    HtmlNode timePeriods = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[1]/table[1]");//
                     string timeTable = timePeriods.OuterHtml.ToString();
 
                     if (years.Any(timeTable.Contains))
@@ -229,7 +248,7 @@ namespace Horse_Picker.Services.Scrap
                             try
                             {
 
-                                HtmlNode[] singleNode = doc.DocumentNode.Descendants("b").ToArray();
+                                HtmlNode[] singleNode = doc.DocumentNode.Descendants("b").ToArray();//
                                 string racersName = singleNode[2].OuterHtml.ToString();
                                 racersName = racersName.Split('>')[1].Split('<')[0].Trim(' ');
                                 char letter = racersName.Split(' ')[1][0];
@@ -247,7 +266,7 @@ namespace Horse_Picker.Services.Scrap
                         }
 
                         //scrap races
-                        HtmlNode[] tableRows = doc.DocumentNode.SelectNodes("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[4]/tr").ToArray();
+                        HtmlNode[] tableRows = doc.DocumentNode.SelectNodes("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[4]/tr").ToArray();//
                         if (tableRows != null && tableRows.Length > 0)
                         {
                             foreach (var row in tableRows)
@@ -323,7 +342,7 @@ namespace Horse_Picker.Services.Scrap
                 if (doc.DocumentNode.OuterHtml.ToString().Contains("Rasa"))
                 {
                     //horses name
-                    HtmlNode horsesName = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div/div[2]/div[2]/header/div/h1");
+                    HtmlNode horsesName = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div/div[2]/div[2]/header/div/h1");//
                     try
                     {
                         if (horsesName != null)
@@ -348,7 +367,7 @@ namespace Horse_Picker.Services.Scrap
                         try
                         {
                             //horses age
-                            HtmlNode horsesAge = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[1]/th/strong");
+                            HtmlNode horsesAge = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[1]/th/strong");//
                             if (horsesAge != null)
                             {
                                 string theAge = horsesAge.OuterHtml.ToString();
@@ -395,7 +414,7 @@ namespace Horse_Picker.Services.Scrap
                         }
 
                         //horses father
-                        HtmlNode horsesFather = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td");
+                        HtmlNode horsesFather = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td");//
                         if (horsesFather != null)
                         {
                             string fathersName = "";
@@ -405,7 +424,7 @@ namespace Horse_Picker.Services.Scrap
                             {
                                 if (horsesFather.OuterHtml.ToString().Contains("<a")) //check if there is anchor
                                 {
-                                    horsesFather = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td/a");
+                                    horsesFather = doc.DocumentNode.SelectSingleNode("/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td/a");//
                                     fathersLink = horsesFather.OuterHtml.ToString();
                                     fathersLink = fathersLink.Split('"')[1].Split('-')[0].Trim(' ');
                                     fathersLink = "https://koniewyscigowe.pl" + fathersLink;
@@ -440,7 +459,7 @@ namespace Horse_Picker.Services.Scrap
                         }
 
                         //table row
-                        HtmlNode[] tableRow = doc.DocumentNode.SelectNodes("//*[@id=\"wykaz\"]/tbody/tr").ToArray();
+                        HtmlNode[] tableRow = doc.DocumentNode.SelectNodes("//*[@id=\"wykaz\"]/tbody/tr").ToArray();//
 
                         if (tableRow != null && tableRow.Length > 0)
                         {
@@ -558,7 +577,7 @@ namespace Horse_Picker.Services.Scrap
                 if (doc.DocumentNode.OuterHtml.ToString().Contains("celkem"))
                 {
                     //horses name
-                    HtmlNode[] boldNodes = doc.DocumentNode.Descendants("b").ToArray();
+                    HtmlNode[] boldNodes = doc.DocumentNode.Descendants("b").ToArray();//
                     if (boldNodes != null)
                     {
                         try
@@ -624,7 +643,7 @@ namespace Horse_Picker.Services.Scrap
                         }
 
                         //father
-                        HtmlNode fathersNode = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[2]/tr[1]");
+                        HtmlNode fathersNode = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[2]/tr[1]");//
                         if (fathersNode != null)
                         {
                             try
@@ -648,7 +667,7 @@ namespace Horse_Picker.Services.Scrap
                         }
 
                         //all races
-                        HtmlNode[] tableRow = doc.DocumentNode.SelectNodes("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[4]/tr").ToArray();
+                        HtmlNode[] tableRow = doc.DocumentNode.SelectNodes("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[4]/tr").ToArray();//
                         if (tableRow != null)
                         {
                             foreach (var row in tableRow)
@@ -725,7 +744,7 @@ namespace Horse_Picker.Services.Scrap
 
                     if (!doc.DocumentNode.OuterHtml.ToString().Contains("Nebyli nalezeni žádní potomci"))
                     {
-                        HtmlNode[] childRows = doc.DocumentNode.SelectNodes("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[3]/tr").ToArray();
+                        HtmlNode[] childRows = doc.DocumentNode.SelectNodes("/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[3]/tr").ToArray();//
                         foreach (var row in childRows)
                         {
                             string stringChildRow = row.OuterHtml.ToString();
@@ -792,118 +811,7 @@ namespace Horse_Picker.Services.Scrap
             return horse;
         }
 
-        private HorseRaceDetails ParseHorseRaceData(string racePlace,
-           string raceCompetitors,
-           string raceDistance,
-           string raceDate,
-           string raceCategory,
-           string raceLink,
-           string racersLink,
-           string racersName)
-        {
-            HorseRaceDetails race = new HorseRaceDetails();
 
-            int n;
-            bool parseTest;
-
-            DateTime t;
-
-            parseTest = int.TryParse(racePlace, out n);
-            if (parseTest)
-            {
-                //if not disqualified
-                if (racePlace != "0" && racePlace != "D" && racePlace != "PN" && racePlace != "Z" && racePlace != "ZN" && racePlace != "SN")
-                {
-                    race.WonPlace = int.Parse(racePlace); //won place
-                }
-                else
-                {
-                    race.WonPlace = int.Parse(raceCompetitors); //won place
-                }
-            }
-
-            parseTest = int.TryParse(raceDistance, out n);
-            if (parseTest)
-            {
-                race.RaceDistance = int.Parse(raceDistance); //race distance
-            }
-
-            parseTest = int.TryParse(raceCompetitors, out n);
-            if (parseTest)
-            {
-                race.RaceCompetition = int.Parse(raceCompetitors); //race qty of horses
-            }
-
-            parseTest = DateTime.TryParse(raceDate, out t);
-            if (parseTest)
-            {
-                race.RaceDate = DateTime.Parse(raceDate); //day of race
-            }
-
-            race.RaceCategory = raceCategory; //category or group of race
-
-            race.RaceLink = raceLink; //link to the race
-
-            race.RacersLink = racersLink; //link tho the racer
-
-            race.RacersName = racersName; //name of the racer
-
-            return race;
-        }
-
-
-
-        private JockeyRaceDetails ParseJockeyRaceData(string raceDate,
-            string raceDistance,
-            string horsesName,
-            string raceScore,
-            string racePlace,
-            string raceCompetitors)
-        {
-            JockeyRaceDetails race = new JockeyRaceDetails();
-            int n;
-            bool parseTest;
-            DateTime t;
-
-            if (racePlace != "0" && racePlace != "D" && racePlace != "PN" && racePlace != "Z" && racePlace != "ZN" && racePlace != "SN")
-            {
-                parseTest = int.TryParse(racePlace, out n);
-                if (parseTest)
-                {
-                    race.WonPlace = int.Parse(racePlace); //won place
-                }
-            }
-            else
-            {
-                parseTest = int.TryParse(raceCompetitors, out n);
-                if (parseTest)
-                {
-                    race.WonPlace = int.Parse(raceCompetitors); //won place
-                }
-            }
-
-            parseTest = int.TryParse(raceDistance, out n);
-            if (parseTest)
-            {
-                race.RaceDistance = int.Parse(raceDistance); //race distance
-            }
-
-            parseTest = int.TryParse(raceCompetitors, out n);
-            if (parseTest)
-            {
-                race.RaceCompetition = int.Parse(raceCompetitors); //race qty of horses
-            }
-
-            parseTest = DateTime.TryParse(raceDate, out t);
-            if (parseTest)
-            {
-                race.RaceDate = DateTime.Parse(raceDate); //day of race
-            }
-
-            race.HorsesName = horsesName; //rided horse
-
-            return race;
-        }
 
         public async Task<LoadedHistoricalRace> ScrapSingleRacePlAsync(int index)
         {
@@ -919,21 +827,12 @@ namespace Horse_Picker.Services.Scrap
                 HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
                 HtmlAgilityPack.HtmlDocument doc = web.Load(link);
 
-                Dictionary<string, int> monthDict = new Dictionary<string, int>();
-                monthDict.Add("Kwiecień", 4);
-                monthDict.Add("Maja", 5);
-                monthDict.Add("Czerwca", 6);
-                monthDict.Add("Lipca", 7);
-                monthDict.Add("Sierpienia", 8);
-                monthDict.Add("Września", 9);
-                monthDict.Add("Października", 10);
-                monthDict.Add("Listopada", 11);
-                monthDict.Add("Grudnia", 12);
+                Dictionary<string, int> monthDict = _dictionaryService.GetMonthDictionary();
 
                 if (doc.DocumentNode.OuterHtml.ToString().Contains("Wynik gonitwy") && !doc.DocumentNode.OuterHtml.ToString().Contains("rekord"))
                 {
                     //race distance
-                    HtmlNode raceDistance = doc.DocumentNode.SelectSingleNode("/html/body/main/section/div[3]/table/tbody/tr[2]/td");
+                    HtmlNode raceDistance = doc.DocumentNode.SelectSingleNode("/html/body/main/section/div[3]/table/tbody/tr[2]/td");//
 
                     string distance = raceDistance.OuterHtml.ToString();
 
@@ -986,7 +885,7 @@ namespace Horse_Picker.Services.Scrap
                     }
 
                     //race date
-                    HtmlNode raceDate = doc.DocumentNode.SelectSingleNode("/html/body/main/section/div[1]/h3");
+                    HtmlNode raceDate = doc.DocumentNode.SelectSingleNode("/html/body/main/section/div[1]/h3");//
 
                     string date = raceDate.OuterHtml.ToString();
 
@@ -1053,7 +952,7 @@ namespace Horse_Picker.Services.Scrap
                     race.RaceLink = link; // link data
 
                     //horses
-                    HtmlNode[] raceHorsesRows = doc.DocumentNode.SelectNodes("/html/body/main/section/div[4]/table/tbody/tr").ToArray();
+                    HtmlNode[] raceHorsesRows = doc.DocumentNode.SelectNodes("/html/body/main/section/div[4]/table/tbody/tr").ToArray();//
                     race.HorseList = new List<HorseDataWrapper>();
                     List<HorseDataWrapper> horseList = new List<HorseDataWrapper>();
                     foreach (var node in raceHorsesRows)
@@ -1137,6 +1036,182 @@ namespace Horse_Picker.Services.Scrap
             }
 
             return name;
+        }
+
+        private HorseRaceDetails ParseHorseRaceData(string racePlace,
+          string raceCompetitors,
+          string raceDistance,
+          string raceDate,
+          string raceCategory,
+          string raceLink,
+          string racersLink,
+          string racersName)
+        {
+            HorseRaceDetails race = new HorseRaceDetails();
+
+            int n;
+            bool parseTest;
+
+            DateTime t;
+
+            parseTest = int.TryParse(raceDistance, out n);
+
+            if (parseTest)
+            {
+                race.RaceDistance = int.Parse(raceDistance); //race distance
+            }
+            else
+            {
+                race.RaceDistance = 2000;
+            }
+
+            parseTest = int.TryParse(raceCompetitors, out n);
+
+            if (parseTest)
+            {
+                race.RaceCompetition = int.Parse(raceCompetitors); //race qty of horses
+            }
+            else
+            {
+                race.RaceCompetition = 10;
+            }
+
+            parseTest = int.TryParse(racePlace, out n);
+
+            if (parseTest)
+            {
+                //if not disqualified
+                if (racePlace != "0" && racePlace != "D" && racePlace != "PN" && racePlace != "Z" && racePlace != "ZN" && racePlace != "SN")
+                {
+                    race.WonPlace = int.Parse(racePlace); //won place
+                }
+                else
+                {
+                    race.WonPlace = race.RaceCompetition; //won place
+                }
+            }
+
+            parseTest = DateTime.TryParse(raceDate, out t);
+            if (parseTest)
+            {
+                race.RaceDate = DateTime.Parse(raceDate); //day of race
+            }
+            else
+            {
+                race.RaceDate = DateTime.Now;
+            }
+
+            Dictionary<string, int> categoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(null);
+
+            if (categoryFactorDict.ContainsKey(raceCategory))
+            {
+                race.RaceCategory = raceCategory; //category or group of race
+            }
+            else
+            {
+                race.RaceCategory = "-";
+            }
+
+            if (!string.IsNullOrEmpty(raceLink))
+            {
+                race.RaceLink = raceLink; //link to the race
+            }
+            else
+            {
+                race.RaceLink = "-";
+            }
+
+            if (!string.IsNullOrEmpty(racersLink))
+            {
+                race.RacersLink = racersLink; //link tho the racer
+            }
+            else
+            {
+                race.RaceLink = "-";
+            }
+
+            if (!string.IsNullOrEmpty(racersName))
+            {
+                race.RacersName = racersName; //name of the racer
+            }
+            else
+            {
+                race.RaceLink = "-";
+            }
+
+            return race;
+        }
+
+        private JockeyRaceDetails ParseJockeyRaceData(string raceDate,
+            string raceDistance,
+            string horsesName,
+            string raceScore,
+            string racePlace,
+            string raceCompetitors)
+        {
+            JockeyRaceDetails race = new JockeyRaceDetails();
+
+            int n;
+            bool parseTest;
+            DateTime t;
+
+            parseTest = int.TryParse(raceDistance, out n);
+            if (parseTest)
+            {
+                race.RaceDistance = int.Parse(raceDistance); //race distance
+            }
+            else
+            {
+                race.RaceDistance = 2000;
+            }
+
+            parseTest = int.TryParse(raceCompetitors, out n);
+            if (parseTest)
+            {
+                race.RaceCompetition = int.Parse(raceCompetitors); //race qty of horses
+            }
+            else
+            {
+                race.RaceCompetition = 10;
+            }
+
+            if (racePlace != "0" && racePlace != "D" && racePlace != "PN" && racePlace != "Z" && racePlace != "ZN" && racePlace != "SN")
+            {
+                parseTest = int.TryParse(racePlace, out n);
+                if (parseTest)
+                {
+                    race.WonPlace = int.Parse(racePlace); //won place
+                }
+                else
+                {
+                    race.WonPlace = race.RaceCompetition;
+                }
+            }
+            else
+            {
+                race.WonPlace = race.RaceCompetition;
+            }
+
+            parseTest = DateTime.TryParse(raceDate, out t);
+            if (parseTest)
+            {
+                race.RaceDate = DateTime.Parse(raceDate); //day of race
+            }
+            else
+            {
+                race.RaceDate = DateTime.Now;
+            }
+
+            if (!string.IsNullOrEmpty(horsesName))
+            {
+                race.HorsesName = horsesName; //rided horse
+            }
+            else
+            {
+                race.HorsesName = "-";
+            }
+
+            return race;
         }
     }
 }

@@ -15,9 +15,6 @@ namespace Horse_Picker.Services.Update
             ObservableCollection<LoadedJockey> jockeys,
             IRaceProvider raceModelProvider);
 
-        Dictionary<string, int> GetRaceCategoryDictionary(IRaceProvider raceModelProvider);
-
-
         void CancelUpdates();
 
         event EventHandler<UpdateBarEventArgs> _updateProgressEventHandler;

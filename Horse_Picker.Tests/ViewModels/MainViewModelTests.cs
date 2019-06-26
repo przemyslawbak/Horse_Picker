@@ -1,5 +1,6 @@
 ﻿using Horse_Picker.Models;
 using Horse_Picker.Services;
+using Horse_Picker.Services.Dictionary;
 using Horse_Picker.Services.Files;
 using Horse_Picker.Services.Message;
 using Horse_Picker.Services.Simulate;
@@ -29,6 +30,7 @@ namespace Horse_Picker.Tests.ViewModels
         private Mock<IRaceProvider> _raceModelProviderMock;
         private Mock<IUpdateService> _updateDataMock;
         private Mock<ISimulateService> _simulateDataMock;
+        private Mock<IDictionariesService> _dictionaryServiceMock;
 
         public MainViewModelTests()
         {
@@ -38,6 +40,7 @@ namespace Horse_Picker.Tests.ViewModels
             _raceModelProviderMock = new Mock<IRaceProvider>();
             _updateDataMock = new Mock<IUpdateService>();
             _simulateDataMock = new Mock<ISimulateService>();
+            _dictionaryServiceMock = new Mock<IDictionariesService>();
 
             //moq setup
             _dataServicesMock.Setup(ds => ds.GetAllHorses())
@@ -123,7 +126,8 @@ namespace Horse_Picker.Tests.ViewModels
                 _raceModelProviderMock.Object,
                 _updateDataMock.Object,
                 _simulateDataMock.Object,
-                _eventAggregatorMock.Object);
+                _eventAggregatorMock.Object,
+                _dictionaryServiceMock.Object);
 
             _viewModel.Category = "I";
             _viewModel.City = "Waw";

@@ -68,9 +68,9 @@ namespace Horse_Picker.Services.Compute
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns CI</returns>
-        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, IRaceProvider raceModelProvider, Dictionary<string, int> racecategoryDictionary)
+        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, IRaceProvider raceModelProvider, Dictionary<string, int> raceCategoryDictionary)
         {
-            Dictionary<string, int> raceDictionary = racecategoryDictionary;
+            Dictionary<string, int> raceDictionary = raceCategoryDictionary;
 
             ResetComputeVariables();
 
@@ -356,9 +356,9 @@ namespace Horse_Picker.Services.Compute
         public double ComputeWinIndex(LoadedHorse horseFromList,
             DateTime date, LoadedJockey jockeyFromList,
             IRaceProvider raceModelProvider,
-            Dictionary<string, int> racecategoryDictionary)
+            Dictionary<string, int> raceCategoryDictionary)
         {
-            Dictionary<string, int> raceDictionary = racecategoryDictionary;
+            Dictionary<string, int> raceDictionary = raceCategoryDictionary;
 
             ResetComputeVariables();
 

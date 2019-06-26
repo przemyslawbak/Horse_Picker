@@ -1,6 +1,7 @@
 ﻿using Horse_Picker.Events;
 using Horse_Picker.Models;
 using Horse_Picker.Services.Compute;
+using Horse_Picker.Services.Dictionary;
 using Horse_Picker.Services.Files;
 using Horse_Picker.Services.Scrap;
 using Horse_Picker.Wrappers;
@@ -27,12 +28,17 @@ namespace Horse_Picker.Services.Update
         private IScrapService _scrapDataService;
         private IFileService _dataServices;
         private IComputeService _computeDataService;
+        private IDictionariesService _dictionaryService;
 
-        public UpdateService(IFileService dataServices, IScrapService scrapDataService, IComputeService computeDataService)
+        public UpdateService(IFileService dataServices,
+            IScrapService scrapDataService,
+            IComputeService computeDataService,
+            IDictionariesService dictionaryService)
         {
             _degreeOfParallelism = 10;
 
             _dataServices = dataServices;
+            _dictionaryService = dictionaryService;
             _scrapDataService = scrapDataService;
             _computeDataService = computeDataService;
 
@@ -295,7 +301,7 @@ namespace Horse_Picker.Services.Update
             ObservableCollection<LoadedJockey> jockeys,
             IRaceProvider raceModelProvider)
         {
-            Dictionary<string, int> raceCategoryDictionary = GetRaceCategoryDictionary(raceModelProvider);
+            Dictionary<string, int> raceCategoryDictionary = _dictionaryService.GetRaceCategoryDictionary(raceModelProvider);
             LoadedJockey jockeyFromList = new LoadedJockey();
             LoadedHorse horseFromList = new LoadedHorse();
             LoadedHorse fatherFromList = new LoadedHorse();
@@ -429,57 +435,6 @@ namespace Horse_Picker.Services.Update
             }
 
             return horseWrapper;
-        }
-
-        /// <summary>
-        /// list of race categories and values of them
-        /// </summary>
-        /// <returns>category dictionary with string key and int value</returns>
-        public Dictionary<string, int> GetRaceCategoryDictionary(IRaceProvider raceModelProvider)
-        {
-            Dictionary<string, int> categoryFactorDict = new Dictionary<string, int>();
-            categoryFactorDict.Add("G1 A", 11);
-            categoryFactorDict.Add("G3 A", 10);
-            categoryFactorDict.Add("LR A", 9);
-            categoryFactorDict.Add("LR B", 8);
-            categoryFactorDict.Add("L A", 7);
-            categoryFactorDict.Add("B", 5);
-            categoryFactorDict.Add("A", 4);
-            categoryFactorDict.Add("Gd 3", 11);
-            categoryFactorDict.Add("Gd 1", 10);
-            categoryFactorDict.Add("L", 8);
-            categoryFactorDict.Add("F", 7);
-            categoryFactorDict.Add("C", 6);
-            categoryFactorDict.Add("D", 5);
-            categoryFactorDict.Add("I", 4);
-            categoryFactorDict.Add("II", 3);
-            categoryFactorDict.Add("III", 2);
-            categoryFactorDict.Add("IV", 1);
-            categoryFactorDict.Add("V", 1);
-            if (raceModelProvider.Category == "sulki" || raceModelProvider.Category == "kłusaki")
-            {
-                categoryFactorDict.Add("sulki", 9);
-                categoryFactorDict.Add("kłusaki", 9);
-            }
-            else
-            {
-                categoryFactorDict.Add("sulki", 2);
-                categoryFactorDict.Add("kłusaki", 2);
-            }
-            if (raceModelProvider.Category == "steeple" || raceModelProvider.Category == "płoty")
-            {
-                categoryFactorDict.Add("steeple", 9);
-                categoryFactorDict.Add("płoty", 9);
-            }
-            else
-            {
-                categoryFactorDict.Add("steeple", 2);
-                categoryFactorDict.Add("płoty", 2);
-            }
-            categoryFactorDict.Add("-", 6);
-            categoryFactorDict.Add(" ", 6);
-            categoryFactorDict.Add("", 6);
-            return categoryFactorDict;
         }
 
         public void CancelUpdates()

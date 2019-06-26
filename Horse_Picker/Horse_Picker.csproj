@@ -178,6 +178,8 @@
     <Compile Include="Events\DataUpdateEvent.cs" />
     <Compile Include="Events\UpdateBarEventArgs.cs" />
     <Compile Include="Services\Compute\ComputeService.cs" />
+    <Compile Include="Services\Dictionary\DictionariesService.cs" />
+    <Compile Include="Services\Dictionary\IDictionariesService.cs" />
     <Compile Include="Services\Files\FileService.cs" />
     <Compile Include="Services\Compute\IComputeService.cs" />
     <Compile Include="Services\Files\IFileService.cs" />

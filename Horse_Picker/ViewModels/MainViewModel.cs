@@ -18,11 +18,13 @@ using Horse_Picker.Services.Update;
 using Horse_Picker.Services.Simulate;
 using Horse_Picker.Services.Files;
 using Prism.Events;
+using Horse_Picker.Services.Dictionary;
 
 namespace Horse_Picker.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private IDictionariesService _dictionaryService;
         private IEventAggregator _eventAggregator;
         private IMessageService _messageDialogService;
         private IUpdateService _updateDataService;
@@ -35,7 +37,8 @@ namespace Horse_Picker.ViewModels
             IRaceProvider raceServices,
             IUpdateService updateDataService,
             ISimulateService simulateDataService,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IDictionariesService dictionaryService)
         {
             Horses = new ObservableCollection<LoadedHorse>();
             Jockeys = new ObservableCollection<LoadedJockey>();
@@ -45,6 +48,7 @@ namespace Horse_Picker.ViewModels
             LoadedJockeys = new List<string>();
 
             _eventAggregator = eventAggregator;
+            _dictionaryService = dictionaryService;
             _dataServices = dataServices;
             _updateDataService = updateDataService;
             _simulateDataService = simulateDataService;
@@ -70,7 +74,7 @@ namespace Horse_Picker.ViewModels
             ClearDataCommand.Execute(null);
             LoadAllData();
             PopulateLists();
-            CategoryFactorDict = _updateDataService.GetRaceCategoryDictionary(_raceModelProvider);
+            CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(_raceModelProvider);
 
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
             _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate);
