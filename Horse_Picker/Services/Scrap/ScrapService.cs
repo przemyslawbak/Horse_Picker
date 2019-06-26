@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Horse_Picker.Models;
@@ -13,51 +14,50 @@ namespace Horse_Picker.Services.Scrap
 {
     public class ScrapService : IScrapService
     {
-        string _linkBase;
-        string _htmlDocument;
-        string _jobType;
-
         public async Task<T> ScrapGenericObject<T>(int id, string jobType)
         {
+            LoadedJockey jockey = new LoadedJockey();
+            LoadedHorse horse = new LoadedHorse();
+            LoadedHistoricalRace race = new LoadedHistoricalRace();
+
+            string linkBase = "";
+            string html = "";
+
             if (jobType.Contains("JockeysPl"))
             {
-                _linkBase = "https://koniewyscigowe.pl/dzokej?d=";
+                linkBase = "https://koniewyscigowe.pl/dzokej?d=";
             }
             if (jobType.Contains("JockeysCz"))
             {
-                _linkBase = "http://dostihyjc.cz/jezdec.php?IDTR=";
+                linkBase = "http://dostihyjc.cz/jezdec.php?IDTR=";
             }
             //add horse + race
 
-            _jobType = jobType;
+            if (typeof(T) == typeof(LoadedJockey))
+            {
+                jockey.Link = GetLink(linkBase, id);
+
+                html = await GetHtmlDocumentAsync(jockey.Link);
+
+                jockey.Name = GetJockeyName(html);
+
+                //jockey.AllRaces = GetJockeyAllRaces();
+            }
+
 
             if (typeof(T) == typeof(LoadedJockey))
             {
-                Jockey = new LoadedJockey();
-
-                Jockey.Link = GetLink(_linkBase, id);
-
-                _htmlDocument = await GetHtmlDocumentAsync(Jockey.Link, "html"); //exceptions, kurła <- chrome wrapper sux
-
-                Jockey.Name = GetJockeyName(Jockey.Link);
-                Jockey.AllRaces = GetJockeyAllRaces();
-
-
-
-                return (T)Convert.ChangeType(Jockey, typeof(LoadedJockey));
+                return (T)Convert.ChangeType(jockey, typeof(LoadedJockey));
             }
-
-            ////////////////////////////////////////////////////////////////////////////
-
             else if (typeof(T) == typeof(LoadedHorse))
             {
-                Horse = new LoadedHorse();//XXXXXXXXXXXXX
-                return (T)Convert.ChangeType(Horse, typeof(LoadedHorse));
+                horse = new LoadedHorse();//XXXXXXXXXXXXX
+                return (T)Convert.ChangeType(horse, typeof(LoadedHorse));
             }
             else if (typeof(T) == typeof(LoadedHistoricalRace))
             {
-                Race = new LoadedHistoricalRace();//XXXXXXXXXXXXX
-                return (T)Convert.ChangeType(Race, typeof(LoadedHistoricalRace));
+                race = new LoadedHistoricalRace();//XXXXXXXXXXXXX
+                return (T)Convert.ChangeType(race, typeof(LoadedHistoricalRace));
             }
             else { throw new ArgumentException(); }
         }
@@ -69,20 +69,17 @@ namespace Horse_Picker.Services.Scrap
             return linkBase + id;
         }
 
-        private string GetJockeyName(string name)
+        private string GetJockeyName(string html)
         {
             throw new NotImplementedException();
         }
+
         private List<JockeyRaceDetails> GetJockeyAllRaces()
         {
             throw new NotImplementedException();
         }
 
         ////////////////////////////////////////////////////////////////////////////
-
-        public LoadedJockey Jockey { get; set; }
-        public LoadedHorse Horse { get; set; }
-        public LoadedHistoricalRace Race { get; set; }
 
         public async Task<LoadedJockey> ScrapSingleJockeyPlAsync(int index)
         {
@@ -1116,19 +1113,18 @@ namespace Horse_Picker.Services.Scrap
 
         /////////////////////////////////////OK///////////////////////////////////////
 
-        private static async Task<string> GetHtmlDocumentAsync(string link, string selector)
+        private static async Task<string> GetHtmlDocumentAsync(string link)
         {
-            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+            string result = "";
+
+            using (HttpClient client = new HttpClient())
             {
-                Headless = true,
-                ExecutablePath = @"c:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
-            });
-            using (Page page = await browser.NewPageAsync())
-            {
-                await page.GoToAsync(link);
-                await page.WaitForSelectorAsync(selector);
-                return await page.GetContentAsync();
+                var response = await client.GetAsync(link);
+
+                result = await response.Content.ReadAsStringAsync();
             }
+
+            return result;
         }
 
         private string MakeTitleCase(string name)
