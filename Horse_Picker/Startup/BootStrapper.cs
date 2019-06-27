@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Horse_Picker.Services;
 using Horse_Picker.Services.Compute;
+using Horse_Picker.Services.Dictionary;
 using Horse_Picker.Services.Files;
 using Horse_Picker.Services.Message;
 using Horse_Picker.Services.Scrap;
@@ -17,6 +18,9 @@ namespace Horse_Picker.Startup
         public static IContainer BootStrap()
         {
             var builder = new ContainerBuilder();
+
+            builder.RegisterType<DictionariesService>()
+              .As<IDictionariesService>().SingleInstance();
 
             builder.RegisterType<EventAggregator>()
               .As<IEventAggregator>().SingleInstance();

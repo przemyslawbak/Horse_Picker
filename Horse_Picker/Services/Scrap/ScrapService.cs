@@ -9,7 +9,6 @@ using Horse_Picker.Models;
 using Horse_Picker.Services.Dictionary;
 using Horse_Picker.Wrappers;
 using HtmlAgilityPack;
-using PuppeteerSharp;
 
 namespace Horse_Picker.Services.Scrap
 {
@@ -36,10 +35,12 @@ namespace Horse_Picker.Services.Scrap
             if (jobType.Contains("JockeysPl"))
             {
                 linkBase = "https://koniewyscigowe.pl/dzokej?d=";
+                nodeDictionary = _dictionaryService.GetJockeyPlNodeDictionary();
             }
             if (jobType.Contains("JockeysCz"))
             {
                 linkBase = "http://dostihyjc.cz/jezdec.php?IDTR=";
+                nodeDictionary = _dictionaryService.GetJockeyCzNodeDictionary();
             }
             //add horse + race
 
