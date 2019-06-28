@@ -674,9 +674,26 @@ namespace Horse_Picker.ViewModels
         /// <param name="e"></param>
         public void ProgressBarTick(object sender, UpdateBarEventArgs e)
         {
+            int divider = e.ToId - e.FromId;
+
             WorkStatus = e.JobType;
-            UpdateStatusBar = e.LoopCouner * 100 / (e.ToId - e.FromId);
-            ProgressDisplay = e.LoopCouner + " / " + (e.ToId - e.FromId);
+
+            if (divider > 0)
+            {
+                UpdateStatusBar = e.LoopCouner * 100 / (e.ToId - e.FromId);
+                ProgressDisplay = e.LoopCouner + " / " + (e.ToId - e.FromId);
+            }
+            else if (divider == 0)
+            {
+                UpdateStatusBar = 1 / 1;
+                ProgressDisplay = "1 / 1";
+            }
+            else if (divider < 0)
+            {
+                UpdateStatusBar = 1 / 1;
+                ProgressDisplay = "ERROR";
+            }
+
         }
 
 
