@@ -270,8 +270,13 @@ namespace Horse_Picker.Services.Update
         /// <param name="jockey">found doubler</param>
         public ObservableCollection<LoadedJockey> MergeJockeysData(LoadedJockey doubledJockey, LoadedJockey jockey)
         {
-            doubledJockey.AllRaces = doubledJockey.AllRaces.Union(jockey.AllRaces).ToList();
+            if (jockey.AllRaces != null)
+            {
+                doubledJockey.AllRaces = doubledJockey.AllRaces.Union(jockey.AllRaces).ToList();
+            }
+
             Jockeys.Add(doubledJockey);
+
             return Jockeys;
         }
 
@@ -282,9 +287,18 @@ namespace Horse_Picker.Services.Update
         /// <param name="horse">scrapped new horse</param>
         public ObservableCollection<LoadedHorse> MergeHorsesData(LoadedHorse doubledHorse, LoadedHorse horse)
         {
-            doubledHorse.AllChildren = doubledHorse.AllChildren.Union(horse.AllChildren).ToList();
-            doubledHorse.AllRaces = doubledHorse.AllRaces.Union(horse.AllRaces).ToList();
+            if (horse.AllRaces != null)
+            {
+                doubledHorse.AllRaces = doubledHorse.AllRaces.Union(horse.AllRaces).ToList();
+            }
+
+            if (horse.AllChildren != null)
+            {
+                doubledHorse.AllChildren = doubledHorse.AllChildren.Union(horse.AllChildren).ToList();
+            }
+
             Horses.Add(doubledHorse);
+
             return Horses;
         }
 
