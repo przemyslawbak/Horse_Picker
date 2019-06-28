@@ -3,26 +3,20 @@ scrap service porzadek
 validacja - zmiana i do serwisu
 async file data - zapis i odczyt
 RaceDataProvider?
-
-
-globalne zmienne przy computing
+SaveRaceTestResultsAsync -> StringBuilder
 przy scrapowaniu koni i dzokejow, jesli jest 0 startow, i tak dodajemy
 walidacja input update dla INT oraz from < to
-utworzyc nowy VM dla update window
 testy
 
 NA PRZYSZLOSC:
+plec konia
 strategy pattern dla metod generycznych? w sumie czemu nie, dla zabawy https://www.dofactory.com/net/strategy-design-pattern
 wyjatki - obsluga
 testowanie SemaphoreSlim na szybszym necie
-SaveRaceTestResultsAsync -> StringBuilder
 staty trenerow - trenerzy co wygrywaja
 zapisywanie do pliku (jak w poprzedniej wersji)
-litery czeskie dzokejow pozamieniac na polskie przy scrapowaniu
-generyczna metoda w VM dla scrap jockeys/horses
 algorytm co analizuje konie + jockey kombinacje oraz koni co biegaly ze soba
 https://www.irishracing.com/horse?prt=529433
-
 scrapowanie: trenerzy, plec, waga/handicap
 czy trener wystawia kilka koni - do sprawdzenia
 waga - jak przybral to zle
@@ -30,6 +24,9 @@ czy kon zmienil ostatnio trenera - jak tak to dobrze, bedzie chcial sie wykazac
 jak klacz wystawiana vs ogierom, to pozytywnie
 nie da sie - shipping - czy kon przyjezdza?
 
+OK - utworzyc nowy VM dla update window
+OK - litery czeskie dzokejow pozamieniac na polskie przy scrapowaniu
+OK - generyczna metoda w VM dla scrap jockeys/horses
 OK - od ostatniego biegu 60-90dni najlepiej - do sprawdzenia
 OK - do 13 startow przez 2 lata, nie wiecej - bardzo rzadko spotykane
 OK - wyscigi duzej liczby koni sa wazniejsze

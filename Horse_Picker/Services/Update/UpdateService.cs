@@ -94,7 +94,7 @@ namespace Horse_Picker.Services.Update
             OnProgressBarTick();
 
             //run loop
-            for (int i = idFrom; i < idTo; i++)
+            for (int i = idFrom; i < idTo + 1; i++)
             {
                 int id = i;
 
