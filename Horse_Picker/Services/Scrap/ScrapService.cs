@@ -14,6 +14,9 @@ namespace Horse_Picker.Services.Scrap
 {
     public class ScrapService : IScrapService
     {
+        int _yearMin = 2013;
+        int _yearMax = DateTime.Now.Year;
+
         private IDictionariesService _dictionaryService;
 
         public ScrapService(IDictionariesService dictionaryService)
@@ -42,7 +45,7 @@ namespace Horse_Picker.Services.Scrap
                 linkBase = "http://dostihyjc.cz/jezdec.php?IDTR=";
                 nodeDictionary = _dictionaryService.GetJockeyCzNodeDictionary();
             }
-            //add horse + race
+            //inne joby
 
             if (typeof(T) == typeof(LoadedJockey))
             {
@@ -52,17 +55,18 @@ namespace Horse_Picker.Services.Scrap
 
                 htmlAgility = GetHtmlAgility(html);
 
-                jockey.Name = GetJockeyName(htmlAgility);
+                jockey.Name = GetName(htmlAgility, nameof(jockey.Name), nodeDictionary, jobType, typeof(T));
 
                 //jockey.AllRaces = GetJockeyAllRaces();
-            }
 
-
-            if (typeof(T) == typeof(LoadedJockey))
-            {
                 return (T)Convert.ChangeType(jockey, typeof(LoadedJockey));
             }
-            else if (typeof(T) == typeof(LoadedHorse))
+
+
+
+
+            //inne typy
+            if (typeof(T) == typeof(LoadedHorse))
             {
                 horse = new LoadedHorse();//XXXXXXXXXXXXX
                 return (T)Convert.ChangeType(horse, typeof(LoadedHorse));
@@ -75,26 +79,123 @@ namespace Horse_Picker.Services.Scrap
             else { throw new ArgumentException(); }
         }
 
-        private HtmlDocument GetHtmlAgility(string html)
-        {
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            return doc;
-        }
-
         private string GetLink(string linkBase, int id)
         {
             return linkBase + id;
         }
 
-        private string GetJockeyName(HtmlDocument html)
+        private string GetName(HtmlDocument html, string propertyName, Dictionary<string, string> nodeDictionary, string jobType, Type type)
         {
-            throw new NotImplementedException();
+            string name = "";
+            if (type == typeof(LoadedJockey))
+            {
+                string nameNode = nodeDictionary[propertyName];
+
+                string nameNodeString = html.DocumentNode.SelectSingleNode(nameNode).OuterHtml.ToString();
+
+                bool nodeNameConditions = CheckNodeNameConditions(jobType, nameNodeString);
+
+                if (nodeNameConditions)
+                {
+                    name = SplitNameNodeString(jobType, nameNodeString);
+                }
+                else
+                {
+                    name = "-";
+                }
+            }
+            //inne joby
+
+            return name;
+        }
+
+        private bool CheckNodeNameConditions(string jobType, string racersNameNode)
+        {
+            if (jobType.Contains("JockeysPl"))
+            {
+                if (racersNameNode.Contains("Jeździec") && racersNameNode.Length > 65) return true;
+
+                return false;
+            }
+            else if (jobType.Contains("JockeysCz"))
+            {
+                if (racersNameNode.Contains("Licence")) return true;
+
+                return false;
+            }
+            //inne joby
+
+            return false;
+        }
+
+        private string SplitNameNodeString(string jobType, string nameNodeString)
+        {
+            string name = "";
+            if (jobType.Contains("JockeysPl"))
+            {
+                name = nameNodeString.Split('>')[1].Split(new string[] { " - " }, StringSplitOptions.None)[1].Split('<')[0].Trim(' ');
+            }
+            else if (jobType.Contains("JockeysCz"))
+            {
+                name = nameNodeString.Split(new string[] { "<b>" }, StringSplitOptions.None)[3].Split('<')[0].Trim(' ');
+            }
+            //inne joby
+
+            name = FormatName(name, jobType);
+
+            name = MakeTitleCase(name);
+
+            name = FilterLetters(name.Normalize(NormalizationForm.FormD));
+
+            return name;
+        }
+
+        private string FormatName(string name, string jobType)
+        {
+            if (name.Contains(" "))
+            {
+                //format jockey name (X. Xxxx)
+                if (jobType.Contains("JockeysPl"))
+                {
+                    char letter = name[0];
+                    name = name.Split(' ')[1].Trim(' ');
+                    name = letter + ". " + name;
+                }
+                else if (jobType.Contains("JockeysCz"))
+                {
+                    char letter = name.Split(' ')[1][0];
+                    name = name.Split(' ')[0].Trim(' ');
+                    name = letter + ". " + name;
+                }
+            }
+
+            return name;
+        }
+
+        private string FilterLetters(string name)
+        {
+            var filtered = name.Where(c => char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark);
+
+            return new string(filtered.ToArray());
         }
 
         private List<JockeyRaceDetails> GetJockeyAllRaces()
         {
+            /*
+            for (int year = _yearMax; year > _yearMin; year--)
+            {
+                StringBuilder sb = new StringBuilder();
+            }
+            */
+
             throw new NotImplementedException();
+        }
+
+        private HtmlDocument GetHtmlAgility(string html)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            return doc;
         }
 
         /////////////////////////////--///////////////////////////////////////////////

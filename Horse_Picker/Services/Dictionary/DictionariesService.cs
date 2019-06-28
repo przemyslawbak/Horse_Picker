@@ -22,7 +22,7 @@ namespace Horse_Picker.Services.Dictionary
         {
             Dictionary<string, string> nodeDictionary = new Dictionary<string, string>();
 
-            nodeDictionary.Add("Name", "b");
+            nodeDictionary.Add("Name", "/html[1]/body[1]/div[1]/form[1]/div[1]");
             nodeDictionary.Add("Time", "/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[1]/table[1]");
             nodeDictionary.Add("AllRaces", "/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[4]/tr");
 
