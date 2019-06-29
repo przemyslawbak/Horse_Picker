@@ -61,7 +61,7 @@ namespace Horse_Picker.Services.Dictionary
         {
             Dictionary<string, string> nodeDictionary = new Dictionary<string, string>();
 
-            nodeDictionary.Add("RaceDistance", "/html/body/main/section/div[3]/table/tbody/tr[2]/td");
+            nodeDictionary.Add("RaceDistance", "/html/body/main/section");
             nodeDictionary.Add("RaceCategory", "/html/body/main/section/div[3]/table/tbody/tr[2]/td");
             nodeDictionary.Add("RaceDate", "/html/body/main/section/div[1]/h3");
             nodeDictionary.Add("HorseList", "/html/body/main/section/div[4]/table/tbody/tr");
