@@ -45,15 +45,15 @@ namespace Horse_Picker.Services.Files
             return _allJockeys;
         }
 
-        public List<LoadedHistoricalRace> GetAllRaces()
+        public List<RaceDetails> GetAllRaces()
         {
-            List<LoadedHistoricalRace> _allRaces = new List<LoadedHistoricalRace>();
+            List<RaceDetails> _allRaces = new List<RaceDetails>();
             if (File.Exists(_racesFileName))
             {
                 using (StreamReader r = new StreamReader(_racesFileName))
                 {
                     string json = r.ReadToEnd();
-                    _allRaces = JsonConvert.DeserializeObject<List<LoadedHistoricalRace>>(json);
+                    _allRaces = JsonConvert.DeserializeObject<List<RaceDetails>>(json);
                 }
             }
 
@@ -108,7 +108,7 @@ namespace Horse_Picker.Services.Files
             });
         }
 
-        public void SaveAllRaces(List<LoadedHistoricalRace> allRaces)
+        public void SaveAllRaces(List<RaceDetails> allRaces)
         {
             if (allRaces.Count != 0)
             {
@@ -129,7 +129,7 @@ namespace Horse_Picker.Services.Files
             }
         }
 
-        public async Task SaveRaceSimulatedResultsAsync(List<LoadedHistoricalRace> allRaces)
+        public async Task SaveRaceSimulatedResultsAsync(List<RaceDetails> allRaces)
         {
             string line;
             if (allRaces.Count != 0)

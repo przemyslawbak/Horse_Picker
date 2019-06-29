@@ -10,8 +10,8 @@ namespace Horse_Picker.Services.Files
         Task SaveAllHorsesAsync(List<LoadedHorse> horses);
         Task SaveAllJockeysAsync(List<LoadedJockey> allJockeys);
         List<LoadedJockey> GetAllJockeys();
-        void SaveAllRaces(List<LoadedHistoricalRace> list);
-        List<LoadedHistoricalRace> GetAllRaces();
-        Task SaveRaceSimulatedResultsAsync(List<LoadedHistoricalRace> allRaces);
+        void SaveAllRaces(List<RaceDetails> list);
+        List<RaceDetails> GetAllRaces();
+        Task SaveRaceSimulatedResultsAsync(List<RaceDetails> allRaces);
     }
 }

@@ -28,7 +28,7 @@ namespace Horse_Picker.Services.Scrap
         {
             LoadedJockey jockey = new LoadedJockey();
             LoadedHorse horse = new LoadedHorse();
-            LoadedHistoricalRace race = new LoadedHistoricalRace();
+            RaceDetails race = new RaceDetails();
             Dictionary<string, string> nodeDictionary = new Dictionary<string, string>();
             List<HtmlDocument> raceHtmlAgilityList = new List<HtmlDocument>();
             HtmlDocument htmlAgility = new HtmlDocument();
@@ -69,7 +69,7 @@ namespace Horse_Picker.Services.Scrap
 
                 return (T)Convert.ChangeType(jockey, typeof(LoadedJockey));
             }
-            else if (typeof(T) == typeof(LoadedHistoricalRace))
+            else if (typeof(T) == typeof(RaceDetails))
             {
                 Dictionary<string, int> monthDict = _dictionaryService.GetMonthDictionary();
 
@@ -87,7 +87,7 @@ namespace Horse_Picker.Services.Scrap
 
                 //całość tutaj? SplitRaceNodeString
 
-                return (T)Convert.ChangeType(race, typeof(LoadedHistoricalRace));
+                return (T)Convert.ChangeType(race, typeof(RaceDetails));
             }
 
 
@@ -247,9 +247,9 @@ namespace Horse_Picker.Services.Scrap
             return raceHtmlAgilityList;
         }
 
-        private List<JockeyRaceDetails> GetJockeyAllRaces(List<HtmlDocument> raceHtmlAgilityList, string propertyName, Dictionary<string, string> nodeDictionary, string jobType)
+        private List<RaceDetails> GetJockeyAllRaces(List<HtmlDocument> raceHtmlAgilityList, string propertyName, Dictionary<string, string> nodeDictionary, string jobType)
         {
-            List<JockeyRaceDetails> races = new List<JockeyRaceDetails>();
+            List<RaceDetails> races = new List<RaceDetails>();
 
             string raceNode = nodeDictionary[propertyName];
 
@@ -267,7 +267,7 @@ namespace Horse_Picker.Services.Scrap
 
                         if (nodeConditions)
                         {
-                            JockeyRaceDetails race = new JockeyRaceDetails();
+                            RaceDetails race = new RaceDetails();
 
                             race = SplitRaceNodeString(jobType, stringNode);
 
@@ -299,7 +299,7 @@ namespace Horse_Picker.Services.Scrap
             return false;
         }
 
-        private JockeyRaceDetails SplitRaceNodeString(string jobType, string stringNode)
+        private RaceDetails SplitRaceNodeString(string jobType, string stringNode)
         {
             string raceDate = "";
             string raceDistance = "";
@@ -308,7 +308,7 @@ namespace Horse_Picker.Services.Scrap
             string racePlace = "";
             string raceCompetitors = "";
 
-            JockeyRaceDetails race = new JockeyRaceDetails();
+            RaceDetails race = new RaceDetails();
 
             if (jobType.Contains("JockeysPl"))
             {
@@ -345,9 +345,9 @@ namespace Horse_Picker.Services.Scrap
 
         /////////////////////////////--///////////////////////////////////////////////
 
-        public async Task<LoadedHistoricalRace> ScrapSingleRacePlAsync(int index)
+        public async Task<RaceDetails> ScrapSingleRacePlAsync(int index)
         {
-            LoadedHistoricalRace race = new LoadedHistoricalRace();
+            RaceDetails race = new RaceDetails();
 
             await Task.Run(() =>
             {
@@ -555,7 +555,7 @@ namespace Horse_Picker.Services.Scrap
             {
                 int n;
                 List<HorseChildDetails> allChildren = new List<HorseChildDetails>();
-                List<HorseRaceDetails> allRaces = new List<HorseRaceDetails>();
+                List<RaceDetails> allRaces = new List<RaceDetails>();
                 string link = "https://koniewyscigowe.pl/horse/" + index;
 
                 HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
@@ -732,7 +732,7 @@ namespace Horse_Picker.Services.Scrap
                                 {
                                     try
                                     {
-                                        HorseRaceDetails race = new HorseRaceDetails();
+                                        RaceDetails race = new RaceDetails();
 
                                         string racersName = stringTableRow.Split('>')[15].Split('<')[0].Trim(' ');
                                         string toReplace = racersName.Split(' ')[0];
@@ -791,7 +791,7 @@ namespace Horse_Picker.Services.Scrap
             {
                 int n;
                 List<HorseChildDetails> allChildren = new List<HorseChildDetails>();
-                List<HorseRaceDetails> allRaces = new List<HorseRaceDetails>();
+                List<RaceDetails> allRaces = new List<RaceDetails>();
                 string link = "http://dostihyjc.cz/kun.php?ID=" + index;
 
                 HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
@@ -899,7 +899,7 @@ namespace Horse_Picker.Services.Scrap
                                 {
                                     try
                                     {
-                                        HorseRaceDetails race = new HorseRaceDetails();
+                                        RaceDetails race = new RaceDetails();
 
                                         string racersName = "";
                                         string toReplace = "";
@@ -1061,7 +1061,7 @@ namespace Horse_Picker.Services.Scrap
             return name;
         }
 
-        private HorseRaceDetails ParseHorseRaceData(string racePlace,
+        private RaceDetails ParseHorseRaceData(string racePlace,
           string raceCompetitors,
           string raceDistance,
           string raceDate,
@@ -1070,7 +1070,7 @@ namespace Horse_Picker.Services.Scrap
           string racersLink,
           string racersName)
         {
-            HorseRaceDetails race = new HorseRaceDetails();
+            RaceDetails race = new RaceDetails();
 
             int n;
             bool parseTest;
@@ -1165,14 +1165,14 @@ namespace Horse_Picker.Services.Scrap
             return race;
         }
 
-        private JockeyRaceDetails ParseJockeyRaceData(string raceDate,
+        private RaceDetails ParseJockeyRaceData(string raceDate,
             string raceDistance,
             string horsesName,
             string raceScore,
             string racePlace,
             string raceCompetitors)
         {
-            JockeyRaceDetails race = new JockeyRaceDetails();
+            RaceDetails race = new RaceDetails();
 
             int n;
             bool parseTest;
@@ -1227,11 +1227,11 @@ namespace Horse_Picker.Services.Scrap
 
             if (!string.IsNullOrEmpty(horsesName))
             {
-                race.HorsesName = horsesName; //rided horse
+                race.HorseName = horsesName; //rided horse
             }
             else
             {
-                race.HorsesName = "-";
+                race.HorseName = "-";
             }
 
             return race;

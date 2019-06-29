@@ -101,9 +101,9 @@ namespace Horse_Picker.Tests.ViewModels
                     }
                 });
             _dataServicesMock.Setup(ds => ds.GetAllRaces())
-                .Returns(new List<LoadedHistoricalRace>
+                .Returns(new List<RaceDetails>
                 {
-                    new LoadedHistoricalRace
+                    new RaceDetails
                     {
                         HorseList = { },
                         RaceCategory = "I",
@@ -111,7 +111,7 @@ namespace Horse_Picker.Tests.ViewModels
                         RaceDistance = 1600,
                         RaceLink = "somelink"
                     },
-                    new LoadedHistoricalRace
+                    new RaceDetails
                     {
                         HorseList = { },
                         RaceCategory = "II",

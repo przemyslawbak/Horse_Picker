@@ -20,7 +20,7 @@ namespace Horse_Picker.ViewModels
         {
             Horses = new ObservableCollection<LoadedHorse>();
             Jockeys = new ObservableCollection<LoadedJockey>();
-            Races = new ObservableCollection<LoadedHistoricalRace>();
+            Races = new ObservableCollection<RaceDetails>();
 
             _eventAggregator = eventAggregator;
             _updateModulesModel = new UpdateModules();
@@ -30,7 +30,7 @@ namespace Horse_Picker.ViewModels
 
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
         public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
-        public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
+        public ObservableCollection<RaceDetails> Races { get; private set; }
 
         private void RunTheUpdate()
         {

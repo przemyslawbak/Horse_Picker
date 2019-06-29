@@ -36,9 +36,9 @@ namespace Horse_Picker.Services.Simulate
 
         public event EventHandler<UpdateBarEventArgs> _simulateProgressEventHandler;
 
-        public async Task<ObservableCollection<LoadedHistoricalRace>> SimulateResultsAsync(int fromId,
+        public async Task<ObservableCollection<RaceDetails>> SimulateResultsAsync(int fromId,
             int toId,
-            ObservableCollection<LoadedHistoricalRace> races,
+            ObservableCollection<RaceDetails> races,
             ObservableCollection<LoadedHorse> horses,
             ObservableCollection<LoadedJockey> jockeys,
             IRaceProvider raceModelProvider)

@@ -42,7 +42,7 @@ namespace Horse_Picker.ViewModels
         {
             Horses = new ObservableCollection<LoadedHorse>();
             Jockeys = new ObservableCollection<LoadedJockey>();
-            Races = new ObservableCollection<LoadedHistoricalRace>();
+            Races = new ObservableCollection<RaceDetails>();
             HorseList = new ObservableCollection<HorseDataWrapper>();
             LoadedHorses = new List<string>();
             LoadedJockeys = new List<string>();
@@ -256,7 +256,7 @@ namespace Horse_Picker.ViewModels
 
             foreach (var race in _dataServices.GetAllRaces())
             {
-                Races.Add(new LoadedHistoricalRace
+                Races.Add(new RaceDetails
                 {
                     RaceCategory = race.RaceCategory,
                     RaceDate = race.RaceDate,
@@ -339,7 +339,7 @@ namespace Horse_Picker.ViewModels
         public HorseDataWrapper HorseWrapper { get; private set; }
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
         public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
-        public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
+        public ObservableCollection<RaceDetails> Races { get; private set; }
         public List<string> LoadedHorses { get; }
         public List<string> LoadedJockeys { get; }
         public Dictionary<string, int> CategoryFactorDict { get; set; }

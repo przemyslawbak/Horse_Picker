@@ -10,6 +10,6 @@ namespace Horse_Picker.Models
     {
         public string Name { get; set; }
         public string Link { get; set; }
-        public List<JockeyRaceDetails> AllRaces { get; set; }
+        public List<RaceDetails> AllRaces { get; set; }
     }
 }

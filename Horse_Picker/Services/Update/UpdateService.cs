@@ -44,12 +44,12 @@ namespace Horse_Picker.Services.Update
 
             Horses = new ObservableCollection<LoadedHorse>();
             Jockeys = new ObservableCollection<LoadedJockey>();
-            Races = new ObservableCollection<LoadedHistoricalRace>();
+            Races = new ObservableCollection<RaceDetails>();
         }
 
         public ObservableCollection<LoadedHorse> Horses { get; private set; }
         public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
-        public ObservableCollection<LoadedHistoricalRace> Races { get; private set; }
+        public ObservableCollection<RaceDetails> Races { get; private set; }
         public CancellationTokenSource TokenSource { get; set; }
         public CancellationToken CancellationToken { get; set; }
 
@@ -79,10 +79,10 @@ namespace Horse_Picker.Services.Update
                 Jockeys = new ObservableCollection<LoadedJockey>(genericCollection.Cast<LoadedJockey>());
                 _jobTypeProgressBar = "Updating jockey data";
             }
-            else if (typeof(T) == typeof(LoadedHistoricalRace))
+            else if (typeof(T) == typeof(RaceDetails))
             {
                 Races.Clear();
-                Races = new ObservableCollection<LoadedHistoricalRace>(genericCollection.Cast<LoadedHistoricalRace>());
+                Races = new ObservableCollection<RaceDetails>(genericCollection.Cast<RaceDetails>());
                 _jobTypeProgressBar = "Updating historic data";
             }
 
@@ -115,7 +115,7 @@ namespace Horse_Picker.Services.Update
                         {
                             await UpdateJockeysAsync(jobType, id);
                         }
-                        else if (typeof(T) == typeof(LoadedHistoricalRace))
+                        else if (typeof(T) == typeof(RaceDetails))
                         {
                             await UpdateRacesAsync(jobType, id);
                         }
@@ -156,7 +156,7 @@ namespace Horse_Picker.Services.Update
                 {
                     await _dataServices.SaveAllHorsesAsync(Horses.ToList());
                 }
-                else if (typeof(T) == typeof(LoadedHistoricalRace))
+                else if (typeof(T) == typeof(RaceDetails))
                 {
                     if (jobType.Contains("Historic"))
                     {
@@ -177,7 +177,7 @@ namespace Horse_Picker.Services.Update
             {
                 return (ObservableCollection<T>)Convert.ChangeType(Jockeys, typeof(ObservableCollection<T>));
             }
-            else if (typeof(T) == typeof(LoadedHistoricalRace))
+            else if (typeof(T) == typeof(RaceDetails))
             {
                 return (ObservableCollection<T>)Convert.ChangeType(Races, typeof(ObservableCollection<T>));
             }
@@ -191,7 +191,7 @@ namespace Horse_Picker.Services.Update
 
         private async Task UpdateRacesAsync(string jobType, int id)
         {
-            LoadedHistoricalRace race = new LoadedHistoricalRace();
+            RaceDetails race = new RaceDetails();
 
             if (jobType == "updateHistoricPl") race = await _scrapDataService.ScrapSingleRacePlAsync(id);
 

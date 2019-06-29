@@ -191,10 +191,8 @@
     <Compile Include="Services\Scrap\ScrapService.cs" />
     <Compile Include="Services\Message\IMessageService.cs" />
     <Compile Include="Services\Message\MessageService.cs" />
-    <Compile Include="Models\HorseRaceDetails.cs" />
+    <Compile Include="Models\RaceDetails.cs" />
     <Compile Include="Models\HorseChildData.cs" />
-    <Compile Include="Models\JockeyRaceDetails.cs" />
-    <Compile Include="Models\LoadedHistoricalRace.cs" />
     <Compile Include="Models\LoadedJockey.cs" />
     <Compile Include="Models\UpdateModules.cs" />
     <Compile Include="Services\Simulate\SimulateService.cs" />

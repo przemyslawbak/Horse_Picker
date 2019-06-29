@@ -8,7 +8,7 @@ namespace Horse_Picker.Services.Scrap
     {
         Task<LoadedHorse> ScrapSingleHorsePlAsync(int index);
         Task<LoadedHorse> ScrapSingleHorseCzAsync(int index);
-        Task<LoadedHistoricalRace> ScrapSingleRacePlAsync(int index);
+        Task<RaceDetails> ScrapSingleRacePlAsync(int index);
         Task<T> ScrapGenericObject<T>(int id, string jobType);
     }
 }

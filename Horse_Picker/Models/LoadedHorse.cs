@@ -13,7 +13,7 @@ namespace Horse_Picker.Models
         public string Link { get; set; } //
         public string Father { get; set; } //
         public string FatherLink { get; set; } //
-        public List<HorseRaceDetails> AllRaces { get; set; }
+        public List<RaceDetails> AllRaces { get; set; }
         public List<HorseChildDetails> AllChildren { get; set; }
     }
 }
