@@ -107,15 +107,15 @@ namespace Horse_Picker.Services.Update
 
                         await throttler.WaitAsync(TokenSource.Token);
 
-                        if (jobType.Contains("Horses"))
+                        if (typeof(T) == typeof(LoadedHorse))
                         {
                             await UpdateHorsesAsync(jobType, id);
                         }
-                        else if (jobType.Contains("Jockeys"))
+                        else if (typeof(T) == typeof(LoadedJockey))
                         {
                             await UpdateJockeysAsync(jobType, id);
                         }
-                        else if (jobType.Contains("Historic"))
+                        else if (typeof(T) == typeof(LoadedHistoricalRace))
                         {
                             await UpdateRacesAsync(jobType, id);
                         }
@@ -211,7 +211,7 @@ namespace Horse_Picker.Services.Update
 
             jockey = await _scrapDataService.ScrapGenericObject<LoadedJockey>(id, jobType);
 
-            if (jockey.Name != null)
+            if (!string.IsNullOrEmpty(jockey.Name))
             {
                 lock (((ICollection)Jockeys).SyncRoot)
                 {
@@ -237,7 +237,7 @@ namespace Horse_Picker.Services.Update
             if (jobType == "updateHorsesPl") horse = await _scrapDataService.ScrapSingleHorsePlAsync(id);
             if (jobType == "updateHorsesCz") horse = await _scrapDataService.ScrapSingleHorseCzAsync(id);
 
-            if (horse.Name != null)
+            if (!string.IsNullOrEmpty(horse.Name))
             {
                 lock (((ICollection)Horses).SyncRoot)
                 {
