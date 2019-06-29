@@ -85,8 +85,6 @@ namespace Horse_Picker.Services.Scrap
 
                 race = SplitRaceNodeString(jobType, stringNode);
 
-                //całość tutaj? SplitRaceNodeString
-
                 return (T)Convert.ChangeType(race, typeof(RaceDetails));
             }
 
@@ -303,10 +301,13 @@ namespace Horse_Picker.Services.Scrap
         {
             string raceDate = "";
             string raceDistance = "";
-            string horsesName = "";
+            string horseName = "";
             string raceScore = "";
             string racePlace = "";
             string raceCompetitors = "";
+            string raceCategory = "";
+            string raceLink = "";
+            List<HorseDataWrapper> horseList = new List<HorseDataWrapper>();
 
             RaceDetails race = new RaceDetails();
 
@@ -314,8 +315,8 @@ namespace Horse_Picker.Services.Scrap
             {
                 raceDate = stringNode.Split('>')[3].Split('<')[0].Trim(' ');
                 raceDistance = stringNode.Split('>')[8].Split(' ')[0].Trim(' ');
-                horsesName = stringNode.Split('>')[10].Split('<')[0].Trim(' ');
-                horsesName = MakeTitleCase(horsesName);
+                horseName = stringNode.Split('>')[10].Split('<')[0].Trim(' ');
+                horseName = MakeTitleCase(horseName);
                 raceScore = stringNode.Split('>')[12].Split('<')[0].Trim(' ');
                 racePlace = raceScore.Split('/')[0].Trim(' ');
                 raceCompetitors = raceScore.Split('/')[1].Trim(' ');
@@ -324,23 +325,30 @@ namespace Horse_Picker.Services.Scrap
             {
                 raceDate = stringNode.Split('>')[3].Split('<')[0].Trim(' ');
                 raceDistance = stringNode.Split('>')[19].Split('<')[0].Trim(' ');
-                horsesName = stringNode.Split('>')[23].Split('<')[0].Trim(' ');
-                if (horsesName.Contains("("))
+                horseName = stringNode.Split('>')[23].Split('<')[0].Trim(' ');
+                if (horseName.Contains("("))
                 {
-                    horsesName = horsesName.Split('(')[0].Trim(' ');
+                    horseName = horseName.Split('(')[0].Trim(' ');
                 }
-                horsesName = MakeTitleCase(horsesName);
+                horseName = MakeTitleCase(horseName);
                 raceScore = stringNode.Split('>')[31].Split('<')[0].Trim(' ');
                 racePlace = raceScore.Split(' ')[0].Trim(' ');
                 raceCompetitors = raceScore.Split(' ')[2].Trim(' ');
             }
+            else if (jobType.Contains("HistoricPl"))
+            {
 
-            return race = ParseJockeyRaceData(raceDate,
+            }
+
+                return race = ParseJockeyRaceData(raceDate,
                 raceDistance,
-                horsesName,
+                horseName,
                 raceScore,
                 racePlace,
-                raceCompetitors);
+                raceCompetitors,
+                raceCategory,
+                raceLink,
+                horseList);
         }
 
         /////////////////////////////--///////////////////////////////////////////////
@@ -1170,7 +1178,10 @@ namespace Horse_Picker.Services.Scrap
             string horsesName,
             string raceScore,
             string racePlace,
-            string raceCompetitors)
+            string raceCompetitors,
+            string raceCategory,
+            string raceLink,
+            List<HorseDataWrapper> horseList)
         {
             RaceDetails race = new RaceDetails();
 
