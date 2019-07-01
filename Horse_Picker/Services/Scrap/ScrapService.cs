@@ -61,13 +61,13 @@ namespace Horse_Picker.Services.Scrap
 
                 htmlAgility = GetHtmlAgility(html);
 
-                jockey.Name = GetName(htmlAgility, nameof(jockey.Name), nodeDictionary, jobType, typeof(T));
+                string name = GetName(htmlAgility, nameof(jockey.Name), nodeDictionary, jobType, typeof(T));
 
                 raceHtmlAgilityList = await GetRaceHtmlAgilityAsync(jobType, jockey.Link);
 
-                jockey.AllRaces = GetAllRaces(raceHtmlAgilityList, nameof(jockey.AllRaces), nodeDictionary, jobType);
+                jockey = ParseJockeyData(link, name);
 
-                jockey.Link = link;
+                jockey.AllRaces = GetAllRaces(raceHtmlAgilityList, nameof(jockey.AllRaces), nodeDictionary, jobType);
 
                 return (T)Convert.ChangeType(jockey, typeof(LoadedJockey));
             }
@@ -94,7 +94,8 @@ namespace Horse_Picker.Services.Scrap
 
                     race = SplitRaceNodeString(jobType, nodeString);
                     race.RaceLink = link;
-                    race.HorseList = GetHorseList(raceHorseTable, race.RaceDate, jobType, race.RaceDate);
+                    race.HorseList = GetHorseList(raceHorseTable, race.RaceDate, jobType);
+                    race.RaceCompetition = race.HorseList.Count;
                 }
                 else
                 {
@@ -132,7 +133,7 @@ namespace Horse_Picker.Services.Scrap
 
                 if (nodeConditions)
                 {
-                    name = SplitName(jobType, nodeString);
+                    name = SplitName(jobType, nodeString, type);
                 }
                 else
                 {
@@ -185,6 +186,10 @@ namespace Horse_Picker.Services.Scrap
                     char letter = name.Split(' ')[1][0];
                     name = name.Split(' ')[0].Trim(' ');
                     name = letter + ". " + name;
+                }
+                else if (jobType.Contains("Horses") || jobType.Contains("Historic"))
+                {
+                    return name;
                 }
             }
 
@@ -297,7 +302,7 @@ namespace Horse_Picker.Services.Scrap
 
             string date = SplitDate(jobType, stringNode);
             string distance = SplitDistance(jobType, stringNode);
-            string horseName = SplitName(jobType, stringNode);
+            string horseName = SplitName(jobType, stringNode, typeof(LoadedHorse));
             string place = SplitPlace(jobType, stringNode);
             string competitors = SplitCompetitors(jobType, stringNode);
             string category = SplitCategory(jobType, stringNode);
@@ -318,13 +323,9 @@ namespace Horse_Picker.Services.Scrap
         {
             string racersName = "";
 
-            if (jobType.Contains("JockeysPl"))
+            if (jobType.Contains("JockeysPl") || jobType.Contains("JockeysCz"))
             {
-                racersName = SplitName(jobType, stringNode);
-            }
-            else if (jobType.Contains("JockeysCz"))
-            {
-                racersName = SplitName(jobType, stringNode);
+                racersName = SplitName(jobType, stringNode, typeof(LoadedJockey));
             }
             else if (jobType.Contains("HistoricPl"))
             {
@@ -421,7 +422,7 @@ namespace Horse_Picker.Services.Scrap
             return place;
         }
 
-        public string SplitName(string jobType, string nameNodeString)
+        public string SplitName(string jobType, string nameNodeString, Type type)
         {
             string name = "";
             if (jobType.Contains("JockeysPl"))
@@ -434,7 +435,18 @@ namespace Horse_Picker.Services.Scrap
             }
             else if (jobType.Contains("HistoricPl"))
             {
-                name = nameNodeString.Split('>')[7].Split('<')[0].Trim(' ');
+                if (type == typeof(HorseDataWrapper))
+                {
+                    name = nameNodeString.Split('>')[7].Split('<')[0].Trim(' ');
+                }
+                if (type == typeof(LoadedJockey))
+                {
+                    name = nameNodeString.Split('>')[13].Split('<')[0].Trim(' ');
+                    string toReplace = name.Split(' ')[0];
+                    name = name.Replace(toReplace, "").Trim(' ');
+                    if (name.Contains("dż. ")) name = name.Replace("dż. ", "");
+                    if (name.Contains("u. ")) name = name.Replace("u. ", "");
+                }
             }
             //inne joby
 
@@ -533,9 +545,9 @@ namespace Horse_Picker.Services.Scrap
 
                 if (nodeConditions)
                 {
-                    string name = SplitName(jobType, nodeString);
+                    string name = SplitName(jobType, nodeString, typeof(HorseDataWrapper));
                     string age = SplitAge(jobType, nodeString, raceDate);
-                    string jockey = "";
+                    string jockey = SplitName(jobType, nodeString, typeof(LoadedJockey));
 
                     horse = ParseHorseData(raceDate, name, age, jockey);
 
@@ -1304,6 +1316,31 @@ namespace Horse_Picker.Services.Scrap
             }
 
             return horse;
+        }
+
+        private LoadedJockey ParseJockeyData(string link, string name)
+        {
+            LoadedJockey jockey = new LoadedJockey();
+
+            if (!string.IsNullOrEmpty(link))
+            {
+                jockey.Link = link; //name of the racer
+            }
+            else
+            {
+                jockey.Link = "-";
+            }
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                jockey.Name = name; //name of the racer
+            }
+            else
+            {
+                jockey.Name = "-";
+            }
+
+            return jockey;
         }
 
         public HtmlDocument GetHtmlAgility(string html)
