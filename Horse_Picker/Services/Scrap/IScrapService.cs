@@ -6,8 +6,6 @@ namespace Horse_Picker.Services.Scrap
 {
     public interface IScrapService
     {
-        Task<LoadedHorse> ScrapSingleHorsePlAsync(int index);
-        Task<LoadedHorse> ScrapSingleHorseCzAsync(int index);
         Task<T> ScrapGenericObject<T>(int id, string jobType);
     }
 }

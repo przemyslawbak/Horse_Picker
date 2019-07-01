@@ -196,11 +196,14 @@ namespace Horse_Picker.Services.Update
             race = await _scrapDataService.ScrapGenericObject<RaceDetails>(id, jobType);
 
             //if the race is from 2018
-            if (race != null && race.RaceDate.Year == 2018)
+            if (race != null)
             {
-                lock (((ICollection)Races).SyncRoot)
+                if (race.RaceDate.Year == 2018)
                 {
-                    Races.Add(race);
+                    lock (((ICollection)Races).SyncRoot)
+                    {
+                        Races.Add(race);
+                    }
                 }
             }
         }
@@ -211,7 +214,7 @@ namespace Horse_Picker.Services.Update
 
             jockey = await _scrapDataService.ScrapGenericObject<LoadedJockey>(id, jobType);
 
-            if (jockey != null && !string.IsNullOrEmpty(jockey.Name))
+            if (jockey != null)
             {
                 lock (((ICollection)Jockeys).SyncRoot)
                 {
@@ -234,10 +237,9 @@ namespace Horse_Picker.Services.Update
         {
             LoadedHorse horse = new LoadedHorse();
 
-            if (jobType == "updateHorsesPl") horse = await _scrapDataService.ScrapSingleHorsePlAsync(id);
-            if (jobType == "updateHorsesCz") horse = await _scrapDataService.ScrapSingleHorseCzAsync(id);
+            horse = await _scrapDataService.ScrapGenericObject<LoadedHorse>(id, jobType);
 
-            if (horse != null && !string.IsNullOrEmpty(horse.Name))
+            if (horse != null)
             {
                 lock (((ICollection)Horses).SyncRoot)
                 {
