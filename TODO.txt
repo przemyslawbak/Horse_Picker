@@ -6,6 +6,7 @@ RaceDataProvider?
 SaveRaceTestResultsAsync -> StringBuilder
 przy scrapowaniu koni i dzokejow, jesli jest 0 startow, i tak dodajemy
 walidacja input update dla INT oraz from < to
+VerifyNodeCondition - slownik?
 testy
 
 NA PRZYSZLOSC:

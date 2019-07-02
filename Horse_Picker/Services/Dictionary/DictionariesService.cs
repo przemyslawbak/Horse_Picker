@@ -35,10 +35,10 @@ namespace Horse_Picker.Services.Dictionary
 
             nodeDictionary.Add("Name", "/html/body/main/section[1]/div/div[2]/div[2]/header/div/h1");
             nodeDictionary.Add("Age", "/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[1]/th/strong");
-            nodeDictionary.Add("Father", "/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td/a");
-            nodeDictionary.Add("FatherLink", "/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td/a");
-            nodeDictionary.Add("AllChildren", "/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td/a");
-            nodeDictionary.Add("Allraces", "/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td/a");
+            nodeDictionary.Add("Father", "/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td");
+            nodeDictionary.Add("FatherLink", "/html/body/main/section[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td");
+            nodeDictionary.Add("AllChildren", "//*[@id=\"wykaz\"]/tbody/tr");
+            nodeDictionary.Add("AllRaces", "//*[@id=\"wykaz\"]/tbody/tr");
 
             return nodeDictionary;
         }

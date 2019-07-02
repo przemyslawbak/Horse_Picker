@@ -174,9 +174,9 @@ namespace Horse_Picker.ViewModels
                     Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JPlFrom, DataUpdateModules.JPlTo, "updateJockeysPl");
                 if (DataUpdateModules.JockeysCz)
                     Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JCzFrom, DataUpdateModules.JCzTo, "updateJockeysCz");
-                if (DataUpdateModules.HorsesCz)
-                    Horses = await _updateDataService.UpdateDataAsync(Horses, DataUpdateModules.HPlFrom, DataUpdateModules.HPlTo, "updateHorsesPl");
                 if (DataUpdateModules.HorsesPl)
+                    Horses = await _updateDataService.UpdateDataAsync(Horses, DataUpdateModules.HPlFrom, DataUpdateModules.HPlTo, "updateHorsesPl");
+                if (DataUpdateModules.HorsesCz)
                     Horses = await _updateDataService.UpdateDataAsync(Horses, DataUpdateModules.HCzFrom, DataUpdateModules.HCzTo, "updateHorsesCz");
                 if (DataUpdateModules.RacesPl)
                     Races = await _updateDataService.UpdateDataAsync(Races, DataUpdateModules.HistPlFrom, DataUpdateModules.HistPlTo, "updateHistoricPl");
