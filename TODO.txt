@@ -1,5 +1,6 @@
+index out of array exception -  HorsesPl update (260) start
+Value cannot be null - HorsesCz update (123456) start
 
-cancel update - zwiecha (jockeycz)
 async file data - zapis i odczyt
 RaceDataProvider?
 SaveRaceTestResultsAsync -> StringBuilder
@@ -23,6 +24,7 @@ czy kon zmienil ostatnio trenera - jak tak to dobrze, bedzie chcial sie wykazac
 jak klacz wystawiana vs ogierom, to pozytywnie
 nie da sie - shipping - czy kon przyjezdza?
 
+OK - cancel update - zwiecha
 OK - przy scrapowaniu koni i dzokejow, jesli jest 0 startow, i tak dodajemy
 OK - scrap service porzadek
 OK - utworzyc nowy VM dla update window

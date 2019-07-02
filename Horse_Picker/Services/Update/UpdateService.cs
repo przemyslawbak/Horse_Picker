@@ -44,7 +44,7 @@ namespace Horse_Picker.Services.Update
             IComputeService computeDataService,
             IDictionariesService dictionaryService)
         {
-            _degreeOfParallelism = 70;
+            _degreeOfParallelism = 30;
 
             _dataServices = dataServices;
             _dictionaryService = dictionaryService;
@@ -67,6 +67,7 @@ namespace Horse_Picker.Services.Update
         //SemaphoreSlim credits: https://blog.briandrupieski.com/throttling-asynchronous-methods-in-csharp
         //SemaphoreSlim corrections: https://stackoverflow.com/questions/56640694/why-my-code-is-throwing-the-semaphore-has-been-disposed-exception/
         //Task.Run corrections: https://stackoverflow.com/questions/56628009/how-should-i-use-task-run-in-my-code-for-proper-scalability-and-performance/
+        //credits for SemaphoreSlim cancellation: https://stackoverflow.com/a/24099764/11027921
 
         public async Task<ObservableCollection<T>> UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int idFrom, int idTo, string jobType)
         {
@@ -107,15 +108,17 @@ namespace Horse_Picker.Services.Update
             {
                 int id = i;
 
+                if (CancellationToken.IsCancellationRequested)
+                    break;
+
                 //create loads of parallel tasks
                 tasks.Add(Task.Run(async () =>
                 {
+                    await throttler.WaitAsync();
                     try
                     {
                         if (CancellationToken.IsCancellationRequested)
                             return;
-
-                        await throttler.WaitAsync(TokenSource.Token);
 
                         if (typeof(T) == typeof(LoadedHorse))
                         {
@@ -129,10 +132,6 @@ namespace Horse_Picker.Services.Update
                         {
                             await UpdateRacesAsync(jobType, id);
                         }
-                    }
-                    catch (Exception e)
-                    {
-
                     }
                     finally
                     {
@@ -150,10 +149,6 @@ namespace Horse_Picker.Services.Update
             try
             {
                 await Task.WhenAll(tasks);
-            }
-            catch (OperationCanceledException)
-            {
-
             }
             finally
             {
