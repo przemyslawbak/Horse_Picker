@@ -1,11 +1,9 @@
+
 cancel update - zwiecha (jockeycz)
-scrap service porzadek
-validacja - zmiana i do serwisu
 async file data - zapis i odczyt
 RaceDataProvider?
 SaveRaceTestResultsAsync -> StringBuilder
-przy scrapowaniu koni i dzokejow, jesli jest 0 startow, i tak dodajemy
-walidacja input update dla INT oraz from < to
+walidacja input update dla INT oraz from < to - validacja - zmiana i do serwisu
 VerifyNodeCondition - slownik?
 testy
 
@@ -25,6 +23,8 @@ czy kon zmienil ostatnio trenera - jak tak to dobrze, bedzie chcial sie wykazac
 jak klacz wystawiana vs ogierom, to pozytywnie
 nie da sie - shipping - czy kon przyjezdza?
 
+OK - przy scrapowaniu koni i dzokejow, jesli jest 0 startow, i tak dodajemy
+OK - scrap service porzadek
 OK - utworzyc nowy VM dla update window
 OK - litery czeskie dzokejow pozamieniac na polskie przy scrapowaniu
 OK - generyczna metoda w VM dla scrap jockeys/horses

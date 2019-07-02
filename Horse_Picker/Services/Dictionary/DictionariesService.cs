@@ -52,7 +52,7 @@ namespace Horse_Picker.Services.Dictionary
             nodeDictionary.Add("Father", "/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[2]/tr[1]");
             nodeDictionary.Add("FatherLink", "/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[2]/tr[1]");
             nodeDictionary.Add("AllChildren", "/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[3]/tr");
-            nodeDictionary.Add("Allraces", "/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[4]/tr");
+            nodeDictionary.Add("AllRaces", "/html[1]/body[1]/div[1]/form[1]/div[1]/table[1]/tr[1]/td[2]/table[4]/tr");
 
             return nodeDictionary;
         }

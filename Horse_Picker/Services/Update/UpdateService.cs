@@ -17,7 +17,16 @@ using System.Threading.Tasks;
 namespace Horse_Picker.Services.Update
 {
     //update progress bar question: https://stackoverflow.com/questions/56690258/is-there-any-way-that-my-service-layer-will-update-vm-properties-or-methods-res
-
+    /// <summary>
+    /// SemaphoreSlim performance test:
+    /// UpdateJockeysAsync(PL) - all records
+    /// _degreeOfParallelism = 10; -> 22m15s
+    /// _degreeOfParallelism = 30; -> 7m41s
+    /// _degreeOfParallelism = 50; -> 6m12s
+    /// _degreeOfParallelism = 70; -> 4m49s
+    /// _degreeOfParallelism = 85; -> 5m20s (many conn. exceptions, try with better net)
+    /// _degreeOfParallelism = 100; -> 5m50s (many conn. exceptions, try with better net)
+    /// </summary>
     public class UpdateService : IUpdateService
     {
         int _idToProgressBar;
@@ -35,7 +44,7 @@ namespace Horse_Picker.Services.Update
             IComputeService computeDataService,
             IDictionariesService dictionaryService)
         {
-            _degreeOfParallelism = 10;
+            _degreeOfParallelism = 70;
 
             _dataServices = dataServices;
             _dictionaryService = dictionaryService;
@@ -98,6 +107,7 @@ namespace Horse_Picker.Services.Update
             {
                 int id = i;
 
+                //create loads of parallel tasks
                 tasks.Add(Task.Run(async () =>
                 {
                     try
