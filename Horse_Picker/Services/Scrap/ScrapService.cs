@@ -16,6 +16,7 @@ namespace Horse_Picker.Services.Scrap
     {
         int _yearMin = 2013;
         int _yearMax = DateTime.Now.Year;
+        DateTime _dateToday = DateTime.Now;
 
         private IDictionariesService _dictionaryService;
 
@@ -80,7 +81,7 @@ namespace Horse_Picker.Services.Scrap
                     raceHtmlAgilityList = await GetRaceHtmlAgilityAsync(jobType, link);
 
                     jockey = ParseJockeyData(link, name);
-                    jockey.AllRaces = GetGenericList<RaceDetails>(raceHtmlAgilityList, nameof(jockey.AllRaces), nodeDictionary, jobType);
+                    jockey.AllRaces = GetGenericList<RaceDetails>(raceHtmlAgilityList, nameof(jockey.AllRaces), nodeDictionary, jobType, _dateToday);
                 }
                 else
                 {
@@ -101,7 +102,7 @@ namespace Horse_Picker.Services.Scrap
 
                     race = SplitRaceNodeString(jobType, nodeString, null);
                     race.RaceLink = link;
-                    race.HorseList = GetGenericList<HorseDataWrapper>(raceHtmlAgilityList, nameof(race.HorseList), nodeDictionary, jobType);
+                    race.HorseList = GetGenericList<HorseDataWrapper>(raceHtmlAgilityList, nameof(race.HorseList), nodeDictionary, jobType, race.RaceDate);
                     race.RaceCompetition = race.HorseList.Count;
                 }
                 else
@@ -120,18 +121,18 @@ namespace Horse_Picker.Services.Scrap
                     raceHtmlAgilityList.Add(htmlAgility);
 
                     string name = SplitName(jobType, nodeString, typeof(T), null);
-                    string age = SplitAge(jobType, nodeString, DateTime.Now, nameof(horse.Age));
+                    string age = SplitAge(jobType, nodeString, _dateToday, nameof(horse.Age));
                     string racer = "";
 
-                    wrapper = ParseHorseData(DateTime.Now, name, age, link, racer, jobType);
+                    wrapper = ParseHorseData(_dateToday, name, age, link, racer, jobType);
 
                     horse.Link = link;
                     horse.Name = wrapper.HorseName;
                     horse.Age = wrapper.Age;
                     horse.Father = GetFather(jobType, htmlAgility, nameof(horse.Father), nodeDictionary);
                     horse.FatherLink = GetFather(jobType, htmlAgility, nameof(horse.FatherLink), nodeDictionary);
-                    horse.AllRaces = GetGenericList<RaceDetails>(raceHtmlAgilityList, nameof(horse.AllRaces), nodeDictionary, jobType);
-                    horse.AllChildren = GetGenericList<HorseChildDetails>(raceHtmlAgilityList, nameof(horse.AllChildren), nodeDictionary, jobType);
+                    horse.AllRaces = GetGenericList<RaceDetails>(raceHtmlAgilityList, nameof(horse.AllRaces), nodeDictionary, jobType, _dateToday);
+                    horse.AllChildren = GetGenericList<HorseChildDetails>(raceHtmlAgilityList, nameof(horse.AllChildren), nodeDictionary, jobType, _dateToday);
                 }
                 else
                 {
@@ -143,7 +144,7 @@ namespace Horse_Picker.Services.Scrap
             else { throw new ArgumentException(); }
         }
 
-        private List<T> GetGenericList<T>(List<HtmlDocument> raceHtmlAgilityList, string propertyName, Dictionary<string, string> nodeDictionary, string jobType)
+        private List<T> GetGenericList<T>(List<HtmlDocument> raceHtmlAgilityList, string propertyName, Dictionary<string, string> nodeDictionary, string jobType, DateTime raceDate)
         {
             List<HorseChildDetails> children = new List<HorseChildDetails>();
 
@@ -171,7 +172,7 @@ namespace Horse_Picker.Services.Scrap
                             {
                                 HorseChildDetails child = new HorseChildDetails();
 
-                                child = SplitChildNodeString(jobType, nodeString, propertyName);
+                                child = SplitChildNodeString(jobType, nodeString, propertyName, raceDate);
 
                                 children.Add(child);
                             }
@@ -188,7 +189,7 @@ namespace Horse_Picker.Services.Scrap
 
                                 HorseDataWrapper horse = new HorseDataWrapper();
 
-                                //horse = SplitHorseNodeString(jobType, nodeString, propertyName);
+                                horse = SplitHorseNodeString(jobType, nodeString, propertyName, raceDate);
 
                                 horses.Add(horse);
                             }
@@ -320,15 +321,15 @@ namespace Horse_Picker.Services.Scrap
         {
             List<string> conditionWords = new List<string>();
 
-            conditionWords.Add("Jeździec"); //for JockeysPl
-            conditionWords.Add("Licence jezdce"); //for JockeysCz profile
-            conditionWords.Add("Rasa"); //for HorsesPl
-            conditionWords.Add("celkem"); //for HorsesCz
-            conditionWords.Add("vysledky.php?id_dostih="); //for JockeysCz race row
-            if (propertyName == "HorseList")
+            if (propertyName == null)
             {
-                conditionWords.Add("Pula nagród"); //for HistoricPl
-                conditionWords.Add("zł"); //for HistoricPl
+                conditionWords.Add("Jeździec"); //for JockeysPl
+                conditionWords.Add("Licence jezdce"); //for JockeysCz profile
+                conditionWords.Add("Rasa"); //for HorsesPl
+                conditionWords.Add("celkem"); //for HorsesCz
+                conditionWords.Add("vysledky.php?id_dostih="); //for JockeysCz race row
+                conditionWords.Add("Pula nagród"); //for HistoricPl (not sent prop name)
+                conditionWords.Add("zł"); //for HistoricPl (not sent prop name)
             }
             if (propertyName == "Father" || propertyName == "FatherLink")
             {
@@ -383,36 +384,31 @@ namespace Horse_Picker.Services.Scrap
             return new string(filtered.ToArray());
         }
 
-        public bool CheckNodeRowConditions(string jobType, string stringTableRow)
+        private HorseDataWrapper SplitHorseNodeString(string jobType, string nodeString, string propertyName, DateTime raceDate)
         {
-            if (jobType.Contains("JockeysPl"))
-            {
-                if (!stringTableRow.Contains("Brak danych") && (stringTableRow.Contains("&nbsp;m") || stringTableRow.Contains(" m"))) return true;
+            HorseDataWrapper horse = new HorseDataWrapper();
 
-                return false;
-            }
-            if (jobType.Contains("JockeysCz"))
-            {
-                if (!stringTableRow.Contains("nebyl nalezen žádný záznam")) return true;
+            string name = SplitName(jobType, nodeString, typeof(HorseDataWrapper), null);
+            string age = SplitAge(jobType, nodeString, raceDate, propertyName);
+            string racer = SplitName(jobType, nodeString, typeof(LoadedJockey), null);
+            string link = "";
 
-                return false;
-            }
-            //inne joby
+            horse = ParseHorseData(raceDate, name, age, link, racer, jobType);
 
-            return false;
+            return horse;
         }
 
-        private HorseChildDetails SplitChildNodeString(string jobType, string nodeString, string propertyName)
+        private HorseChildDetails SplitChildNodeString(string jobType, string nodeString, string propertyName, DateTime raceDate)
         {
             HorseDataWrapper wrapper = new HorseDataWrapper();
             HorseChildDetails child = new HorseChildDetails();
 
             string name = SplitName(jobType, nodeString, typeof(LoadedHorse), propertyName);
-            string age = SplitAge(jobType, nodeString, DateTime.Now, propertyName);
+            string age = SplitAge(jobType, nodeString, _dateToday, propertyName);
             string link = SplitLink(nodeString, jobType, propertyName);
             string jockey = "";
 
-            wrapper = ParseHorseData(DateTime.Now, name, age, link, jockey, jobType);
+            wrapper = ParseHorseData(_dateToday, name, age, link, jockey, jobType);
 
             child.ChildAge = wrapper.Age;
             child.ChildLink = wrapper.Link;
