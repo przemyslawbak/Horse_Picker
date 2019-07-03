@@ -1,6 +1,7 @@
 index out of array exception -  HorsesPl update (260) start
 Value cannot be null - HorsesCz update (123456) start
 
+dodac prosty error log z obslugi wyjatkow dla petli
 async file data - zapis i odczyt
 RaceDataProvider?
 SaveRaceTestResultsAsync -> StringBuilder

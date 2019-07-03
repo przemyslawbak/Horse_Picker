@@ -70,7 +70,7 @@ namespace Horse_Picker.Services.Scrap
 
             string nodeString = htmlAgility.DocumentNode.OuterHtml.ToString();
 
-            bool nodeConditions = VerifyNodeCondition(nodeString, null);
+            bool nodeConditions = VerifyNodeCondition(nodeString, null, jobType);
 
             if (typeof(T) == typeof(LoadedJockey))
             {
@@ -158,7 +158,7 @@ namespace Horse_Picker.Services.Scrap
 
             foreach (var raceHtmlAgility in raceHtmlAgilityList)
             {
-                nodeConditions = VerifyNodeCondition(raceHtmlAgility.DocumentNode.OuterHtml.ToString(), propertyName);
+                nodeConditions = VerifyNodeCondition(raceHtmlAgility.DocumentNode.OuterHtml.ToString(), propertyName, jobType);
 
                 if (nodeConditions)
                 {
@@ -170,7 +170,7 @@ namespace Horse_Picker.Services.Scrap
                         {
                             string nodeString = row.OuterHtml.ToString();
 
-                            nodeConditions = VerifyNodeCondition(nodeString, propertyName);
+                            nodeConditions = VerifyNodeCondition(nodeString, propertyName, jobType);
 
                             if (nodeConditions)
                             {
@@ -307,7 +307,7 @@ namespace Horse_Picker.Services.Scrap
 
             string nodeString = node.OuterHtml.ToString();
 
-            bool nodeConditions = VerifyNodeCondition(nodeString, propertyName);
+            bool nodeConditions = VerifyNodeCondition(nodeString, propertyName, jobType);
 
             if (jobType.Contains("HorsesPl"))
             {
@@ -343,36 +343,59 @@ namespace Horse_Picker.Services.Scrap
         }
 
         //TODO: dictionary
-        public bool VerifyNodeCondition(string node, string propertyName)
+        public bool VerifyNodeCondition(string node, string propertyName, string jobType)
         {
             List<string> conditionWords = new List<string>();
 
-            if (propertyName == null || propertyName == "AllRaces" || propertyName == "HorseList")
+            if (jobType.Contains("JockeysPl"))
             {
-                conditionWords.Add("Jeździec"); //for JockeysPl
+                conditionWords.Add("Jeździec"); //for JockeysPl profile
+                if (propertyName == "AllRaces")
+                {
+                    conditionWords.Add("&nbsp;zł"); //for HorsesPl race row
+                }
+            }
+            if (jobType.Contains("JockeysCz"))
+            {
                 conditionWords.Add("Licence jezdce"); //for JockeysCz profile
-                conditionWords.Add("Rasa"); //for HorsesPl
-                conditionWords.Add("celkem"); //for HorsesCz
                 conditionWords.Add("vysledky.php?id_dostih="); //for JockeysCz race row
+            }
+            if (jobType.Contains("HorsesPl"))
+            {
+                conditionWords.Add("Rasa:"); //for HorsesPl profile
+
+                if (propertyName == "Father" || propertyName == "FatherLink")
+                {
+                    conditionWords.Add("<a href="); //for HorsesPl father
+                }
+                if (propertyName == "AllRaces")
+                {
+                    conditionWords.Add("&nbsp;m"); //for HorsesPl race row
+                }
+                if (propertyName == "AllChildren")
+                {
+                    conditionWords.Add("ogier"); //for HorsesPl child row
+                    conditionWords.Add("klacz"); //for HorsesPl child row
+                    conditionWords.Add("wałach"); //for HorsesPl child row
+                }
+            }
+            if (jobType.Contains("HorsesCz"))
+            {
+                conditionWords.Add("celkem"); //for HorsesCz profile
+
+                if (propertyName == "AllRaces")
+                {
+                    conditionWords.Add("Kč"); //for HorsesCz race row
+                }
+                if (propertyName == "AllChildren")
+                {
+                    conditionWords.Add("td align='left' width='180' class='trs'"); //for HorsesCz child row
+                }
+            }
+            if (jobType.Contains("HistoricPl"))
+            {
                 conditionWords.Add("Pula nagród"); //for HistoricPl (not sent prop name)
                 conditionWords.Add("zł"); //for HistoricPl (not sent prop name)
-            }
-            if (propertyName == "Father" || propertyName == "FatherLink")
-            {
-                conditionWords.Add("<a href="); //for HorsesPl father
-            }
-            if (propertyName == "AllRaces")
-            {
-                conditionWords.Add("&nbsp;m"); //for HorsesPl race row
-                conditionWords.Add("Kč"); //for HorsesCz race row
-            }
-            if (propertyName == "AllChildren")
-            {
-                conditionWords.Add("ogier"); //for HorsesPl child row
-                conditionWords.Add("klacz"); //for HorsesPl child row
-                conditionWords.Add("wałach"); //for HorsesPl child row
-                conditionWords.Add("td align='left' width='180' class='trs'"); //for HorsesCz child row
-
             }
 
             bool verify = conditionWords.Any(node.Contains);

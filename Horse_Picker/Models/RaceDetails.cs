@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.Models
 {
+    //equals credits: https://stackoverflow.com/a/20701995/11027921
     public class RaceDetails
     {
         public DateTime RaceDate { get; set; }//
@@ -23,24 +24,28 @@ namespace Horse_Picker.Models
         //overriding Equals for List Union
         public override bool Equals(object obj)
         {
-            // Try to cast the object to compare to to be a Person
-            var raceDetails = obj as RaceDetails;
+            if (obj == null)
+                return false;
 
-            return Equals(raceDetails);
+            RaceDetails r = obj as RaceDetails;
+            if (r == null)
+                return false;
+
+            return (RaceDate == r.RaceDate) && (RaceDistance == r.RaceDistance) && (WonPlace == r.WonPlace);
         }
+
 
         public override int GetHashCode()
         {
-            return RaceDate.GetHashCode();
+            return RaceDate.GetHashCode() ^ RaceDistance.GetHashCode() ^ WonPlace.GetHashCode();
         }
 
         public bool Equals(RaceDetails raceToCompareTo)
         {
-            // Check if person is being compared to a non person. In that case always return false.
-            if (raceToCompareTo == null) return false;
+            if ((object)raceToCompareTo == null)
+                return false;
 
-            // Check if both person objects contain the same Name. In that case they're assumed equal.
-            return RaceDate.Equals(raceToCompareTo.RaceDate);
+            return (RaceDate == raceToCompareTo.RaceDate) && (RaceDistance == raceToCompareTo.RaceDistance) && (WonPlace == raceToCompareTo.WonPlace);
         }
     }
 }

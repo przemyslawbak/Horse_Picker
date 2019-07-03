@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Horse_Picker.Services.Update
 {
@@ -44,7 +45,7 @@ namespace Horse_Picker.Services.Update
             IComputeService computeDataService,
             IDictionariesService dictionaryService)
         {
-            _degreeOfParallelism = 30;
+            _degreeOfParallelism = 40;
 
             _dataServices = dataServices;
             _dictionaryService = dictionaryService;
@@ -79,19 +80,16 @@ namespace Horse_Picker.Services.Update
             //parse collections, display job
             if (typeof(T) == typeof(LoadedHorse))
             {
-                Horses.Clear();
                 Horses = new ObservableCollection<LoadedHorse>(genericCollection.Cast<LoadedHorse>());
                 _jobTypeProgressBar = "Updating horse data";
             }
             else if (typeof(T) == typeof(LoadedJockey))
             {
-                Jockeys.Clear();
                 Jockeys = new ObservableCollection<LoadedJockey>(genericCollection.Cast<LoadedJockey>());
                 _jobTypeProgressBar = "Updating jockey data";
             }
             else if (typeof(T) == typeof(RaceDetails))
             {
-                Races.Clear();
                 Races = new ObservableCollection<RaceDetails>(genericCollection.Cast<RaceDetails>());
                 _jobTypeProgressBar = "Updating historic data";
             }
@@ -132,6 +130,10 @@ namespace Horse_Picker.Services.Update
                         {
                             await UpdateRacesAsync(jobType, id);
                         }
+                    }
+                    catch
+                    {
+                        MessageBox.Show(id.ToString());
                     }
                     finally
                     {
@@ -275,7 +277,7 @@ namespace Horse_Picker.Services.Update
         /// </summary>
         /// <param name="doubledJockey">jockey for Jockeys</param>
         /// <param name="jockey">found doubler</param>
-        public ObservableCollection<LoadedJockey> MergeJockeysData(LoadedJockey doubledJockey, LoadedJockey jockey)
+        public void MergeJockeysData(LoadedJockey doubledJockey, LoadedJockey jockey)
         {
             if (jockey.AllRaces != null)
             {
@@ -283,8 +285,6 @@ namespace Horse_Picker.Services.Update
             }
 
             Jockeys.Add(doubledJockey);
-
-            return Jockeys;
         }
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace Horse_Picker.Services.Update
         /// </summary>
         /// <param name="doubledHorse">horse from Horses</param>
         /// <param name="horse">scrapped new horse</param>
-        public ObservableCollection<LoadedHorse> MergeHorsesData(LoadedHorse doubledHorse, LoadedHorse horse)
+        public void MergeHorsesData(LoadedHorse doubledHorse, LoadedHorse horse)
         {
             if (horse.AllRaces != null)
             {
@@ -305,8 +305,6 @@ namespace Horse_Picker.Services.Update
             }
 
             Horses.Add(doubledHorse);
-
-            return Horses;
         }
 
         //passing RaceModel to the services credits: https://stackoverflow.com/questions/56646346/should-i-pass-view-model-to-my-service-and-if-yes-how-to-do-it/
