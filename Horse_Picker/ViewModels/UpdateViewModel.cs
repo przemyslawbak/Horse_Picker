@@ -18,19 +18,11 @@ namespace Horse_Picker.ViewModels
         private UpdateModules _updateModulesModel;
         public UpdateViewModel(IEventAggregator eventAggregator)
         {
-            Horses = new ObservableCollection<LoadedHorse>();
-            Jockeys = new ObservableCollection<LoadedJockey>();
-            Races = new ObservableCollection<RaceDetails>();
-
             _eventAggregator = eventAggregator;
             _updateModulesModel = new UpdateModules();
 
             RunTheUpdate();
         }
-
-        public ObservableCollection<LoadedHorse> Horses { get; private set; }
-        public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
-        public ObservableCollection<RaceDetails> Races { get; private set; }
 
         /// <summary>
         /// initializing properties and publishes update props to the event
