@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 namespace Horse_Picker.Services.Files
 {
     //JsonConvert async CPU bound https://stackoverflow.com/a/19912382/11027921 , https://stackoverflow.com/q/49610328/11027921
+    //async file writing credits: https://stackoverflow.com/a/25521636
     public class FileService : IFileService
     {
         string _horsesFileName = "_horses_list.json";
