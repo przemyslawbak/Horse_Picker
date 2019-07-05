@@ -166,17 +166,32 @@ namespace Horse_Picker.Services.Files
 
                         for (int h = 0; h < allRaces[j].HorseList.Count; h++)
                         {
-                            line = allRaces[j].HorseList[h].HorseName + " - "
-                                + allRaces[j].HorseList[h].Jockey + " - "
-                                + allRaces[j].HorseList[h].WinIndex.ToString("0.000") + " - "
-                                + allRaces[j].HorseList[h].JockeyIndex.ToString("0.000") + " - "
-                                + allRaces[j].HorseList[h].CategoryIndex.ToString("0.000") + " - "
-                                + allRaces[j].HorseList[h].SiblingsIndex.ToString("0.000") + " - "
-                                + allRaces[j].HorseList[h].AgeIndex.ToString("0.000") + " - "
-                                + allRaces[j].HorseList[h].PercentageIndex.ToString("0.000") + " - "
-                                + allRaces[j].HorseList[h].RestIndex.ToString("0.000") + " - "
-                                + allRaces[j].HorseList[h].TiredIndex.ToString("0.000") + " - "
-                                + allRaces[j].HorseList[h].HorseScore.ToString("0.000");
+                            StringBuilder sbLine = new StringBuilder();
+
+                            sbLine.Append(allRaces[j].HorseList[h].HorseName);
+                            sbLine.Append(" - ");
+                            sbLine.Append(allRaces[j].HorseList[h].Jockey);
+                            sbLine.Append(" - ");
+                            sbLine.Append(allRaces[j].HorseList[h].WinIndex.ToString("0.000"));
+                            sbLine.Append(" - ");
+                            sbLine.Append(allRaces[j].HorseList[h].JockeyIndex.ToString("0.000"));
+                            sbLine.Append(" - ");
+                            sbLine.Append(allRaces[j].HorseList[h].CategoryIndex.ToString("0.000"));
+                            sbLine.Append(" - ");
+                            sbLine.Append(allRaces[j].HorseList[h].SiblingsIndex.ToString("0.000"));
+                            sbLine.Append(" - ");
+                            sbLine.Append(allRaces[j].HorseList[h].AgeIndex.ToString("0.000"));
+                            sbLine.Append(" - ");
+                            sbLine.Append(allRaces[j].HorseList[h].PercentageIndex.ToString("0.000"));
+                            sbLine.Append(" - ");
+                            sbLine.Append(allRaces[j].HorseList[h].RestIndex.ToString("0.000"));
+                            sbLine.Append(" - ");
+                            sbLine.Append(allRaces[j].HorseList[h].TiredIndex.ToString("0.000"));
+                            sbLine.Append(" - ");
+                            sbLine.Append(allRaces[j].HorseList[h].HorseScore.ToString("0.000"));
+
+                            line = sbLine.ToString();
+
                             await SaveTestResultLine(line);
                         }
 

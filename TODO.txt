@@ -1,11 +1,10 @@
 
-async void - mainviewmodel
+async void - mainviewmodel ctor
 testy
 
 NA PRZYSZLOSC:
 VerifyNodeCondition - slownik?
 walidacja input update dla INT oraz from < to - validacja - zmiana i do serwisu
-SaveRaceTestResultsAsync -> StringBuilder
 RaceDataProvider?
 wyjatki dla parsowania i split do error logu?
 dodac prosty error log z obslugi wyjatkow dla petli
@@ -24,6 +23,8 @@ czy kon zmienil ostatnio trenera - jak tak to dobrze, bedzie chcial sie wykazac
 jak klacz wystawiana vs ogierom, to pozytywnie
 nie da sie - shipping - czy kon przyjezdza?
 
+OK - SaveRaceTestResultsAsync -> StringBuilder
+OK - async get/save pliki
 OK - async file data - zapis i odczyt - zostawiam jako CPU bound https://stackoverflow.com/a/19912382/11027921
 OK - spr merge jockey/horse
 OK - index out of array exception -  HorsesPl update (260) start

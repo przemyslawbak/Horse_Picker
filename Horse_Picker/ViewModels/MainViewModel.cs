@@ -160,12 +160,14 @@ namespace Horse_Picker.ViewModels
         {
             var result = _messageDialogService.ShowUpdateWindow();
 
-            UpdateModules = new ObservableCollection<bool>();
-            UpdateModules.Add(DataUpdateModules.JockeysPl);
-            UpdateModules.Add(DataUpdateModules.JockeysCz);
-            UpdateModules.Add(DataUpdateModules.HorsesCz);
-            UpdateModules.Add(DataUpdateModules.HorsesPl);
-            UpdateModules.Add(DataUpdateModules.RacesPl);
+            UpdateModules = new ObservableCollection<bool>
+            {
+                DataUpdateModules.JockeysPl,
+                DataUpdateModules.JockeysCz,
+                DataUpdateModules.HorsesCz,
+                DataUpdateModules.HorsesPl,
+                DataUpdateModules.RacesPl
+            };
 
             bool isAnyTrue = UpdateModules.Any(module => module == true);
 
