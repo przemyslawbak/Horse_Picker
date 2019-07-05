@@ -71,10 +71,11 @@ namespace Horse_Picker.ViewModels
             PickHorseDataCommand = new DelegateCommand(OnPickHorseDataExecute);
             UpdateDataCommand = new AsyncCommand(async () => await OnUpdateDataExecuteAsync());
 
+            //delegates and commands
             ClearDataCommand.Execute(null);
-            PopulateListsAsync();
+            _loadDataEventHandler += LoadAllDataAsync;
+            OnPopulateLists(null);
             CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(_raceModelProvider);
-
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
             _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate);
         }
@@ -199,7 +200,7 @@ namespace Horse_Picker.ViewModels
                 AllControlsEnabled = true;
                 VisibilityCancellingMsg = Visibility.Collapsed;
 
-                PopulateListsAsync();
+                OnPopulateLists(null);
             }
         }
 
@@ -232,61 +233,61 @@ namespace Horse_Picker.ViewModels
 
         /// <summary>
         /// loads horses from the file data services
+        /// async void eventhandler credits: https://stackoverflow.com/a/19415703/11027921
         /// </summary>
-        public async Task LoadAllDataAsync()
+        public async void LoadAllDataAsync(object sender, EventArgs e)
         {
-            Horses.Clear();
-            Jockeys.Clear();
-            Races.Clear();
-
-            List<LoadedHorse> horses = await _dataServices.GetAllHorses();
-            List<LoadedJockey> jockeys = await _dataServices.GetAllJockeys();
-            List<RaceDetails> races = await _dataServices.GetAllRaces();
-
-            foreach (var horse in horses)
+            if (Horses.Count == 0 && Jockeys.Count == 0 && Races.Count == 0)
             {
-                Horses.Add(new LoadedHorse
+                List<LoadedHorse> horses = await _dataServices.GetAllHorses();
+                List<LoadedJockey> jockeys = await _dataServices.GetAllJockeys();
+                List<RaceDetails> races = await _dataServices.GetAllRaces();
+
+                foreach (var horse in horses)
                 {
-                    Name = horse.Name,
-                    Age = horse.Age,
-                    AllRaces = horse.AllRaces,
-                    AllChildren = horse.AllChildren,
-                    Father = horse.Father,
-                    Link = horse.Link,
-                    FatherLink = horse.FatherLink
-                });
+                    Horses.Add(new LoadedHorse
+                    {
+                        Name = horse.Name,
+                        Age = horse.Age,
+                        AllRaces = horse.AllRaces,
+                        AllChildren = horse.AllChildren,
+                        Father = horse.Father,
+                        Link = horse.Link,
+                        FatherLink = horse.FatherLink
+                    });
+                }
+
+                foreach (var jockey in jockeys)
+                {
+                    Jockeys.Add(new LoadedJockey
+                    {
+                        Name = jockey.Name,
+                        AllRaces = jockey.AllRaces,
+                        Link = jockey.Link
+                    });
+                }
+
+                foreach (var race in races)
+                {
+                    Races.Add(new RaceDetails
+                    {
+                        RaceCategory = race.RaceCategory,
+                        RaceDate = race.RaceDate,
+                        RaceDistance = race.RaceDistance,
+                        RaceLink = race.RaceLink,
+                        HorseList = race.HorseList
+                    });
+                }
             }
 
-            foreach (var jockey in jockeys)
-            {
-                Jockeys.Add(new LoadedJockey
-                {
-                    Name = jockey.Name,
-                    AllRaces = jockey.AllRaces,
-                    Link = jockey.Link
-                });
-            }
-
-            foreach (var race in races)
-            {
-                Races.Add(new RaceDetails
-                {
-                    RaceCategory = race.RaceCategory,
-                    RaceDate = race.RaceDate,
-                    RaceDistance = race.RaceDistance,
-                    RaceLink = race.RaceLink,
-                    HorseList = race.HorseList
-                });
-            }
+            PopulateLists();
         }
 
         /// <summary>
         /// populates LoadedHorses and LoadedJockeys for AutoCompleteBox binding
         /// </summary>
-        public async void PopulateListsAsync()
+        public void PopulateLists()
         {
-            await LoadAllDataAsync();
-
             LoadedHorses.Clear();
             LoadedJockeys.Clear();
 
@@ -358,6 +359,8 @@ namespace Horse_Picker.ViewModels
         public List<string> LoadedHorses { get; }
         public List<string> LoadedJockeys { get; }
         public Dictionary<string, int> CategoryFactorDict { get; set; }
+
+        public event EventHandler _loadDataEventHandler;
 
         //prop race distance
         public string Distance
@@ -752,6 +755,15 @@ namespace Horse_Picker.ViewModels
             VisibilityTestingBtn = Visibility.Visible;
             VisibilityCancelUpdatingBtn = Visibility.Collapsed;
             VisibilityUpdatingBtn = Visibility.Visible;
+        }
+
+        protected virtual void OnPopulateLists(EventArgs e)
+        {
+            EventHandler handler = LoadAllDataAsync;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
         }
     }
 }
