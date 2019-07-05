@@ -17,19 +17,17 @@ namespace Horse_Picker.Services.Files
 
         public async Task<List<LoadedHorse>> GetAllHorses()
         {
+            string json = "";
             List<LoadedHorse> _allHorses = new List<LoadedHorse>();
+
+            using (StreamReader r = new StreamReader(_horsesFileName))
+            {
+                json = await r.ReadToEndAsync();
+            }
+
             await Task.Run(() =>
             {
-                _allHorses = new List<LoadedHorse>();
-                if (File.Exists(_horsesFileName))
-                {
-
-                    using (StreamReader r = new StreamReader(_horsesFileName))
-                    {
-                        string json = r.ReadToEnd();
-                        _allHorses = JsonConvert.DeserializeObject<List<LoadedHorse>>(json);
-                    }
-                }
+                _allHorses = JsonConvert.DeserializeObject<List<LoadedHorse>>(json);
             });
 
             return _allHorses;
@@ -37,18 +35,17 @@ namespace Horse_Picker.Services.Files
 
         public async Task<List<LoadedJockey>> GetAllJockeys()
         {
+            string json = "";
             List<LoadedJockey> _allJockeys = new List<LoadedJockey>();
+
+            using (StreamReader r = new StreamReader(_jockeysFileName))
+            {
+                json = await r.ReadToEndAsync();
+            }
+
             await Task.Run(() =>
             {
-                _allJockeys = new List<LoadedJockey>();
-                if (File.Exists(_jockeysFileName))
-                {
-                    using (StreamReader r = new StreamReader(_jockeysFileName))
-                    {
-                        string json = r.ReadToEnd();
-                        _allJockeys = JsonConvert.DeserializeObject<List<LoadedJockey>>(json);
-                    }
-                }
+                _allJockeys = JsonConvert.DeserializeObject<List<LoadedJockey>>(json);
             });
 
             return _allJockeys;
@@ -56,18 +53,17 @@ namespace Horse_Picker.Services.Files
 
         public async Task<List<RaceDetails>> GetAllRaces()
         {
+            string json = "";
             List<RaceDetails> _allRaces = new List<RaceDetails>();
+
+            using (StreamReader r = new StreamReader(_racesFileName))
+            {
+                json = await r.ReadToEndAsync();
+            }
+
             await Task.Run(() =>
             {
-                _allRaces = new List<RaceDetails>();
-                if (File.Exists(_racesFileName))
-                {
-                    using (StreamReader r = new StreamReader(_racesFileName))
-                    {
-                        string json = r.ReadToEnd();
-                        _allRaces = JsonConvert.DeserializeObject<List<RaceDetails>>(json);
-                    }
-                }
+                _allRaces = JsonConvert.DeserializeObject<List<RaceDetails>>(json);
             });
 
             return _allRaces;
