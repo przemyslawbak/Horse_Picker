@@ -6,12 +6,12 @@ namespace Horse_Picker.Services.Files
 {
     public interface IFileService
     {
-        List<LoadedHorse> GetAllHorses();
+        Task<List<LoadedHorse>> GetAllHorses();
         Task SaveAllHorsesAsync(List<LoadedHorse> horses);
         Task SaveAllJockeysAsync(List<LoadedJockey> allJockeys);
-        List<LoadedJockey> GetAllJockeys();
-        void SaveAllRaces(List<RaceDetails> list);
-        List<RaceDetails> GetAllRaces();
+        Task<List<LoadedJockey>> GetAllJockeys();
+        Task SaveAllRaces(List<RaceDetails> list);
+        Task<List<RaceDetails>> GetAllRaces();
         Task SaveRaceSimulatedResultsAsync(List<RaceDetails> allRaces);
     }
 }

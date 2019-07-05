@@ -367,6 +367,10 @@ namespace Horse_Picker.Services.Parse
                     else //horse name
                     {
                         name = nodeString.Split(new string[] { "<title>" }, StringSplitOptions.None)[1].Split('(')[0].Trim(' ');
+                        if (name.Contains(" - "))
+                        {
+                            name = name.Split(new string[] { " - " }, StringSplitOptions.None)[0].Trim(' ');
+                        }
                     }
                 }
                 else if (type == typeof(LoadedJockey))
@@ -417,6 +421,10 @@ namespace Horse_Picker.Services.Parse
                         if (name.Contains('.'))
                         {
                             name = name.Replace(".", "").Trim(' ');
+                        }
+                        if (name.Contains(" - "))
+                        {
+                            name = name.Split(new string[] { " - " }, StringSplitOptions.None)[0].Trim(' ');
                         }
                     }
                 }

@@ -72,8 +72,7 @@ namespace Horse_Picker.ViewModels
             UpdateDataCommand = new AsyncCommand(async () => await OnUpdateDataExecuteAsync());
 
             ClearDataCommand.Execute(null);
-            LoadAllData();
-            PopulateLists();
+            PopulateListsAsync();
             CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(_raceModelProvider);
 
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
@@ -190,7 +189,7 @@ namespace Horse_Picker.ViewModels
                 AllControlsEnabled = true;
                 VisibilityCancellingMsg = Visibility.Collapsed;
 
-                PopulateLists();
+                PopulateListsAsync();
             }
         }
 
@@ -224,13 +223,17 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// loads horses from the file data services
         /// </summary>
-        public void LoadAllData()
+        public async Task LoadAllDataAsync()
         {
             Horses.Clear();
             Jockeys.Clear();
             Races.Clear();
 
-            foreach (var horse in _dataServices.GetAllHorses())
+            List<LoadedHorse> horses = await _dataServices.GetAllHorses();
+            List<LoadedJockey> jockeys = await _dataServices.GetAllJockeys();
+            List<RaceDetails> races = await _dataServices.GetAllRaces();
+
+            foreach (var horse in horses)
             {
                 Horses.Add(new LoadedHorse
                 {
@@ -244,7 +247,7 @@ namespace Horse_Picker.ViewModels
                 });
             }
 
-            foreach (var jockey in _dataServices.GetAllJockeys())
+            foreach (var jockey in jockeys)
             {
                 Jockeys.Add(new LoadedJockey
                 {
@@ -254,7 +257,7 @@ namespace Horse_Picker.ViewModels
                 });
             }
 
-            foreach (var race in _dataServices.GetAllRaces())
+            foreach (var race in races)
             {
                 Races.Add(new RaceDetails
                 {
@@ -270,8 +273,10 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// populates LoadedHorses and LoadedJockeys for AutoCompleteBox binding
         /// </summary>
-        public void PopulateLists()
+        public async void PopulateListsAsync()
         {
+            await LoadAllDataAsync();
+
             LoadedHorses.Clear();
             LoadedJockeys.Clear();
 

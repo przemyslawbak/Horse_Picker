@@ -4,6 +4,7 @@ using Horse_Picker.Services.Compute;
 using Horse_Picker.Services.Dictionary;
 using Horse_Picker.Services.Files;
 using Horse_Picker.Services.Message;
+using Horse_Picker.Services.Parse;
 using Horse_Picker.Services.Scrap;
 using Horse_Picker.Services.Simulate;
 using Horse_Picker.Services.Update;
@@ -21,6 +22,9 @@ namespace Horse_Picker.Startup
 
             builder.RegisterType<DictionariesService>()
               .As<IDictionariesService>().SingleInstance();
+
+            builder.RegisterType<ParseService>()
+              .As<IParseService>().SingleInstance();
 
             builder.RegisterType<EventAggregator>()
               .As<IEventAggregator>().SingleInstance();

@@ -1,5 +1,5 @@
-spr merge jockey/horse
-async file data - zapis i odczyt
+
+async void - mainviewmodel
 testy
 
 NA PRZYSZLOSC:
@@ -24,6 +24,8 @@ czy kon zmienil ostatnio trenera - jak tak to dobrze, bedzie chcial sie wykazac
 jak klacz wystawiana vs ogierom, to pozytywnie
 nie da sie - shipping - czy kon przyjezdza?
 
+OK - async file data - zapis i odczyt - zostawiam jako CPU bound https://stackoverflow.com/a/19912382/11027921
+OK - spr merge jockey/horse
 OK - index out of array exception -  HorsesPl update (260) start
 OK - cancel update - zwiecha
 OK - przy scrapowaniu koni i dzokejow, jesli jest 0 startow, i tak dodajemy

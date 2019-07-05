@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.Events
 {
-    //ListEventArgs credits: https://stackoverflow.com/questions/14058412/passing-parameter-to-an-event-handler
+    //ListEventArgs credits: https://stackoverflow.com/a/14058441/11027921
     public class UpdateBarEventArgs : EventArgs
     {
         public string JobType { get; set; }

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 
 namespace Horse_Picker.Services.Files
 {
+    //JsonConvert async CPU bound https://stackoverflow.com/a/19912382/11027921
     public class FileService : IFileService
     {
         string _horsesFileName = "_horses_list.json";
@@ -14,48 +15,60 @@ namespace Horse_Picker.Services.Files
         string _racesFileName = "_historic_races.json";
         string _testsFileName = "_test_results.txt";
 
-        public List<LoadedHorse> GetAllHorses()
+        public async Task<List<LoadedHorse>> GetAllHorses()
         {
             List<LoadedHorse> _allHorses = new List<LoadedHorse>();
-            if (File.Exists(_horsesFileName))
+            await Task.Run(() =>
             {
-
-                using (StreamReader r = new StreamReader(_horsesFileName))
+                _allHorses = new List<LoadedHorse>();
+                if (File.Exists(_horsesFileName))
                 {
-                    string json = r.ReadToEnd();
-                    _allHorses = JsonConvert.DeserializeObject<List<LoadedHorse>>(json);
+
+                    using (StreamReader r = new StreamReader(_horsesFileName))
+                    {
+                        string json = r.ReadToEnd();
+                        _allHorses = JsonConvert.DeserializeObject<List<LoadedHorse>>(json);
+                    }
                 }
-            }
+            });
 
             return _allHorses;
         }
 
-        public List<LoadedJockey> GetAllJockeys()
+        public async Task<List<LoadedJockey>> GetAllJockeys()
         {
             List<LoadedJockey> _allJockeys = new List<LoadedJockey>();
-            if (File.Exists(_jockeysFileName))
+            await Task.Run(() =>
             {
-                using (StreamReader r = new StreamReader(_jockeysFileName))
+                _allJockeys = new List<LoadedJockey>();
+                if (File.Exists(_jockeysFileName))
                 {
-                    string json = r.ReadToEnd();
-                    _allJockeys = JsonConvert.DeserializeObject<List<LoadedJockey>>(json);
+                    using (StreamReader r = new StreamReader(_jockeysFileName))
+                    {
+                        string json = r.ReadToEnd();
+                        _allJockeys = JsonConvert.DeserializeObject<List<LoadedJockey>>(json);
+                    }
                 }
-            }
+            });
 
             return _allJockeys;
         }
 
-        public List<RaceDetails> GetAllRaces()
+        public async Task<List<RaceDetails>> GetAllRaces()
         {
             List<RaceDetails> _allRaces = new List<RaceDetails>();
-            if (File.Exists(_racesFileName))
+            await Task.Run(() =>
             {
-                using (StreamReader r = new StreamReader(_racesFileName))
+                _allRaces = new List<RaceDetails>();
+                if (File.Exists(_racesFileName))
                 {
-                    string json = r.ReadToEnd();
-                    _allRaces = JsonConvert.DeserializeObject<List<RaceDetails>>(json);
+                    using (StreamReader r = new StreamReader(_racesFileName))
+                    {
+                        string json = r.ReadToEnd();
+                        _allRaces = JsonConvert.DeserializeObject<List<RaceDetails>>(json);
+                    }
                 }
-            }
+            });
 
             return _allRaces;
         }
@@ -108,25 +121,28 @@ namespace Horse_Picker.Services.Files
             });
         }
 
-        public void SaveAllRaces(List<RaceDetails> allRaces)
+        public async Task SaveAllRaces(List<RaceDetails> allRaces)
         {
-            if (allRaces.Count != 0)
+            await Task.Run(() =>
             {
-                if (File.Exists(_racesFileName)) File.Delete(_racesFileName);
-
-                try
+                if (allRaces.Count != 0)
                 {
-                    using (StreamWriter file = File.CreateText(_racesFileName))
+                    if (File.Exists(_racesFileName)) File.Delete(_racesFileName);
+
+                    try
                     {
-                        JsonSerializer serializer = new JsonSerializer();
-                        serializer.Serialize(file, allRaces);
+                        using (StreamWriter file = File.CreateText(_racesFileName))
+                        {
+                            JsonSerializer serializer = new JsonSerializer();
+                            serializer.Serialize(file, allRaces);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        //
                     }
                 }
-                catch (Exception e)
-                {
-                    //
-                }
-            }
+            });
         }
 
         public async Task SaveRaceSimulatedResultsAsync(List<RaceDetails> allRaces)

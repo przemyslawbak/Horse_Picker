@@ -139,7 +139,7 @@ namespace Horse_Picker.Tests.ViewModels
         [Fact]
         public void LoadAllData_ShouldLoadHorses_True()
         {
-            _viewModel.LoadAllData();
+            _viewModel.LoadAllDataAsync();
 
             Assert.Equal(3, _viewModel.Horses.Count); //counts horses
             Assert.Equal("Trim", _viewModel.Horses[0].Name);
@@ -152,7 +152,7 @@ namespace Horse_Picker.Tests.ViewModels
         [Fact]
         public void LoadAllData_ShouldLoadJockeys_True()
         {
-            _viewModel.LoadAllData();
+            _viewModel.LoadAllDataAsync();
 
             Assert.Equal(3, _viewModel.Jockeys.Count); //counts jockeys
             Assert.Equal("N. Hendzel", _viewModel.Jockeys[0].Name);
@@ -162,7 +162,7 @@ namespace Horse_Picker.Tests.ViewModels
         [Fact]
         public void LoadAllData_ShouldLoadHistoricRaces_True()
         {
-            _viewModel.LoadAllData();
+            _viewModel.LoadAllDataAsync();
 
             Assert.Equal(2, _viewModel.Races.Count); //counts races
             Assert.Equal("I", _viewModel.Races[0].RaceCategory);
@@ -273,8 +273,8 @@ namespace Horse_Picker.Tests.ViewModels
         [Fact]
         public void PopulateLists_PopulatesThem_True()
         {
-            _viewModel.LoadAllData();
-            _viewModel.PopulateLists();
+            _viewModel.LoadAllDataAsync();
+            _viewModel.PopulateListsAsync();
 
             Assert.Equal(3, _viewModel.Horses.Count);
             Assert.Equal(2, _viewModel.LoadedHorses.Count);
