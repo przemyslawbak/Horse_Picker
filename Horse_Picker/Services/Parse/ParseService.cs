@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.Services.Parse
 {
+    /// <summary>
+    /// node parsing service
+    /// </summary>
     public class ParseService : IParseService
     {
         private IDictionariesService _dictionaryService;

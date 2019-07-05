@@ -16,6 +16,10 @@ namespace Horse_Picker.Startup
 {
     public class BootStrapper
     {
+        /// <summary>
+        /// IoC container
+        /// </summary>
+        /// <returns></returns>
         public static IContainer BootStrap()
         {
             var builder = new ContainerBuilder();

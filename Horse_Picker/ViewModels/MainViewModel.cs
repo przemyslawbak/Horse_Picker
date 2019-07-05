@@ -79,11 +79,19 @@ namespace Horse_Picker.ViewModels
             _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate);
         }
 
+        /// <summary>
+        /// event subscrition for update properties came from UpdateViewModel
+        /// </summary>
+        /// <param name="updateModules"></param>
         private void OnDataUpdate(UpdateModules updateModules)
         {
             DataUpdateModules = updateModules;
         }
 
+        /// <summary>
+        /// executed on click simulation `cancel` btn
+        /// </summary>
+        /// <param name="obj"></param>
         private void OnSimulateCancellationExecute(object obj)
         {
             _simulateDataService.CancelUpdates();

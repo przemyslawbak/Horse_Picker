@@ -36,6 +36,20 @@ namespace Horse_Picker.Services.Simulate
 
         public event EventHandler<UpdateBarEventArgs> _simulateProgressEventHandler;
 
+        /// <summary>
+        /// simulates score index for all horses in all races in certain year from race database
+        /// CPU operations
+        /// creates loads of parallel tasks to improve performance speed
+        /// use of SemaphoreSlim to control tasks
+        /// mode details for credits in UpdateService
+        /// </summary>
+        /// <param name="fromId">object id limitation</param>
+        /// <param name="toId">object id limitation</param>
+        /// <param name="races">collection of races</param>
+        /// <param name="horses">collection of horses</param>
+        /// <param name="jockeys">collection of jockey</param>
+        /// <param name="raceModelProvider">race data</param>
+        /// <returns></returns>
         public async Task<ObservableCollection<RaceDetails>> SimulateResultsAsync(int fromId,
             int toId,
             ObservableCollection<RaceDetails> races,
@@ -117,11 +131,17 @@ namespace Horse_Picker.Services.Simulate
             return races;
         }
 
+        /// <summary>
+        /// updating progress bar event in main window
+        /// </summary>
         protected void OnProgressBarTick()
         {
             _simulateProgressEventHandler(this, new UpdateBarEventArgs(_jobType, _loopCounter, _idTo, _idFrom));
         }
 
+        /// <summary>
+        /// cancellation token for simulations
+        /// </summary>
         public void CancelUpdates()
         {
             TokenSource.Cancel();

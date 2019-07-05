@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.Services.Dictionary
 {
+    /// <summary>
+    /// XPath dictionaries for prop names and race category weight dictionary
+    /// </summary>
     public class DictionariesService : IDictionariesService
     {
         public Dictionary<string, string> GetJockeyPlNodeDictionary()

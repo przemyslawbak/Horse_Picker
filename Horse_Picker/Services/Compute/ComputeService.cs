@@ -15,6 +15,7 @@ namespace Horse_Picker.Services.Compute
         private double _siblingIndex;
         private int _counter;
         private LoadedHorse _childFromList = new LoadedHorse();
+
         //compute loop fields
         private double _placeFactor = 0;
         private double _distRaceIndex = 0;

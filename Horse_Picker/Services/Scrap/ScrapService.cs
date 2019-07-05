@@ -29,6 +29,13 @@ namespace Horse_Picker.Services.Scrap
             _parseService = parseService;
         }
 
+        /// <summary>
+        /// Generic method that scraps single object for Jockey, Horse, Race
+        /// </summary>
+        /// <typeparam name="T">Jockey, Horse, Race</typeparam>
+        /// <param name="id">id on the website</param>
+        /// <param name="jobType">type of scrapping</param>
+        /// <returns>returns back casted generic object</returns>
         public async Task<T> ScrapGenericObject<T>(int id, string jobType)
         {
             LoadedJockey jockey = new LoadedJockey();
@@ -146,6 +153,16 @@ namespace Horse_Picker.Services.Scrap
             else { throw new ArgumentException(); }
         }
 
+        /// <summary>
+        /// Some classes have collections of objects as props, here we get them
+        /// </summary>
+        /// <typeparam name="T">collection generic type</typeparam>
+        /// <param name="raceHtmlAgilityList">list of HTML documents by HtmlAfilityPack framework</param>
+        /// <param name="propertyName">property collection name of currently scrapped object (ex. AllRaces - of the horse)</param>
+        /// <param name="nodeDictionary">xpath dictionary with property name as a Key</param>
+        /// <param name="jobType">type of scrapping</param>
+        /// <param name="raceDate">day of race input</param>
+        /// <returns></returns>
         public List<T> GetGenericList<T>(List<HtmlDocument> raceHtmlAgilityList, string propertyName, Dictionary<string, string> nodeDictionary, string jobType, DateTime raceDate)
         {
             List<HorseChildDetails> children = new List<HorseChildDetails>();
@@ -223,11 +240,23 @@ namespace Horse_Picker.Services.Scrap
             else { throw new ArgumentException(); }
         }
 
+        /// <summary>
+        /// gets complete url string
+        /// </summary>
+        /// <param name="linkBase">domain base</param>
+        /// <param name="id">objects id on www</param>
+        /// <returns></returns>
         public string GetLink(string linkBase, int id)
         {
             return linkBase + id;
         }
 
+        /// <summary>
+        /// gets HtmlAgilityPack collection of documents depending on scrap job type and website navigation
+        /// </summary>
+        /// <param name="jobType">type of scrapping</param>
+        /// <param name="link">complete url string</param>
+        /// <returns></returns>
         public async Task<List<HtmlDocument>> GetRaceHtmlAgilityListAsync(string jobType, string link)
         {
             List<HtmlDocument> raceHtmlAgilityList = new List<HtmlDocument>();
@@ -285,6 +314,11 @@ namespace Horse_Picker.Services.Scrap
             return raceHtmlAgilityList;
         }
 
+        /// <summary>
+        /// gets single HtmlAgilityPack document with ASYNC http call
+        /// </summary>
+        /// <param name="link">complete url string</param>
+        /// <returns></returns>
         public static async Task<string> GetHtmlDocumentAsync(string link)
         {
             string result = "";
@@ -299,6 +333,14 @@ namespace Horse_Picker.Services.Scrap
             return result;
         }
 
+        /// <summary>
+        /// gets horses father name based on scrap job type and type of property updated
+        /// </summary>
+        /// <param name="jobType">scrap job type</param>
+        /// <param name="htmlAgility">html doc</param>
+        /// <param name="propertyName">property updated</param>
+        /// <param name="nodeDictionary">xpath dictionary with property name as a Key</param>
+        /// <returns></returns>
         public string GetFather(string jobType, HtmlDocument htmlAgility, string propertyName, Dictionary<string, string> nodeDictionary)
         {
             string father = "";
@@ -313,7 +355,7 @@ namespace Horse_Picker.Services.Scrap
 
             if (jobType.Contains("HorsesPl"))
             {
-                if (nodeConditions) //check for anchor
+                if (nodeConditions) //check for an anchor
                 {
                     xpath = xpath + "/a";
                     node = htmlAgility.DocumentNode.SelectSingleNode(xpath);
@@ -337,6 +379,11 @@ namespace Horse_Picker.Services.Scrap
             return father;
         }
 
+        /// <summary>
+        /// gets parsed HtmlAgilityPack document
+        /// </summary>
+        /// <param name="html">html doc taken from http async call</param>
+        /// <returns></returns>
         public HtmlDocument GetHtmlAgility(string html)
         {
             HtmlDocument doc = new HtmlDocument();

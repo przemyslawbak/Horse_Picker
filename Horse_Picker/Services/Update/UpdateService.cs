@@ -65,11 +65,22 @@ namespace Horse_Picker.Services.Update
 
         public event EventHandler<UpdateBarEventArgs> _updateProgressEventHandler;
 
-        //SemaphoreSlim credits: https://blog.briandrupieski.com/throttling-asynchronous-methods-in-csharp
-        //SemaphoreSlim corrections: https://stackoverflow.com/questions/56640694/why-my-code-is-throwing-the-semaphore-has-been-disposed-exception/
-        //Task.Run corrections: https://stackoverflow.com/questions/56628009/how-should-i-use-task-run-in-my-code-for-proper-scalability-and-performance/
-        //credits for SemaphoreSlim cancellation: https://stackoverflow.com/a/24099764/11027921
-
+        /// <summary>
+        /// updates collections of generic type
+        /// I/O operations
+        /// creates loads of parallel tasks to improve performance speed
+        /// use of SemaphoreSlim to control tasks
+        /// SemaphoreSlim credits: https://blog.briandrupieski.com/throttling-asynchronous-methods-in-csharp
+        /// SemaphoreSlim corrections: https://stackoverflow.com/a/56641448/11027921
+        /// Task.Run corrections: https://stackoverflow.com/a/56631208/11027921
+        /// credits for SemaphoreSlim cancellation: https://stackoverflow.com/a/24099764/11027921
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="genericCollection">collection parameter</param>
+        /// <param name="idFrom">object id limitation</param>
+        /// <param name="idTo">object id limitation</param>
+        /// <param name="jobType">type of scrapping</param>
+        /// <returns></returns>
         public async Task<ObservableCollection<T>> UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int idFrom, int idTo, string jobType)
         {
             //variables
@@ -167,7 +178,7 @@ namespace Horse_Picker.Services.Update
                 {
                     if (jobType.Contains("Historic"))
                     {
-                        _dataServices.SaveAllRaces(Races.ToList());
+                        await _dataServices.SaveAllRaces(Races.ToList());
                     }
                     else if (jobType.Contains("testRaces"))
                     {
@@ -215,6 +226,15 @@ namespace Horse_Picker.Services.Update
             }
         }
 
+        /// <summary>
+        /// updates single jockey object
+        /// gets data from scrap service
+        /// compares with objects in current database
+        /// calls merge method if object already in database
+        /// </summary>
+        /// <param name="jobType">type of scrapping</param>
+        /// <param name="id">id on the website</param>
+        /// <returns></returns>
         private async Task UpdateJockeysAsync(string jobType, int id)
         {
             LoadedJockey jockey = new LoadedJockey();
@@ -240,6 +260,15 @@ namespace Horse_Picker.Services.Update
             }
         }
 
+        /// <summary>
+        /// updates single horse object
+        /// gets data from scrap service
+        /// compares with objects in current database
+        /// calls merge method if object already in database
+        /// </summary>
+        /// <param name="jobType"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         private async Task UpdateHorsesAsync(string jobType, int id)
         {
             LoadedHorse horse = new LoadedHorse();
@@ -307,10 +336,9 @@ namespace Horse_Picker.Services.Update
             Horses.Add(doubledHorse);
         }
 
-        //passing RaceModel to the services credits: https://stackoverflow.com/questions/56646346/should-i-pass-view-model-to-my-service-and-if-yes-how-to-do-it/
-
         /// <summary>
         /// parses the horse from Horses with providen data
+        /// passing RaceModel to the services credits: https://stackoverflow.com/a/56650635/11027921
         /// </summary>
         /// <param name="horseWrapper">horse data</param>
         /// <param name="date">day of the race</param>
@@ -456,6 +484,9 @@ namespace Horse_Picker.Services.Update
             return horseWrapper;
         }
 
+        /// <summary>
+        /// cancellation token for updating
+        /// </summary>
         public void CancelUpdates()
         {
             TokenSource.Cancel();

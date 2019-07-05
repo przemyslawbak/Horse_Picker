@@ -32,6 +32,9 @@ namespace Horse_Picker.ViewModels
         public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
         public ObservableCollection<RaceDetails> Races { get; private set; }
 
+        /// <summary>
+        /// initializing properties and publishes update props to the event
+        /// </summary>
         private void RunTheUpdate()
         {
             UpdateHorsesCz = false;

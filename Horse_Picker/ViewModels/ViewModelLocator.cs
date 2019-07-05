@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.ViewModels
 {
+    /// <summary>
+    /// resolving viewmodels
+    /// </summary>
     public class ViewModelLocator
     {
         IContainer container = BootStrapper.BootStrap();

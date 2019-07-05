@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.Services
 {
+    /// <summary>
+    /// interface implementation for race data
+    /// </summary>
     public class RaceProvider : IRaceProvider
     {
         RaceModel _raceModel = new RaceModel();
