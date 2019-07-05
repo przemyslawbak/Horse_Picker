@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Horse_Picker.Models;
 using Newtonsoft.Json;
@@ -20,15 +21,18 @@ namespace Horse_Picker.Services.Files
             string json = "";
             List<LoadedHorse> _allHorses = new List<LoadedHorse>();
 
-            using (StreamReader r = new StreamReader(_horsesFileName))
+            if (File.Exists(_horsesFileName))
             {
-                json = await r.ReadToEndAsync();
-            }
+                using (StreamReader r = new StreamReader(_horsesFileName))
+                {
+                    json = await r.ReadToEndAsync();
+                }
 
-            await Task.Run(() =>
-            {
-                _allHorses = JsonConvert.DeserializeObject<List<LoadedHorse>>(json);
-            });
+                await Task.Run(() =>
+                {
+                    _allHorses = JsonConvert.DeserializeObject<List<LoadedHorse>>(json);
+                });
+            }
 
             return _allHorses;
         }
@@ -38,15 +42,18 @@ namespace Horse_Picker.Services.Files
             string json = "";
             List<LoadedJockey> _allJockeys = new List<LoadedJockey>();
 
-            using (StreamReader r = new StreamReader(_jockeysFileName))
+            if (File.Exists(_jockeysFileName))
             {
-                json = await r.ReadToEndAsync();
-            }
+                using (StreamReader r = new StreamReader(_jockeysFileName))
+                {
+                    json = await r.ReadToEndAsync();
+                }
 
-            await Task.Run(() =>
-            {
-                _allJockeys = JsonConvert.DeserializeObject<List<LoadedJockey>>(json);
-            });
+                await Task.Run(() =>
+                {
+                    _allJockeys = JsonConvert.DeserializeObject<List<LoadedJockey>>(json);
+                });
+            }
 
             return _allJockeys;
         }
@@ -56,89 +63,86 @@ namespace Horse_Picker.Services.Files
             string json = "";
             List<RaceDetails> _allRaces = new List<RaceDetails>();
 
-            using (StreamReader r = new StreamReader(_racesFileName))
+            if (File.Exists(_racesFileName))
             {
-                json = await r.ReadToEndAsync();
-            }
+                using (StreamReader r = new StreamReader(_racesFileName))
+                {
+                    json = await r.ReadToEndAsync();
+                }
 
-            await Task.Run(() =>
-            {
-                _allRaces = JsonConvert.DeserializeObject<List<RaceDetails>>(json);
-            });
+                await Task.Run(() =>
+                {
+                    _allRaces = JsonConvert.DeserializeObject<List<RaceDetails>>(json);
+                });
+            }
 
             return _allRaces;
         }
 
         public async Task SaveAllHorsesAsync(List<LoadedHorse> allHorses)
         {
+            string json = "";
+            List<LoadedHorse> _allHorses = new List<LoadedHorse>();
+
             await Task.Run(() =>
             {
                 if (allHorses.Count != 0)
                 {
-                    try
-                    {
-                        if (File.Exists(_horsesFileName)) File.Delete(_horsesFileName);
-
-                        using (StreamWriter file = File.CreateText(_horsesFileName))
-                        {
-                            JsonSerializer serializer = new JsonSerializer();
-                            serializer.Serialize(file, allHorses);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        //
-                    }
+                    json = JsonConvert.SerializeObject(allHorses);
                 }
             });
+
+            var buffer = Encoding.UTF8.GetBytes(json);
+
+            using (var fileStream = new FileStream(_horsesFileName, FileMode.OpenOrCreate,
+        FileAccess.Write, FileShare.None, buffer.Length, true))
+            {
+                await fileStream.WriteAsync(buffer, 0, buffer.Length);
+            }
         }
 
         public async Task SaveAllJockeysAsync(List<LoadedJockey> allJockeys)
         {
+            string json = "";
+            List<LoadedJockey> _allJockeys = new List<LoadedJockey>();
+
             await Task.Run(() =>
             {
                 if (allJockeys.Count != 0)
                 {
-                    if (File.Exists(_jockeysFileName)) File.Delete(_jockeysFileName);
-
-                    try
-                    {
-                        using (StreamWriter file = File.CreateText(_jockeysFileName))
-                        {
-                            JsonSerializer serializer = new JsonSerializer();
-                            serializer.Serialize(file, allJockeys);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        //
-                    }
+                    json = JsonConvert.SerializeObject(allJockeys);
                 }
             });
+
+            var buffer = Encoding.UTF8.GetBytes(json);
+
+            using (var fileStream = new FileStream(_jockeysFileName, FileMode.OpenOrCreate,
+        FileAccess.Write, FileShare.None, buffer.Length, true))
+            {
+                await fileStream.WriteAsync(buffer, 0, buffer.Length);
+            }
         }
 
         public async Task SaveAllRaces(List<RaceDetails> allRaces)
         {
+            string json = "";
+            List<RaceDetails> _allRaces = new List<RaceDetails>();
+
             await Task.Run(() =>
             {
                 if (allRaces.Count != 0)
                 {
-                    if (File.Exists(_racesFileName)) File.Delete(_racesFileName);
-
-                    try
-                    {
-                        using (StreamWriter file = File.CreateText(_racesFileName))
-                        {
-                            JsonSerializer serializer = new JsonSerializer();
-                            serializer.Serialize(file, allRaces);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        //
-                    }
+                    json = JsonConvert.SerializeObject(allRaces);
                 }
             });
+
+            var buffer = Encoding.UTF8.GetBytes(json);
+
+            using (var fileStream = new FileStream(_racesFileName, FileMode.OpenOrCreate,
+        FileAccess.Write, FileShare.None, buffer.Length, true))
+            {
+                await fileStream.WriteAsync(buffer, 0, buffer.Length);
+            }
         }
 
         public async Task SaveRaceSimulatedResultsAsync(List<RaceDetails> allRaces)
