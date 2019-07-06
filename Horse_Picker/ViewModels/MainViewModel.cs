@@ -55,12 +55,8 @@ namespace Horse_Picker.ViewModels
             _messageDialogService = messageDialogServices;
 
             AllControlsEnabled = true;
-            VisibilityStatusBar = Visibility.Hidden;
-            VisibilityCancellingMsg = Visibility.Collapsed;
-            VisibilityCancelTestingBtn = Visibility.Collapsed;
-            VisibilityCancelUpdatingBtn = Visibility.Collapsed;
-            VisibilityUpdatingBtn = Visibility.Visible;
-            VisibilityTestingBtn = Visibility.Visible;
+            VisibilityUpdatingBtn = true;
+            VisibilityTestingBtn = true;
 
             NewHorseCommand = new DelegateCommand(OnNewHorseExecute);
             ClearDataCommand = new DelegateCommand(OnClearDataExecute);
@@ -129,7 +125,7 @@ namespace Horse_Picker.ViewModels
 
             CommandCompletedControlsSetup();
             AllControlsEnabled = true;
-            VisibilityCancellingMsg = Visibility.Collapsed;
+            VisibilityCancellingMsg = false;
 
         }
 
@@ -186,7 +182,7 @@ namespace Horse_Picker.ViewModels
 
                 CommandCompletedControlsSetup();
                 AllControlsEnabled = true;
-                VisibilityCancellingMsg = Visibility.Collapsed;
+                VisibilityCancellingMsg = false;
 
                 OnPopulateLists(null);
             }
@@ -228,9 +224,9 @@ namespace Horse_Picker.ViewModels
         {
             if (Horses.Count == 0 && Jockeys.Count == 0 && Races.Count == 0)
             {
-                List<LoadedHorse> horses = await _dataServices.GetAllHorses();
-                List<LoadedJockey> jockeys = await _dataServices.GetAllJockeys();
-                List<RaceDetails> races = await _dataServices.GetAllRaces();
+                List<LoadedHorse> horses = await _dataServices.GetAllHorsesAsync();
+                List<LoadedJockey> jockeys = await _dataServices.GetAllJockeysAsync();
+                List<RaceDetails> races = await _dataServices.GetAllRacesAsync();
 
                 foreach (var horse in horses)
                 {
@@ -579,8 +575,8 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// display `status bar` or not?
         /// </summary>
-        private Visibility _visibilityStatusBar;
-        public Visibility VisibilityStatusBar
+        private bool _visibilityStatusBar;
+        public bool VisibilityStatusBar
         {
             get
             {
@@ -596,8 +592,8 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// display `cancel updates` btn or not
         /// </summary>
-        private Visibility _visibilityCancelUpdatesBtn;
-        public Visibility VisibilityCancelUpdatingBtn
+        private bool _visibilityCancelUpdatesBtn;
+        public bool VisibilityCancelUpdatingBtn
         {
             get
             {
@@ -613,8 +609,8 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// display `cancel tests` btn or not
         /// </summary>
-        private Visibility _visibilityCancelTestingBtn;
-        public Visibility VisibilityCancelTestingBtn
+        private bool _visibilityCancelTestingBtn;
+        public bool VisibilityCancelTestingBtn
         {
             get
             {
@@ -630,8 +626,8 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// display `tests` btn or not
         /// </summary>
-        private Visibility _visibilityTestingBtn;
-        public Visibility VisibilityTestingBtn
+        private bool _visibilityTestingBtn;
+        public bool VisibilityTestingBtn
         {
             get
             {
@@ -647,8 +643,8 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// display `tests` btn or not
         /// </summary>
-        private Visibility _visibilityUpdatingBtn;
-        public Visibility VisibilityUpdatingBtn
+        private bool _visibilityUpdatingBtn;
+        public bool VisibilityUpdatingBtn
         {
             get
             {
@@ -664,8 +660,8 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// display `cancel tests` btn or not
         /// </summary>
-        private Visibility _visibilityCancellingMsg;
-        public Visibility VisibilityCancellingMsg
+        private bool _visibilityCancellingMsg;
+        public bool VisibilityCancellingMsg
         {
             get
             {
@@ -717,19 +713,19 @@ namespace Horse_Picker.ViewModels
         {
             AllControlsEnabled = false;
             ValidateButtons();
-            VisibilityStatusBar = Visibility.Visible;
+            VisibilityStatusBar = true;
             UpdateStatusBar = 0;
 
             if (command == "SimulateResultsCommand")
             {
-                VisibilityCancelTestingBtn = Visibility.Visible;
-                VisibilityTestingBtn = Visibility.Collapsed;
+                VisibilityCancelTestingBtn = true;
+                VisibilityTestingBtn = true;
             }
 
             if (command == "UpdateDataCommand")
             {
-                VisibilityCancelUpdatingBtn = Visibility.Visible;
-                VisibilityUpdatingBtn = Visibility.Collapsed;
+                VisibilityCancelUpdatingBtn = true;
+                VisibilityUpdatingBtn = false;
             }
         }
 
@@ -740,15 +736,15 @@ namespace Horse_Picker.ViewModels
         {
             //TokenSource.Dispose();
             UpdateStatusBar = 0;
-            VisibilityStatusBar = Visibility.Hidden;
+            VisibilityStatusBar = false;
             ValidateButtons();
             ProgressDisplay = "";
             WorkStatus = "";
-            VisibilityCancellingMsg = Visibility.Visible;
-            VisibilityCancelTestingBtn = Visibility.Collapsed;
-            VisibilityTestingBtn = Visibility.Visible;
-            VisibilityCancelUpdatingBtn = Visibility.Collapsed;
-            VisibilityUpdatingBtn = Visibility.Visible;
+            VisibilityCancellingMsg = true;
+            VisibilityCancelTestingBtn = false;
+            VisibilityTestingBtn = true;
+            VisibilityCancelUpdatingBtn = false;
+            VisibilityUpdatingBtn = true;
         }
 
         protected virtual void OnPopulateLists(EventArgs e)

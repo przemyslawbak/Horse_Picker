@@ -2,8 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:vm="clr-namespace:Horse_Picker.ViewModels"
-        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -469,7 +467,7 @@
                 Style="{StaticResource appbtn}"
                 Command="{Binding SimulateResultsCommand}"
                 IsEnabled="{Binding AllControlsEnabled}"
-                Visibility="{Binding VisibilityTestingBtn}">
+                Visibility="{Binding VisibilityTestingBtn, Converter={StaticResource BoolToVis}}">
             </Button>
             <Button
                 Content="Cancel simulation"
@@ -478,7 +476,7 @@
                 Width="100"
                 Style="{StaticResource cancelbtn}"
                 Command="{Binding SimulateCancellationCommand}"
-                Visibility="{Binding VisibilityCancelTestingBtn}">
+                Visibility="{Binding VisibilityCancelTestingBtn, Converter={StaticResource BoolToVis}}">
             </Button>
             <Button
                 x:Name="btnUpdateHorses"
@@ -489,7 +487,7 @@
                 Style="{StaticResource appbtn}"
                 Command="{Binding UpdateDataCommand}"
                 IsEnabled="{Binding AllControlsEnabled}"
-                Visibility="{Binding VisibilityUpdatingBtn}">
+                Visibility="{Binding VisibilityUpdatingBtn, Converter={StaticResource BoolToVis}}">
             </Button>
             <Button
                 Content="Cancel updating"
@@ -498,7 +496,7 @@
                 Width="100"
                 Style="{StaticResource cancelbtn}"
                 Command="{Binding UpdateCancellationCommand}"
-                Visibility="{Binding VisibilityCancelUpdatingBtn}">
+                Visibility="{Binding VisibilityCancelUpdatingBtn, Converter={StaticResource BoolToVis}}">
             </Button>
         </StackPanel>
         <Button
@@ -516,7 +514,7 @@
         <Grid
                      Grid.Row="3"
                      Grid.Column="1"
-                     Visibility="{Binding VisibilityStatusBar}">
+                     Visibility="{Binding VisibilityStatusBar, Converter={StaticResource BoolToVis}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
@@ -555,7 +553,7 @@
             Padding="20"
             BorderBrush="#EBEBEB"
             BorderThickness="1"
-            Visibility="{Binding VisibilityCancellingMsg}"
+            Visibility="{Binding VisibilityCancellingMsg, Converter={StaticResource BoolToVis}}"
             />
     </Grid>
 </Window>

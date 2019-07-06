@@ -12,6 +12,7 @@ using Moq;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -51,7 +52,7 @@ namespace Horse_Picker.Tests.ViewModels
             _raceModelProviderMock.SetupAllProperties();
 
             //moq setup
-            _dataServicesMock.Setup(ds => ds.GetAllHorses())
+            _dataServicesMock.Setup(ds => ds.GetAllHorsesAsync())
                 .Returns(Task.FromResult(new List<LoadedHorse>
                 {
                     new LoadedHorse
@@ -86,7 +87,7 @@ namespace Horse_Picker.Tests.ViewModels
                     }
                 }));
 
-            _dataServicesMock.Setup(ds => ds.GetAllJockeys())
+            _dataServicesMock.Setup(ds => ds.GetAllJockeysAsync())
                 .Returns(Task.FromResult(new List<LoadedJockey>
                 {
                     new LoadedJockey
@@ -108,12 +109,26 @@ namespace Horse_Picker.Tests.ViewModels
                         AllRaces = { }
                     }
                 }));
-            _dataServicesMock.Setup(ds => ds.GetAllRaces())
+            _dataServicesMock.Setup(ds => ds.GetAllRacesAsync())
                 .Returns(Task.FromResult(new List<RaceDetails>
                 {
                     new RaceDetails
                     {
-                        HorseList = { },
+                       HorseList = new List<HorseDataWrapper>()
+                        {
+                            new HorseDataWrapper()
+                            {
+                                HorseName = "Trim",
+                                Age = 7,
+                                Father = "Some Father 1"
+                            },
+                            new HorseDataWrapper()
+                            {
+                                HorseName = "Saba",
+                                Age = 8,
+                                Father = "Some Father 2"
+                            }
+                        },
                         RaceCategory = "I",
                         RaceDate = new DateTime(2018, 11, 11),
                         RaceDistance = 1600,
@@ -121,7 +136,21 @@ namespace Horse_Picker.Tests.ViewModels
                     },
                     new RaceDetails
                     {
-                        HorseList = { },
+                        HorseList = new List<HorseDataWrapper>()
+                        {
+                            new HorseDataWrapper()
+                            {
+                                HorseName = "Dora",
+                                Age = 9,
+                                Father = "Some Father 3"
+                            },
+                            new HorseDataWrapper()
+                            {
+                                HorseName = "Bari",
+                                Age = 10,
+                                Father = "Some Father 4"
+                            }
+                        },
                         RaceCategory = "II",
                         RaceDate = new DateTime(2018, 11, 10),
                         RaceDistance = 1400,
@@ -184,6 +213,7 @@ namespace Horse_Picker.Tests.ViewModels
             _updateDataMock.Verify(sd => sd.CancelUpdates(), Times.Once);
         }
 
+        /*
         [Fact]
         public void SimulateCancellationCommand_ChangesVisibilityProps_True()
         {
@@ -205,13 +235,19 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void OnSimulateResultsExecuteAsync_CallsSimulateResultsAsync_True()
+        public void OnSimulateResultsExecuteAsync_ChangesVisibilityProps_True()
         {
+            _viewModel.VisibilityTestingBtn = Visibility.Hidden;
+            _viewModel.VisibilityCancellingMsg = Visibility.Collapsed;
+            _viewModel.AllControlsEnabled = false;
+
             _viewModel.SimulateResultsCommand.Execute(null);
 
-            _simulateDataMock.Verify(sd => sd.SimulateResultsAsync(It.IsAny<int>(), It.IsAny<int>(), _viewModel.Races, _viewModel.Horses, _viewModel.Jockeys, _viewModel.RaceModelProvider), Times.Once);
+            Assert.Equal(Visibility.Visible, _viewModel.VisibilityTestingBtn);
+            Assert.Equal(Visibility.Collapsed, _viewModel.VisibilityCancellingMsg);
+            Assert.True(_viewModel.AllControlsEnabled);
         }
-
+        */
         [Fact]
         public void OnClearDataExecute_ClearsRaceProps_True()
         {
