@@ -16,6 +16,6 @@ namespace Horse_Picker.Services.Simulate
             ObservableCollection<LoadedHorse> horses,
             ObservableCollection<LoadedJockey> jockeys,
             IRaceProvider _raceModelProvider);
-        void CancelUpdates();
+        void CancelSimulation();
     }
 }

@@ -142,7 +142,7 @@ namespace Horse_Picker.Services.Simulate
         /// <summary>
         /// cancellation token for simulations
         /// </summary>
-        public void CancelUpdates()
+        public void CancelSimulation()
         {
             TokenSource.Cancel();
         }
