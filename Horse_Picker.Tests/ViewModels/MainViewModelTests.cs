@@ -46,6 +46,8 @@ namespace Horse_Picker.Tests.ViewModels
             _eventAggregatorMock.Setup(ea => ea.GetEvent<DataUpdateEvent>())
               .Returns(_dataUpdateEvent);
 
+            _raceModelProviderMock.SetupAllProperties();
+
             //moq setup
             _dataServicesMock.Setup(ds => ds.GetAllHorses())
                 .Returns(Task.FromResult(new List<LoadedHorse>
@@ -140,16 +142,17 @@ namespace Horse_Picker.Tests.ViewModels
             _viewModel.RaceDate = new DateTime(2018, 11, 11);
         }
 
+
+
         [Fact]
-        public void MainViewModel_CallsLoadDataEventHandler_True()
+        public void MainViewModelInstance_CallsLoadDataEventHandler_True()
         {
             Assert.True(_viewModel.WasCalled); //testing that event was called
         }
 
         [Fact]
-        public void LoadAllData_ShouldLoadHorses_True()
+        public void MainViewModelInstance_ShouldLoadHorses_True()
         {
-
             Assert.Equal(3, _viewModel.Horses.Count); //counts horses
             Assert.Equal("Trim", _viewModel.Horses[0].Name);
             Assert.Equal(7, _viewModel.Horses[0].Age);
@@ -173,78 +176,6 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal("I", _viewModel.Races[0].RaceCategory);
             Assert.Equal(1600, _viewModel.Races[0].RaceDistance);
             Assert.Equal("somelink", _viewModel.Races[0].RaceLink);
-        }
-
-        [Fact]
-        public async Task OnTestResultExecuteAsync_ShouldCreateCancellationTokenSource_True()
-        {
-            CancellationTokenSource tokenSource = new CancellationTokenSource();
-            CancellationToken cancellationToken = tokenSource.Token;
-
-            await Task.Run(() => _viewModel.SimulateResultsCommand.Execute(null));
-
-            //Assert.Equal(cancellationToken.CanBeCanceled, _viewModel.CancellationToken.CanBeCanceled);
-            //Assert.Equal(cancellationToken.IsCancellationRequested, _viewModel.CancellationToken.IsCancellationRequested);
-        }
-
-        [Fact]
-        public void OnPickHorseDataExecute_ShouldAssignHorseWrapper_True()
-        {
-            HorseDataWrapper horse = new HorseDataWrapper(){ HorseName = "Trim, 7", Jockey = "N. Hendzel" };
-
-            _viewModel.PickHorseDataCommand.Execute(horse);
-
-            Assert.Equal(horse.HorseName, _viewModel.HorseWrapper.HorseName);
-            Assert.Equal(horse.Jockey, _viewModel.HorseWrapper.Jockey);
-        }
-
-        /*
-        [Fact]
-        public async Task OnUpdateDataExecuteAsync_MakesUpdateModulesAreFalseByDefault_True()
-        {
-            _viewModel.UpdateHorsesCz = true;
-            _viewModel.UpdateHorsesPl = true;
-            _viewModel.UpdateJockeysCz = true;
-            _viewModel.UpdateJockeysPl = true;
-            _viewModel.UpdateRacesPl = true;
-
-            await Task.Run(() => _viewModel.UpdateDataCommand.Execute(null));
-
-            bool isAnyTrue = _viewModel.UpdateModules.Any(module => module == true);
-            Assert.True(!isAnyTrue);
-        }
-        */
-
-        // <- test OnUpdateDataExecuteAsync CONTINUE!
-
-        [Fact]
-        public void OnTaskCancellationExecute_CancelTask_True()
-        {
-            //_viewModel.TaskCancellation = true;
-            //_viewModel.TokenSource = new CancellationTokenSource();
-
-            //_viewModel.TaskCancellationCommand.Execute(null);
-
-            //Assert.True(_viewModel.TokenSource.IsCancellationRequested);
-            //Assert.True(!_viewModel.TaskCancellation);
-            Assert.Equal(0, _viewModel.UpdateStatusBar);
-            Assert.Equal(0, _viewModel.UpdateStatusBar);
-            Assert.True(_viewModel.ProgressDisplay == "");
-            Assert.True(_viewModel.WorkStatus == "");
-        }
-
-        [Fact]
-        public void CommandCompletedControlsSetup_ChangesCancellationProps_True()
-        {
-            //_viewModel.TokenSource = new CancellationTokenSource();
-
-            //_viewModel.CommandCompletedControlsSetup();
-
-            //Assert.True(!_viewModel.TaskCancellation);
-            Assert.Equal(0, _viewModel.UpdateStatusBar);
-            Assert.Equal(0, _viewModel.UpdateStatusBar);
-            Assert.True(_viewModel.ProgressDisplay == "");
-            Assert.True(_viewModel.WorkStatus == "");
         }
 
         [Fact]
@@ -274,21 +205,6 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal(2, _viewModel.HorseList.Count);
             Assert.False(_viewModel.HorseList[0] == null);
         }
-
-        /*
-        [Fact]
-        public void PopulateLists_PopulatesThem_True()
-        {
-            _viewModel.LoadAllDataAsync();
-            _viewModel.PopulateListsAsync();
-
-            Assert.Equal(3, _viewModel.Horses.Count);
-            Assert.Equal(2, _viewModel.LoadedHorses.Count);
-            Assert.Equal(2, _viewModel.LoadedJockeys.Count);
-            Assert.Equal("Trim, 7", _viewModel.LoadedHorses[0]);
-            Assert.Equal("N. Hendzel", _viewModel.LoadedJockeys[0]);
-        }
-        */
 
         [Theory]
         [InlineData("--Not found--", "")]

@@ -46,6 +46,7 @@ namespace Horse_Picker.ViewModels
             HorseList = new ObservableCollection<HorseDataWrapper>();
             LoadedHorses = new List<string>();
             LoadedJockeys = new List<string>();
+            DateTimeNow = DateTimeNow;
 
             _eventAggregator = eventAggregator;
             _dictionaryService = dictionaryService;
@@ -148,8 +149,7 @@ namespace Horse_Picker.ViewModels
         public void OnPickHorseDataExecute(object obj)
         {
             HorseWrapper = (HorseDataWrapper)obj;
-            DateTime date = DateTime.Now;
-            Task.Run(() => HorseWrapper = _updateDataService.GetParsedHorseData(HorseWrapper, date, Horses, Jockeys, _raceModelProvider)); //consumes time
+            Task.Run(() => HorseWrapper = _updateDataService.GetParsedHorseData(HorseWrapper, DateTimeNow, Horses, Jockeys, _raceModelProvider)); //consumes time
         }
 
         /// <summary>
@@ -353,6 +353,7 @@ namespace Horse_Picker.ViewModels
 
         //properties
         public bool WasCalled { get; set; } //was LoadDataEventHandler event called
+        public DateTime DateTimeNow { get; set; } //was LoadDataEventHandler event called
         public UpdateModules DataUpdateModules { get; set; }
         public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
         public ObservableCollection<bool> UpdateModules { get; private set; }
