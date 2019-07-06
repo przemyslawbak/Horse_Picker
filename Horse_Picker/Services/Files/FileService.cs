@@ -17,7 +17,7 @@ namespace Horse_Picker.Services.Files
         string _racesFileName = "_historic_races.json";
         string _testsFileName = "_test_results.txt";
 
-        public async Task<List<LoadedHorse>> GetAllHorses()
+        public async Task<List<LoadedHorse>> GetAllHorsesAsync()
         {
             string json = "";
             List<LoadedHorse> _allHorses = new List<LoadedHorse>();
@@ -38,7 +38,7 @@ namespace Horse_Picker.Services.Files
             return _allHorses;
         }
 
-        public async Task<List<LoadedJockey>> GetAllJockeys()
+        public async Task<List<LoadedJockey>> GetAllJockeysAsync()
         {
             string json = "";
             List<LoadedJockey> _allJockeys = new List<LoadedJockey>();
@@ -59,7 +59,7 @@ namespace Horse_Picker.Services.Files
             return _allJockeys;
         }
 
-        public async Task<List<RaceDetails>> GetAllRaces()
+        public async Task<List<RaceDetails>> GetAllRacesAsync()
         {
             string json = "";
             List<RaceDetails> _allRaces = new List<RaceDetails>();
