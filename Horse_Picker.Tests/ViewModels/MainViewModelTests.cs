@@ -212,42 +212,39 @@ namespace Horse_Picker.Tests.ViewModels
             _simulateDataMock.Verify(sd => sd.CancelSimulation(), Times.Once);
             _updateDataMock.Verify(sd => sd.CancelUpdates(), Times.Once);
         }
-
-        /*
         [Fact]
         public void SimulateCancellationCommand_ChangesVisibilityProps_True()
         {
-            _viewModel.VisibilityTestingBtn = Visibility.Hidden;
+            _viewModel.VisibilityTestingBtn = false;
 
             _viewModel.SimulateCancellationCommand.Execute(null);
 
-            Assert.Equal(Visibility.Visible, _viewModel.VisibilityTestingBtn);
+            Assert.True(_viewModel.VisibilityTestingBtn);
         }
 
         [Fact]
         public void UpdateCancellationCommand_ChangesVisibilityProps_True()
         {
-            _viewModel.VisibilityTestingBtn = Visibility.Hidden;
+            _viewModel.VisibilityTestingBtn = false;
 
             _viewModel.UpdateCancellationCommand.Execute(null);
 
-            Assert.Equal(Visibility.Visible, _viewModel.VisibilityTestingBtn);
+            Assert.True(_viewModel.VisibilityTestingBtn);
         }
 
         [Fact]
         public void OnSimulateResultsExecuteAsync_ChangesVisibilityProps_True()
         {
-            _viewModel.VisibilityTestingBtn = Visibility.Hidden;
-            _viewModel.VisibilityCancellingMsg = Visibility.Collapsed;
+            _viewModel.VisibilityTestingBtn = false;
+            _viewModel.VisibilityCancellingMsg = false;
             _viewModel.AllControlsEnabled = false;
 
             _viewModel.SimulateResultsCommand.Execute(null);
 
-            Assert.Equal(Visibility.Visible, _viewModel.VisibilityTestingBtn);
-            Assert.Equal(Visibility.Collapsed, _viewModel.VisibilityCancellingMsg);
+            Assert.True(_viewModel.VisibilityTestingBtn);
+            Assert.False(_viewModel.VisibilityCancellingMsg);
             Assert.True(_viewModel.AllControlsEnabled);
         }
-        */
         [Fact]
         public void OnClearDataExecute_ClearsRaceProps_True()
         {
