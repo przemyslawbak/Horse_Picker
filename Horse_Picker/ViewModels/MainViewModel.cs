@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,7 +29,6 @@ namespace Horse_Picker.ViewModels
         private IUpdateService _updateDataService;
         private ISimulateService _simulateDataService;
         private IFileService _dataServices;
-        private IRaceProvider _raceModelProvider;
 
         public MainViewModel(IFileService dataServices,
             IMessageService messageDialogServices,
@@ -53,7 +51,7 @@ namespace Horse_Picker.ViewModels
             _dataServices = dataServices;
             _updateDataService = updateDataService;
             _simulateDataService = simulateDataService;
-            _raceModelProvider = raceServices;
+            RaceModelProvider = raceServices;
             _messageDialogService = messageDialogServices;
 
             AllControlsEnabled = true;
@@ -76,7 +74,7 @@ namespace Horse_Picker.ViewModels
             ClearDataCommand.Execute(null);
             LoadDataEventHandler += LoadAllDataAsync;
             OnPopulateLists(null);
-            CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(_raceModelProvider);
+            CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(RaceModelProvider);
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
             _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate);
         }
@@ -94,9 +92,9 @@ namespace Horse_Picker.ViewModels
         /// executed on click simulation `cancel` btn
         /// </summary>
         /// <param name="obj"></param>
-        private void OnSimulateCancellationExecute(object obj)
+        public void OnSimulateCancellationExecute(object obj)
         {
-            _simulateDataService.CancelUpdates();
+            _simulateDataService.CancelSimulation();
 
             CommandCompletedControlsSetup();
         }
@@ -121,18 +119,13 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         public async Task OnSimulateResultsExecuteAsync()
         {
-            var stopwatch = Stopwatch.StartNew();//stopwatch
-
             _simulateDataService.SimulateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
             CommandStartedControlsSetup("SimulateResultsCommand");
 
-            Races = await _simulateDataService.SimulateResultsAsync(0, Races.Count, Races, Horses, Jockeys, _raceModelProvider);
+            Races = await _simulateDataService.SimulateResultsAsync(0, Races.Count, Races, Horses, Jockeys, RaceModelProvider);
 
             _simulateDataService.SimulateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
-
-            stopwatch.Stop();//stopwatch
-            MessageBox.Show(stopwatch.Elapsed.ToString());//stopwatch
 
             CommandCompletedControlsSetup();
             AllControlsEnabled = true;
@@ -149,7 +142,7 @@ namespace Horse_Picker.ViewModels
         public void OnPickHorseDataExecute(object obj)
         {
             HorseWrapper = (HorseDataWrapper)obj;
-            Task.Run(() => HorseWrapper = _updateDataService.GetParsedHorseData(HorseWrapper, DateTimeNow, Horses, Jockeys, _raceModelProvider)); //consumes time
+            Task.Run(() => HorseWrapper = _updateDataService.GetParsedHorseData(HorseWrapper, DateTimeNow, Horses, Jockeys, RaceModelProvider)); //consumes time
         }
 
         /// <summary>
@@ -176,8 +169,6 @@ namespace Horse_Picker.ViewModels
             {
                 CommandStartedControlsSetup("UpdateDataCommand");
 
-                var stopwatch = Stopwatch.StartNew(); //stopwatch
-
                 _updateDataService.UpdateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
                 if (DataUpdateModules.JockeysPl)
@@ -192,9 +183,6 @@ namespace Horse_Picker.ViewModels
                     Races = await _updateDataService.UpdateDataAsync(Races, DataUpdateModules.HistPlFrom, DataUpdateModules.HistPlTo, "updateHistoricPl");
 
                 _updateDataService.UpdateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //unsub from service event
-
-                stopwatch.Stop();//stopwatch
-                MessageBox.Show(stopwatch.Elapsed.ToString());//stopwatch
 
                 CommandCompletedControlsSetup();
                 AllControlsEnabled = true;
@@ -364,6 +352,7 @@ namespace Horse_Picker.ViewModels
         public List<string> LoadedHorses { get; }
         public List<string> LoadedJockeys { get; }
         public Dictionary<string, int> CategoryFactorDict { get; set; }
+        public IRaceProvider RaceModelProvider { get; set; }
 
         public event EventHandler LoadDataEventHandler;
 
@@ -372,11 +361,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _raceModelProvider.Distance;
+                return RaceModelProvider.Distance;
             }
             set
             {
-                _raceModelProvider.Distance = value;
+                RaceModelProvider.Distance = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -387,11 +376,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _raceModelProvider.Category;
+                return RaceModelProvider.Category;
             }
             set
             {
-                _raceModelProvider.Category = value;
+                RaceModelProvider.Category = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -402,11 +391,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _raceModelProvider.City;
+                return RaceModelProvider.City;
             }
             set
             {
-                _raceModelProvider.City = value;
+                RaceModelProvider.City = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -417,11 +406,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _raceModelProvider.RaceNo;
+                return RaceModelProvider.RaceNo;
             }
             set
             {
-                _raceModelProvider.RaceNo = value;
+                RaceModelProvider.RaceNo = value;
                 OnPropertyChanged();
                 ValidateButtons();
             }
@@ -432,11 +421,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _raceModelProvider.RaceDate;
+                return RaceModelProvider.RaceDate;
             }
             set
             {
-                _raceModelProvider.RaceDate = value;
+                RaceModelProvider.RaceDate = value;
                 OnPropertyChanged();
             }
         }
@@ -546,7 +535,7 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// validates buttons being enabled
         /// </summary>
-        private void ValidateButtons()
+        public void ValidateButtons()
         {
             int n;
             bool isDistanceCorrect = int.TryParse(Distance, out n);
