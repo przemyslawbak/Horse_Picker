@@ -9,6 +9,5 @@ namespace Horse_Picker.Services
         string City { get; set; }
         string Category { get; set; }
         string Distance { get; set; }
-        bool IsButtonVisible { get; set; }
     }
 }

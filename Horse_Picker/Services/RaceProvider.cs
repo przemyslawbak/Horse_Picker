@@ -18,6 +18,5 @@ namespace Horse_Picker.Services
         public string City { get => _raceModel.City; set => _raceModel.City = value; }
         public string Category { get => _raceModel.Category; set => _raceModel.Category = value; }
         public string Distance { get => _raceModel.Distance; set => _raceModel.Distance = value; }
-        public bool IsButtonVisible { get => _raceModel.IsButtonVisible; set => _raceModel.IsButtonVisible = value; }
     }
 }
