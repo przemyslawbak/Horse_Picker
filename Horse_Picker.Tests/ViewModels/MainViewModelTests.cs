@@ -32,6 +32,7 @@ namespace Horse_Picker.Tests.ViewModels
         private Mock<IDictionariesService> _dictionaryServiceMock;
 
         private DataUpdateEvent _dataUpdateEvent; //for subscriber only
+        private bool _eventRaised = false;
 
         public MainViewModelTests()
         {
@@ -165,6 +166,8 @@ namespace Horse_Picker.Tests.ViewModels
                 _simulateDataMock.Object,
                 _eventAggregatorMock.Object,
                 _dictionaryServiceMock.Object);
+
+            _viewModel.LoadDataEventHandler += delegate (object sender, EventArgs e) { _eventRaised = true; };
         }
 
         [Fact]

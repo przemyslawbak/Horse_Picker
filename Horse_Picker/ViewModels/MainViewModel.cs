@@ -10,7 +10,6 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Horse_Picker.Services.Message;
 using Horse_Picker.Services.Update;
@@ -73,6 +72,7 @@ namespace Horse_Picker.ViewModels
             CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(RaceModelProvider);
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
             _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate);
+            _eventAggregator.GetEvent<ProgressBarEvent>().Subscribe(ProgressBarTick);
         }
 
         /// <summary>
@@ -115,13 +115,9 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         public async Task OnSimulateResultsExecuteAsync()
         {
-            _simulateDataService.SimulateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
-
             CommandStartedControlsSetup("SimulateResultsCommand");
 
             Races = await _simulateDataService.SimulateResultsAsync(0, Races.Count, Races, Horses, Jockeys, RaceModelProvider);
-
-            _simulateDataService.SimulateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
             CommandCompletedControlsSetup();
             AllControlsEnabled = true;
@@ -165,8 +161,6 @@ namespace Horse_Picker.ViewModels
             {
                 CommandStartedControlsSetup("UpdateDataCommand");
 
-                _updateDataService.UpdateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
-
                 if (DataUpdateModules.JockeysPl)
                     Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JPlFrom, DataUpdateModules.JPlTo, "updateJockeysPl");
                 if (DataUpdateModules.JockeysCz)
@@ -177,8 +171,6 @@ namespace Horse_Picker.ViewModels
                     Horses = await _updateDataService.UpdateDataAsync(Horses, DataUpdateModules.HCzFrom, DataUpdateModules.HCzTo, "updateHorsesCz");
                 if (DataUpdateModules.RacesPl)
                     Races = await _updateDataService.UpdateDataAsync(Races, DataUpdateModules.HistPlFrom, DataUpdateModules.HistPlTo, "updateHistoricPl");
-
-                _updateDataService.UpdateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //unsub from service event
 
                 CommandCompletedControlsSetup();
                 AllControlsEnabled = true;
@@ -572,6 +564,8 @@ namespace Horse_Picker.ViewModels
             }
         }
 
+        //cool visibility stuff: https://stackoverflow.com/questions/7000819/binding-a-buttons-visibility-to-a-bool-value-in-viewmodel
+
         /// <summary>
         /// display `status bar` or not?
         /// </summary>
@@ -680,16 +674,16 @@ namespace Horse_Picker.ViewModels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void ProgressBarTick(object sender, UpdateBarEventArgs e)
+        public void ProgressBarTick(ProgressBarData bar)
         {
-            int divider = e.ToId - e.FromId;
+            int divider = bar.ToId - bar.FromId;
 
-            WorkStatus = e.JobType;
+            WorkStatus = bar.JobType;
 
             if (divider > 0)
             {
-                UpdateStatusBar = e.LoopCouner * 100 / (e.ToId - e.FromId);
-                ProgressDisplay = e.LoopCouner + " / " + (e.ToId - e.FromId);
+                UpdateStatusBar = bar.LoopCouner * 100 / (bar.ToId - bar.FromId);
+                ProgressDisplay = bar.LoopCouner + " / " + (bar.ToId - bar.FromId);
             }
             else if (divider == 0)
             {

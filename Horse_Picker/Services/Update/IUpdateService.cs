@@ -17,8 +17,6 @@ namespace Horse_Picker.Services.Update
 
         void CancelUpdates();
 
-        event EventHandler<UpdateBarEventArgs> UpdateProgressEventHandler;
-
         Task<ObservableCollection<T>> UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int jPlFrom, int jPlTo, string v);
 
     }

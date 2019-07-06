@@ -8,8 +8,6 @@ namespace Horse_Picker.Services.Simulate
 {
     public interface ISimulateService
     {
-        event EventHandler<UpdateBarEventArgs> SimulateProgressEventHandler;
-
         Task<ObservableCollection<RaceDetails>> SimulateResultsAsync(int fromId,
             int toId,
             ObservableCollection<RaceDetails> races,

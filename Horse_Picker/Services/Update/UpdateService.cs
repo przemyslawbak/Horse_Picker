@@ -5,6 +5,7 @@ using Horse_Picker.Services.Dictionary;
 using Horse_Picker.Services.Files;
 using Horse_Picker.Services.Scrap;
 using Horse_Picker.Wrappers;
+using Prism.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,11 +31,10 @@ namespace Horse_Picker.Services.Update
     /// </summary>
     public class UpdateService : IUpdateService
     {
-        int _idToProgressBar;
-        int _idFromProgressBar;
-        int _loopCounterProgressBar;
         string _jobTypeProgressBar;
         int _degreeOfParallelism;
+
+        private IEventAggregator _eventAggregator;
         private IScrapService _scrapDataService;
         private IFileService _dataServices;
         private IComputeService _computeDataService;
@@ -43,10 +43,12 @@ namespace Horse_Picker.Services.Update
         public UpdateService(IFileService dataServices,
             IScrapService scrapDataService,
             IComputeService computeDataService,
-            IDictionariesService dictionaryService)
+            IDictionariesService dictionaryService,
+            IEventAggregator eventAggregator)
         {
             _degreeOfParallelism = 40;
 
+            _eventAggregator = eventAggregator;
             _dataServices = dataServices;
             _dictionaryService = dictionaryService;
             _scrapDataService = scrapDataService;
@@ -62,8 +64,6 @@ namespace Horse_Picker.Services.Update
         public ObservableCollection<RaceDetails> Races { get; private set; }
         public CancellationTokenSource TokenSource { get; set; }
         public CancellationToken CancellationToken { get; set; }
-
-        public event EventHandler<UpdateBarEventArgs> UpdateProgressEventHandler;
 
         /// <summary>
         /// updates collections of generic type
@@ -83,10 +83,8 @@ namespace Horse_Picker.Services.Update
         /// <returns></returns>
         public async Task<ObservableCollection<T>> UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int idFrom, int idTo, string jobType)
         {
-            //variables
-            _loopCounterProgressBar = 0;
-            _idFromProgressBar = idFrom;
-            _idToProgressBar = idTo;
+            ProgressBarData progressBar;
+            int loopCounterProgressBar = 0;
 
             //parse collections, display job
             if (typeof(T) == typeof(LoadedHorse))
@@ -110,7 +108,18 @@ namespace Horse_Picker.Services.Update
             List<Task> tasks = new List<Task>();
             TokenSource = new CancellationTokenSource();
             CancellationToken = TokenSource.Token;
-            OnProgressBarTick();
+
+            progressBar = GetProgressBar(jobType, idFrom, idTo, loopCounterProgressBar);
+
+            progressBar = new ProgressBarData()
+            {
+                JobType = jobType,
+                FromId = idFrom,
+                ToId = idTo,
+                LoopCouner = loopCounterProgressBar
+            };
+
+            _eventAggregator.GetEvent<ProgressBarEvent>().Publish(progressBar);
 
             //run loop
             for (int i = idFrom; i < idTo + 1; i++)
@@ -148,11 +157,11 @@ namespace Horse_Picker.Services.Update
                     }
                     finally
                     {
-                        _loopCounterProgressBar++;
+                        loopCounterProgressBar++;
 
-                        EventHandler<UpdateBarEventArgs> progressBarTick = UpdateProgressEventHandler;
+                        progressBar = GetProgressBar(jobType, idFrom, idTo, loopCounterProgressBar);
 
-                        OnProgressBarTick();
+                        _eventAggregator.GetEvent<ProgressBarEvent>().Publish(progressBar);
 
                         throttler.Release();
                     }
@@ -202,9 +211,17 @@ namespace Horse_Picker.Services.Update
             else { throw new ArgumentException(); }
         }
 
-        protected void OnProgressBarTick()
+        public ProgressBarData GetProgressBar(string jobType, int idFrom, int idTo, int loopCounterProgressBar)
         {
-            UpdateProgressEventHandler(this, new UpdateBarEventArgs(_jobTypeProgressBar, _loopCounterProgressBar, _idToProgressBar, _idFromProgressBar));
+            ProgressBarData progressBar = new ProgressBarData()
+            {
+                JobType = jobType,
+                FromId = idFrom,
+                ToId = idTo,
+                LoopCouner = loopCounterProgressBar
+            };
+
+            return progressBar;
         }
 
         private async Task UpdateRacesAsync(string jobType, int id)
