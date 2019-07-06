@@ -1,4 +1,5 @@
-﻿using Horse_Picker.Models;
+﻿using Horse_Picker.Events;
+using Horse_Picker.Models;
 using Horse_Picker.Services;
 using Horse_Picker.Services.Dictionary;
 using Horse_Picker.Services.Files;
@@ -11,10 +12,6 @@ using Moq;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -32,6 +29,8 @@ namespace Horse_Picker.Tests.ViewModels
         private Mock<ISimulateService> _simulateDataMock;
         private Mock<IDictionariesService> _dictionaryServiceMock;
 
+        private DataUpdateEvent _dataUpdateEvent; //for subscriber only
+
         public MainViewModelTests()
         {
             _eventAggregatorMock = new Mock<IEventAggregator>();
@@ -42,9 +41,14 @@ namespace Horse_Picker.Tests.ViewModels
             _simulateDataMock = new Mock<ISimulateService>();
             _dictionaryServiceMock = new Mock<IDictionariesService>();
 
+            _dataUpdateEvent = new DataUpdateEvent();
+
+            _eventAggregatorMock.Setup(ea => ea.GetEvent<DataUpdateEvent>())
+              .Returns(_dataUpdateEvent);
+
             //moq setup
             _dataServicesMock.Setup(ds => ds.GetAllHorses())
-                .Returns(new List<LoadedHorse>
+                .Returns(Task.FromResult(new List<LoadedHorse>
                 {
                     new LoadedHorse
                     {
@@ -76,10 +80,10 @@ namespace Horse_Picker.Tests.ViewModels
                         FatherLink = "",
                         Link = "https://koniewyscigowe.pl/horse/14474"
                     }
-                });
+                }));
 
             _dataServicesMock.Setup(ds => ds.GetAllJockeys())
-                .Returns(new List<LoadedJockey>
+                .Returns(Task.FromResult(new List<LoadedJockey>
                 {
                     new LoadedJockey
                     {
@@ -99,9 +103,9 @@ namespace Horse_Picker.Tests.ViewModels
                         Link = "https://koniewyscigowe.pl/dzokej?d=666",
                         AllRaces = { }
                     }
-                });
+                }));
             _dataServicesMock.Setup(ds => ds.GetAllRaces())
-                .Returns(new List<RaceDetails>
+                .Returns(Task.FromResult(new List<RaceDetails>
                 {
                     new RaceDetails
                     {
@@ -119,7 +123,7 @@ namespace Horse_Picker.Tests.ViewModels
                         RaceDistance = 1400,
                         RaceLink = "somelink2"
                     }
-                });
+                }));
 
             _viewModel = new MainViewModel(_dataServicesMock.Object,
                 _messageDialogServicesMock.Object,
@@ -137,9 +141,14 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
+        public void MainViewModel_CallsLoadDataEventHandler_True()
+        {
+            Assert.True(_viewModel.WasCalled); //testing that event was called
+        }
+
+        [Fact]
         public void LoadAllData_ShouldLoadHorses_True()
         {
-            _viewModel.LoadAllDataAsync();
 
             Assert.Equal(3, _viewModel.Horses.Count); //counts horses
             Assert.Equal("Trim", _viewModel.Horses[0].Name);
@@ -152,8 +161,6 @@ namespace Horse_Picker.Tests.ViewModels
         [Fact]
         public void LoadAllData_ShouldLoadJockeys_True()
         {
-            _viewModel.LoadAllDataAsync();
-
             Assert.Equal(3, _viewModel.Jockeys.Count); //counts jockeys
             Assert.Equal("N. Hendzel", _viewModel.Jockeys[0].Name);
             Assert.Equal("https://koniewyscigowe.pl/dzokej?d=4", _viewModel.Jockeys[0].Link);
@@ -162,8 +169,6 @@ namespace Horse_Picker.Tests.ViewModels
         [Fact]
         public void LoadAllData_ShouldLoadHistoricRaces_True()
         {
-            _viewModel.LoadAllDataAsync();
-
             Assert.Equal(2, _viewModel.Races.Count); //counts races
             Assert.Equal("I", _viewModel.Races[0].RaceCategory);
             Assert.Equal(1600, _viewModel.Races[0].RaceDistance);
@@ -270,6 +275,7 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.False(_viewModel.HorseList[0] == null);
         }
 
+        /*
         [Fact]
         public void PopulateLists_PopulatesThem_True()
         {
@@ -282,6 +288,7 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal("Trim, 7", _viewModel.LoadedHorses[0]);
             Assert.Equal("N. Hendzel", _viewModel.LoadedJockeys[0]);
         }
+        */
 
         [Theory]
         [InlineData("--Not found--", "")]
