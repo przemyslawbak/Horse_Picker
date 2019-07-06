@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Xunit;
 
 namespace Horse_Picker.Tests.ViewModels
@@ -46,6 +47,7 @@ namespace Horse_Picker.Tests.ViewModels
             _eventAggregatorMock.Setup(ea => ea.GetEvent<DataUpdateEvent>())
               .Returns(_dataUpdateEvent);
 
+            //SetupAllProperties credits: https://stackoverflow.com/a/24036457/11027921
             _raceModelProviderMock.SetupAllProperties();
 
             //moq setup
@@ -134,15 +136,7 @@ namespace Horse_Picker.Tests.ViewModels
                 _simulateDataMock.Object,
                 _eventAggregatorMock.Object,
                 _dictionaryServiceMock.Object);
-
-            _viewModel.Category = "I";
-            _viewModel.City = "Waw";
-            _viewModel.Distance = "1600";
-            _viewModel.RaceNo = "1";
-            _viewModel.RaceDate = new DateTime(2018, 11, 11);
         }
-
-
 
         [Fact]
         public void MainViewModelInstance_CallsLoadDataEventHandler_True()
@@ -162,7 +156,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void LoadAllData_ShouldLoadJockeys_True()
+        public void MainViewModelInstance_ShouldLoadJockeys_True()
         {
             Assert.Equal(3, _viewModel.Jockeys.Count); //counts jockeys
             Assert.Equal("N. Hendzel", _viewModel.Jockeys[0].Name);
@@ -170,12 +164,52 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void LoadAllData_ShouldLoadHistoricRaces_True()
+        public void MainViewModelInstance_ShouldLoadHistoricRaces_True()
         {
             Assert.Equal(2, _viewModel.Races.Count); //counts races
             Assert.Equal("I", _viewModel.Races[0].RaceCategory);
             Assert.Equal(1600, _viewModel.Races[0].RaceDistance);
             Assert.Equal("somelink", _viewModel.Races[0].RaceLink);
+        }
+
+        [Fact]
+        public void CancellationExecuteMethods_CallsCancelSimulation_True()
+        {
+            Mock<MainViewModel> mockVm = new Mock<MainViewModel>();
+
+            _viewModel.SimulateCancellationCommand.Execute(null);
+            _viewModel.UpdateCancellationCommand.Execute(null);
+
+            _simulateDataMock.Verify(sd => sd.CancelSimulation(), Times.Once);
+            _updateDataMock.Verify(sd => sd.CancelUpdates(), Times.Once);
+        }
+
+        [Fact]
+        public void SimulateCancellationCommand_ChangesVisibilityProps_True()
+        {
+            _viewModel.VisibilityTestingBtn = Visibility.Hidden;
+
+            _viewModel.SimulateCancellationCommand.Execute(null);
+
+            Assert.Equal(Visibility.Visible, _viewModel.VisibilityTestingBtn);
+        }
+
+        [Fact]
+        public void UpdateCancellationCommand_ChangesVisibilityProps_True()
+        {
+            _viewModel.VisibilityTestingBtn = Visibility.Hidden;
+
+            _viewModel.UpdateCancellationCommand.Execute(null);
+
+            Assert.Equal(Visibility.Visible, _viewModel.VisibilityTestingBtn);
+        }
+
+        [Fact]
+        public void OnSimulateResultsExecuteAsync_CallsSimulateResultsAsync_True()
+        {
+            _viewModel.SimulateResultsCommand.Execute(null);
+
+            _simulateDataMock.Verify(sd => sd.SimulateResultsAsync(It.IsAny<int>(), It.IsAny<int>(), _viewModel.Races, _viewModel.Horses, _viewModel.Jockeys, _viewModel.RaceModelProvider), Times.Once);
         }
 
         [Fact]
@@ -222,19 +256,5 @@ namespace Horse_Picker.Tests.ViewModels
 
             Assert.Equal(expected, result);
         }
-
-        [Fact]
-        private void HorseList_CollectionChangedEventValidatesSaveBtn_True()
-        {
-            _viewModel.HorseList.Clear();
-            _viewModel.IsSaveEnabled = false;
-            _viewModel.AllControlsEnabled = true;
-
-            _viewModel.HorseList.Add(new HorseDataWrapper { });
-
-            Assert.True(_viewModel.IsSaveEnabled);
-        }
-
-        //ValidateButtons tests now
     }
 }
