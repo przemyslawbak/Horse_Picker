@@ -73,7 +73,7 @@ namespace Horse_Picker.ViewModels
 
             //delegates and commands
             ClearDataCommand.Execute(null);
-            _loadDataEventHandler += LoadAllDataAsync;
+            LoadDataEventHandler += LoadAllDataAsync;
             OnPopulateLists(null);
             CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(_raceModelProvider);
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
@@ -122,13 +122,13 @@ namespace Horse_Picker.ViewModels
         {
             var stopwatch = Stopwatch.StartNew();//stopwatch
 
-            _simulateDataService._simulateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
+            _simulateDataService.SimulateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
             CommandStartedControlsSetup("SimulateResultsCommand");
 
             Races = await _simulateDataService.SimulateResultsAsync(0, Races.Count, Races, Horses, Jockeys, _raceModelProvider);
 
-            _simulateDataService._simulateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
+            _simulateDataService.SimulateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
             stopwatch.Stop();//stopwatch
             MessageBox.Show(stopwatch.Elapsed.ToString());//stopwatch
@@ -178,7 +178,7 @@ namespace Horse_Picker.ViewModels
 
                 var stopwatch = Stopwatch.StartNew(); //stopwatch
 
-                _updateDataService._updateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
+                _updateDataService.UpdateProgressEventHandler += new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //sub to service event
 
                 if (DataUpdateModules.JockeysPl)
                     Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JPlFrom, DataUpdateModules.JPlTo, "updateJockeysPl");
@@ -191,7 +191,7 @@ namespace Horse_Picker.ViewModels
                 if (DataUpdateModules.RacesPl)
                     Races = await _updateDataService.UpdateDataAsync(Races, DataUpdateModules.HistPlFrom, DataUpdateModules.HistPlTo, "updateHistoricPl");
 
-                _updateDataService._updateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //unsub from service event
+                _updateDataService.UpdateProgressEventHandler -= new EventHandler<UpdateBarEventArgs>(ProgressBarTick); //unsub from service event
 
                 stopwatch.Stop();//stopwatch
                 MessageBox.Show(stopwatch.Elapsed.ToString());//stopwatch
@@ -233,7 +233,8 @@ namespace Horse_Picker.ViewModels
 
         /// <summary>
         /// loads horses from the file data services
-        /// async void eventhandler credits: https://stackoverflow.com/a/19415703/11027921
+        /// async void eventhandler testing credits: https://stackoverflow.com/a/19415703/11027921
+        /// delegates https://docs.microsoft.com/en-us/dotnet/api/system.eventhandler?view=netframework-4.8
         /// </summary>
         public async void LoadAllDataAsync(object sender, EventArgs e)
         {
@@ -281,6 +282,8 @@ namespace Horse_Picker.ViewModels
             }
 
             PopulateLists();
+
+            WasCalled = true;
         }
 
         /// <summary>
@@ -349,6 +352,7 @@ namespace Horse_Picker.ViewModels
         public ICommand PickHorseDataCommand { get; private set; }
 
         //properties
+        public bool WasCalled { get; set; } //was LoadDataEventHandler event called
         public UpdateModules DataUpdateModules { get; set; }
         public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
         public ObservableCollection<bool> UpdateModules { get; private set; }
@@ -360,7 +364,7 @@ namespace Horse_Picker.ViewModels
         public List<string> LoadedJockeys { get; }
         public Dictionary<string, int> CategoryFactorDict { get; set; }
 
-        public event EventHandler _loadDataEventHandler;
+        public event EventHandler LoadDataEventHandler;
 
         //prop race distance
         public string Distance

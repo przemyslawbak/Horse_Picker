@@ -34,7 +34,7 @@ namespace Horse_Picker.Services.Simulate
         public CancellationTokenSource TokenSource { get; set; }
         public CancellationToken CancellationToken { get; set; }
 
-        public event EventHandler<UpdateBarEventArgs> _simulateProgressEventHandler;
+        public event EventHandler<UpdateBarEventArgs> SimulateProgressEventHandler;
 
         /// <summary>
         /// simulates score index for all horses in all races in certain year from race database
@@ -104,7 +104,7 @@ namespace Horse_Picker.Services.Simulate
                     {
                         _loopCounter++;
 
-                        EventHandler<UpdateBarEventArgs> progressBarTick = _simulateProgressEventHandler;
+                        EventHandler<UpdateBarEventArgs> progressBarTick = SimulateProgressEventHandler;
 
                         OnProgressBarTick();
 
@@ -136,7 +136,7 @@ namespace Horse_Picker.Services.Simulate
         /// </summary>
         protected void OnProgressBarTick()
         {
-            _simulateProgressEventHandler(this, new UpdateBarEventArgs(_jobType, _loopCounter, _idTo, _idFrom));
+            SimulateProgressEventHandler(this, new UpdateBarEventArgs(_jobType, _loopCounter, _idTo, _idFrom));
         }
 
         /// <summary>

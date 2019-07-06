@@ -63,7 +63,7 @@ namespace Horse_Picker.Services.Update
         public CancellationTokenSource TokenSource { get; set; }
         public CancellationToken CancellationToken { get; set; }
 
-        public event EventHandler<UpdateBarEventArgs> _updateProgressEventHandler;
+        public event EventHandler<UpdateBarEventArgs> UpdateProgressEventHandler;
 
         /// <summary>
         /// updates collections of generic type
@@ -150,7 +150,7 @@ namespace Horse_Picker.Services.Update
                     {
                         _loopCounterProgressBar++;
 
-                        EventHandler<UpdateBarEventArgs> progressBarTick = _updateProgressEventHandler;
+                        EventHandler<UpdateBarEventArgs> progressBarTick = UpdateProgressEventHandler;
 
                         OnProgressBarTick();
 
@@ -204,7 +204,7 @@ namespace Horse_Picker.Services.Update
 
         protected void OnProgressBarTick()
         {
-            _updateProgressEventHandler(this, new UpdateBarEventArgs(_jobTypeProgressBar, _loopCounterProgressBar, _idToProgressBar, _idFromProgressBar));
+            UpdateProgressEventHandler(this, new UpdateBarEventArgs(_jobTypeProgressBar, _loopCounterProgressBar, _idToProgressBar, _idFromProgressBar));
         }
 
         private async Task UpdateRacesAsync(string jobType, int id)

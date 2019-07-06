@@ -1,5 +1,4 @@
 
-async void - mainviewmodel ctor
 testy
 
 NA PRZYSZLOSC:
