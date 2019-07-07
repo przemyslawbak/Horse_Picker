@@ -67,12 +67,12 @@ namespace Horse_Picker.ViewModels
 
             //delegates and commands
             ClearDataCommand.Execute(null);
-            LoadDataEventHandler += LoadAllDataAsync;
-            OnPopulateLists(null);
             CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(RaceModelProvider);
-            HorseList.CollectionChanged += OnHorseListCollectionChanged; //prism.core?
+            HorseList.CollectionChanged += OnHorseListCollectionChanged;
             _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate); //watches for update view model properties update event
             _eventAggregator.GetEvent<ProgressBarEvent>().Subscribe(ProgressBarTick); //watches for service layer progress bar data update event
+            _eventAggregator.GetEvent<LoadDataEvent>().Subscribe(LoadAllDataAsync); //watches for vm load data update event
+            _eventAggregator.GetEvent<LoadDataEvent>().Publish(); // publish vm load data update event
         }
 
         /// <summary>
@@ -115,14 +115,11 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         public async Task OnSimulateResultsExecuteAsync()
         {
-            CommandStartedControlsSetup("SimulateResultsCommand");
+            CommandStartedControlsSetup("SimulateResultsCommand"); //setup controls for job time being
 
             Races = await _simulateDataService.SimulateResultsAsync(0, Races.Count, Races, Horses, Jockeys, RaceModelProvider);
 
-            CommandCompletedControlsSetup();
-            AllControlsEnabled = true;
-            VisibilityCancellingMsg = false;
-
+            ResetControls(); //reset controlls after job done
         }
 
         /// <summary>
@@ -159,7 +156,7 @@ namespace Horse_Picker.ViewModels
 
             if (result == MessageDialogResult.Update && isAnyTrue)
             {
-                CommandStartedControlsSetup("UpdateDataCommand");
+                CommandStartedControlsSetup("UpdateDataCommand"); //setup controls for job time being
 
                 if (DataUpdateModules.JockeysPl)
                     Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JPlFrom, DataUpdateModules.JPlTo, "updateJockeysPl");
@@ -172,11 +169,9 @@ namespace Horse_Picker.ViewModels
                 if (DataUpdateModules.RacesPl)
                     Races = await _updateDataService.UpdateDataAsync(Races, DataUpdateModules.HistPlFrom, DataUpdateModules.HistPlTo, "updateHistoricPl");
 
-                CommandCompletedControlsSetup();
-                AllControlsEnabled = true;
-                VisibilityCancellingMsg = false;
+                ResetControls(); //reset controlls after job done
 
-                OnPopulateLists(null);
+                _eventAggregator.GetEvent<LoadDataEvent>().Publish(); // publish vm load data update event
             }
         }
 
@@ -208,11 +203,12 @@ namespace Horse_Picker.ViewModels
         }
 
         /// <summary>
+        /// subscribed to event
         /// loads horses from the file data services
         /// async void eventhandler testing credits: https://stackoverflow.com/a/19415703/11027921
         /// delegates https://docs.microsoft.com/en-us/dotnet/api/system.eventhandler?view=netframework-4.8
         /// </summary>
-        public async void LoadAllDataAsync(object sender, EventArgs e)
+        public async void LoadAllDataAsync()
         {
             if (Horses.Count == 0 && Jockeys.Count == 0 && Races.Count == 0)
             {
@@ -258,8 +254,6 @@ namespace Horse_Picker.ViewModels
             }
 
             PopulateLists();
-
-            WasCalled = true;
         }
 
         /// <summary>
@@ -328,7 +322,6 @@ namespace Horse_Picker.ViewModels
         public ICommand PickHorseDataCommand { get; private set; }
 
         //properties
-        public bool WasCalled { get; set; } //was LoadDataEventHandler event called
         public DateTime DateTimeNow { get; set; } //was LoadDataEventHandler event called
         public UpdateModules DataUpdateModules { get; set; }
         public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
@@ -341,8 +334,6 @@ namespace Horse_Picker.ViewModels
         public List<string> LoadedJockeys { get; }
         public Dictionary<string, int> CategoryFactorDict { get; set; }
         public IRaceProvider RaceModelProvider { get; set; }
-
-        public event EventHandler LoadDataEventHandler;
 
         //prop race distance
         public string Distance
@@ -668,7 +659,6 @@ namespace Horse_Picker.ViewModels
             }
         }
 
-
         /// <summary>
         /// updates data on progress bar for any task
         /// </summary>
@@ -697,7 +687,6 @@ namespace Horse_Picker.ViewModels
             }
 
         }
-
 
         /// <summary>
         /// changes some display props on starting long running tasks
@@ -741,13 +730,14 @@ namespace Horse_Picker.ViewModels
             VisibilityUpdatingBtn = true;
         }
 
-        protected virtual void OnPopulateLists(EventArgs e)
+        /// <summary>
+        /// resets visibility controls after job done
+        /// </summary>
+        public void ResetControls()
         {
-            EventHandler handler = LoadAllDataAsync;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            CommandCompletedControlsSetup();
+            AllControlsEnabled = true;
+            VisibilityCancellingMsg = false;
         }
     }
 }

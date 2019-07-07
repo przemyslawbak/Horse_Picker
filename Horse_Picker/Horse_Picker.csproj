@@ -176,6 +176,7 @@
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Events\DataUpdateEvent.cs" />
+    <Compile Include="Events\LoadDataEvent.cs" />
     <Compile Include="Events\ProgressBarEvent.cs" />
     <Compile Include="Models\ProgressBarData.cs" />
     <Compile Include="Services\Compute\ComputeService.cs" />

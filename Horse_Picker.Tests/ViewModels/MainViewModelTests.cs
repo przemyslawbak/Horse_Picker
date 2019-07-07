@@ -32,9 +32,11 @@ namespace Horse_Picker.Tests.ViewModels
         private Mock<ISimulateService> _simulateDataMock;
         private Mock<IDictionariesService> _dictionaryServiceMock;
 
-        private DataUpdateEvent _dataUpdateEvent; //for subscriber only
-        private ProgressBarEvent _progressBarEvent; //for subscriber only
-        private bool _eventRaised = false;
+        private DataUpdateEvent _dataUpdateEvent; //for subscriber
+        private ProgressBarEvent _progressBarEvent; //for subscriber
+        private LoadDataEvent _loadDataEvent; //for subscriber
+
+        Mock<LoadDataEvent> _loadDataEventMock; //for publisher
 
         public MainViewModelTests()
         {
@@ -48,11 +50,16 @@ namespace Horse_Picker.Tests.ViewModels
 
             _dataUpdateEvent = new DataUpdateEvent();
             _progressBarEvent = new ProgressBarEvent();
+            _loadDataEvent = new LoadDataEvent();
+
+            _loadDataEventMock = new Mock<LoadDataEvent>();
 
             _eventAggregatorMock.Setup(ea => ea.GetEvent<DataUpdateEvent>())
               .Returns(_dataUpdateEvent);
             _eventAggregatorMock.Setup(ea => ea.GetEvent<ProgressBarEvent>())
               .Returns(_progressBarEvent);
+            _eventAggregatorMock.Setup(ea => ea.GetEvent<LoadDataEvent>())
+              .Returns(_loadDataEvent);
 
             //SetupAllProperties credits: https://stackoverflow.com/a/24036457/11027921
             _raceModelProviderMock.SetupAllProperties();
@@ -174,9 +181,11 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void MainViewModelInstance_CallsLoadDataEventHandler_True()
+        public void MainViewModelInstance_SubscribesToLoadDataEvent_True()
         {
-            Assert.True(_viewModel.WasCalled); //testing that event was called
+            _dataServicesMock.Verify(ds => ds.GetAllHorsesAsync(), Times.Once);
+            _dataServicesMock.Verify(ds => ds.GetAllJockeysAsync(), Times.Once);
+            _dataServicesMock.Verify(ds => ds.GetAllRacesAsync(), Times.Once);
         }
 
         [Fact]
@@ -188,6 +197,23 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal("Belenus", _viewModel.Horses[0].Father);
             Assert.Equal("https://koniewyscigowe.pl/horse/14474", _viewModel.Horses[0].FatherLink);
             Assert.Equal("https://koniewyscigowe.pl/horse/260", _viewModel.Horses[0].Link);
+        }
+
+        [Fact]
+        public void MainViewModelInstance_ShouldLoadJockeys_True()
+        {
+            Assert.Equal(3, _viewModel.Jockeys.Count); //counts jockeys
+            Assert.Equal("N. Hendzel", _viewModel.Jockeys[0].Name);
+            Assert.Equal("https://koniewyscigowe.pl/dzokej?d=4", _viewModel.Jockeys[0].Link);
+        }
+
+        [Fact]
+        public void MainViewModelInstance_ShouldLoadHistoricRaces_True()
+        {
+            Assert.Equal(2, _viewModel.Races.Count); //counts races
+            Assert.Equal("I", _viewModel.Races[0].RaceCategory);
+            Assert.Equal(1600, _viewModel.Races[0].RaceDistance);
+            Assert.Equal("somelink", _viewModel.Races[0].RaceLink);
         }
 
         [Fact]
@@ -203,6 +229,7 @@ namespace Horse_Picker.Tests.ViewModels
 
             Assert.True(_viewModel.DataUpdateModules.RacesPl);
             Assert.Equal(20, _viewModel.DataUpdateModules.HCzFrom);
+            Assert.Equal(update, _viewModel.DataUpdateModules);
         }
 
         [Fact]
@@ -221,23 +248,6 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal(10, _viewModel.UpdateStatusBar);
             Assert.Equal("test job", _viewModel.WorkStatus);
             Assert.Equal("100 / 1000", _viewModel.ProgressDisplay);
-        }
-
-        [Fact]
-        public void MainViewModelInstance_ShouldLoadJockeys_True()
-        {
-            Assert.Equal(3, _viewModel.Jockeys.Count); //counts jockeys
-            Assert.Equal("N. Hendzel", _viewModel.Jockeys[0].Name);
-            Assert.Equal("https://koniewyscigowe.pl/dzokej?d=4", _viewModel.Jockeys[0].Link);
-        }
-
-        [Fact]
-        public void MainViewModelInstance_ShouldLoadHistoricRaces_True()
-        {
-            Assert.Equal(2, _viewModel.Races.Count); //counts races
-            Assert.Equal("I", _viewModel.Races[0].RaceCategory);
-            Assert.Equal(1600, _viewModel.Races[0].RaceDistance);
-            Assert.Equal("somelink", _viewModel.Races[0].RaceLink);
         }
 
         [Fact]
@@ -272,18 +282,11 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void OnSimulateResultsExecuteAsync_ChangesVisibilityProps_True()
+        public void OnSimulateResultsExecuteAsync_UpdatesRaces_True()
         {
-            _viewModel.VisibilityTestingBtn = false;
-            _viewModel.VisibilityCancellingMsg = false;
-            _viewModel.AllControlsEnabled = false;
-
-            _viewModel.SimulateResultsCommand.Execute(null);
-
-            Assert.True(_viewModel.VisibilityTestingBtn);
-            Assert.False(_viewModel.VisibilityCancellingMsg);
-            Assert.True(_viewModel.AllControlsEnabled);
+            //moq _simulateDataService.SimulateResultsAsync here and test it
         }
+
         [Fact]
         public void OnClearDataExecute_ClearsRaceProps_True()
         {
@@ -327,6 +330,20 @@ namespace Horse_Picker.Tests.ViewModels
             var result = _viewModel.MakeTitleCase(name);
 
             Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void ResetControls_ChangesVisibilityProps_True()
+        {
+            _viewModel.VisibilityTestingBtn = false;
+            _viewModel.VisibilityCancellingMsg = false;
+            _viewModel.AllControlsEnabled = false;
+
+            _viewModel.SimulateResultsCommand.Execute(null);
+
+            Assert.True(_viewModel.VisibilityTestingBtn);
+            Assert.False(_viewModel.VisibilityCancellingMsg);
+            Assert.True(_viewModel.AllControlsEnabled);
         }
     }
 }
