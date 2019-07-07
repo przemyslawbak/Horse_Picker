@@ -181,7 +181,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void MainViewModelInstance_SubscribesToLoadDataEvent_True()
+        public void MainViewModelInstance_SubscribesToLoadDataEventAndCallsGetAllMethods_True()
         {
             _dataServicesMock.Verify(ds => ds.GetAllHorsesAsync(), Times.Once);
             _dataServicesMock.Verify(ds => ds.GetAllJockeysAsync(), Times.Once);
@@ -280,16 +280,28 @@ namespace Horse_Picker.Tests.ViewModels
 
             Assert.True(_viewModel.VisibilityTestingBtn);
         }
-
+        //MOQ SETUP FOR _simulateDataMock.SimulateResultsAsync
         [Fact]
-        public void OnSimulateResultsExecuteAsync_UpdatesRaces_True()
+        public void OnSimulateResultsExecuteAsync_CallSimulateResultsAsync_True()
         {
-            //moq _simulateDataService.SimulateResultsAsync here and test it
+            _viewModel.Category = "I";
+            _viewModel.City = "Wro";
+            _viewModel.Distance = "1600";
+            _viewModel.RaceNo = "1";
+            _viewModel.RaceDate = new DateTime(2018, 11, 11);
+            _viewModel.SimulateResultsCommand.Execute(null);
+
+            _simulateDataMock.Verify(sd => sd.SimulateResultsAsync(0, _viewModel.Races.Count, _viewModel.Races, _viewModel.Horses, _viewModel.Jockeys, _viewModel.RaceModelProvider), Times.Once);
         }
 
         [Fact]
         public void OnClearDataExecute_ClearsRaceProps_True()
         {
+            _viewModel.Category = "I";
+            _viewModel.City = "Wro";
+            _viewModel.Distance = "1600";
+            _viewModel.RaceNo = "1";
+            _viewModel.RaceDate = new DateTime(2018, 11, 11);
             _viewModel.HorseList.Clear();
             _viewModel.HorseList.Add(new HorseDataWrapper { HorseName = "Eugeniusz", Age = 1, Father = "Żytomir", Comments = "No comment" });
             _viewModel.HorseList.Add(new HorseDataWrapper { HorseName = "Eustachy", Age = 2, Father = "Dobrosława", Comments = "Some comment" });
