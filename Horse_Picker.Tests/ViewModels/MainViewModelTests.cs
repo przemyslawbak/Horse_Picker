@@ -198,10 +198,29 @@ namespace Horse_Picker.Tests.ViewModels
                 RacesPl = true,
                 HCzFrom = 20
             };
+
             _dataUpdateEvent.Publish(update);
 
             Assert.True(_viewModel.DataUpdateModules.RacesPl);
             Assert.Equal(20, _viewModel.DataUpdateModules.HCzFrom);
+        }
+
+        [Fact]
+        public void MainViewModelInstance_SubscribesToProgressBarEvent()
+        {
+            ProgressBarData bar = new ProgressBarData()
+            {
+                JobType = "test job",
+                LoopCouner = 100,
+                FromId = 10,
+                ToId = 1010
+            };
+
+            _progressBarEvent.Publish(bar);
+
+            Assert.Equal(10, _viewModel.UpdateStatusBar);
+            Assert.Equal("test job", _viewModel.WorkStatus);
+            Assert.Equal("100 / 1000", _viewModel.ProgressDisplay);
         }
 
         [Fact]

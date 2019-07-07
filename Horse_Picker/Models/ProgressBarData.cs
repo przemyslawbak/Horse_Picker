@@ -8,9 +8,9 @@ namespace Horse_Picker.Models
 {
     public class ProgressBarData
     {
-        public int ToId { get; internal set; }
-        public int FromId { get; internal set; }
-        public string JobType { get; internal set; }
-        public int LoopCouner { get; internal set; }
+        public int ToId { get; set; }
+        public int FromId { get; set; }
+        public string JobType { get; set; }
+        public int LoopCouner { get; set; }
     }
 }
