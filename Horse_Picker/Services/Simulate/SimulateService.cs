@@ -59,8 +59,8 @@ namespace Horse_Picker.Services.Simulate
             List<Task> tasks = new List<Task>();
             TokenSource = new CancellationTokenSource();
             CancellationToken = TokenSource.Token;
-            int loopCounter = 0;
-            string jobType = "Simulating historic races";
+            int loopCounterProgressBar = 0;
+            string jobTypeProgressBar = "Simulating historic races";
             ProgressBarData progressBar;
 
             //run loop
@@ -97,9 +97,9 @@ namespace Horse_Picker.Services.Simulate
                     }
                     finally
                     {
-                        loopCounter++;
+                        loopCounterProgressBar++;
 
-                        progressBar = GetProgressBar(jobType, idFrom, idTo, loopCounter);
+                        progressBar = GetProgressBar(jobTypeProgressBar, idFrom, idTo, loopCounterProgressBar);
 
                         _eventAggregator.GetEvent<ProgressBarEvent>().Publish(progressBar);
 

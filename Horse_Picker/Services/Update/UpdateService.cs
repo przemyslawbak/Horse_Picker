@@ -31,7 +31,6 @@ namespace Horse_Picker.Services.Update
     /// </summary>
     public class UpdateService : IUpdateService
     {
-        string _jobTypeProgressBar;
         int _degreeOfParallelism;
 
         private IEventAggregator _eventAggregator;
@@ -85,22 +84,23 @@ namespace Horse_Picker.Services.Update
         {
             ProgressBarData progressBar;
             int loopCounterProgressBar = 0;
+            string jobTypeProgressBar = "";
 
             //parse collections, display job
             if (typeof(T) == typeof(LoadedHorse))
             {
                 Horses = new ObservableCollection<LoadedHorse>(genericCollection.Cast<LoadedHorse>());
-                _jobTypeProgressBar = "Updating horse data";
+                jobTypeProgressBar = "Updating horse data";
             }
             else if (typeof(T) == typeof(LoadedJockey))
             {
                 Jockeys = new ObservableCollection<LoadedJockey>(genericCollection.Cast<LoadedJockey>());
-                _jobTypeProgressBar = "Updating jockey data";
+                jobTypeProgressBar = "Updating jockey data";
             }
             else if (typeof(T) == typeof(RaceDetails))
             {
                 Races = new ObservableCollection<RaceDetails>(genericCollection.Cast<RaceDetails>());
-                _jobTypeProgressBar = "Updating historic data";
+                jobTypeProgressBar = "Updating historic data";
             }
 
             //initial
@@ -159,7 +159,7 @@ namespace Horse_Picker.Services.Update
                     {
                         loopCounterProgressBar++;
 
-                        progressBar = GetProgressBar(jobType, idFrom, idTo, loopCounterProgressBar);
+                        progressBar = GetProgressBar(jobTypeProgressBar, idFrom, idTo, loopCounterProgressBar);
 
                         _eventAggregator.GetEvent<ProgressBarEvent>().Publish(progressBar);
 
