@@ -20,6 +20,7 @@ using Xunit;
 
 namespace Horse_Picker.Tests.ViewModels
 {
+    //testing events: https://stackoverflow.com/a/9693800/11027921
     public class MainViewModelTests
     {
         private MainViewModel _viewModel;
@@ -32,6 +33,7 @@ namespace Horse_Picker.Tests.ViewModels
         private Mock<IDictionariesService> _dictionaryServiceMock;
 
         private DataUpdateEvent _dataUpdateEvent; //for subscriber only
+        private ProgressBarEvent _progressBarEvent; //for subscriber only
         private bool _eventRaised = false;
 
         public MainViewModelTests()
@@ -45,9 +47,12 @@ namespace Horse_Picker.Tests.ViewModels
             _dictionaryServiceMock = new Mock<IDictionariesService>();
 
             _dataUpdateEvent = new DataUpdateEvent();
+            _progressBarEvent = new ProgressBarEvent();
 
             _eventAggregatorMock.Setup(ea => ea.GetEvent<DataUpdateEvent>())
               .Returns(_dataUpdateEvent);
+            _eventAggregatorMock.Setup(ea => ea.GetEvent<ProgressBarEvent>())
+              .Returns(_progressBarEvent);
 
             //SetupAllProperties credits: https://stackoverflow.com/a/24036457/11027921
             _raceModelProviderMock.SetupAllProperties();
@@ -166,8 +171,6 @@ namespace Horse_Picker.Tests.ViewModels
                 _simulateDataMock.Object,
                 _eventAggregatorMock.Object,
                 _dictionaryServiceMock.Object);
-
-            _viewModel.LoadDataEventHandler += delegate (object sender, EventArgs e) { _eventRaised = true; };
         }
 
         [Fact]
@@ -185,6 +188,20 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal("Belenus", _viewModel.Horses[0].Father);
             Assert.Equal("https://koniewyscigowe.pl/horse/14474", _viewModel.Horses[0].FatherLink);
             Assert.Equal("https://koniewyscigowe.pl/horse/260", _viewModel.Horses[0].Link);
+        }
+
+        [Fact]
+        public void MainViewModelInstance_SubscribesToDataUpdateEvent_True()
+        {
+            UpdateModules update = new UpdateModules()
+            {
+                RacesPl = true,
+                HCzFrom = 20
+            };
+            _dataUpdateEvent.Publish(update);
+
+            Assert.True(_viewModel.DataUpdateModules.RacesPl);
+            Assert.Equal(20, _viewModel.DataUpdateModules.HCzFrom);
         }
 
         [Fact]

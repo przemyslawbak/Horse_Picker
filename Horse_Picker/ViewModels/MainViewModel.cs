@@ -70,9 +70,9 @@ namespace Horse_Picker.ViewModels
             LoadDataEventHandler += LoadAllDataAsync;
             OnPopulateLists(null);
             CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(RaceModelProvider);
-            HorseList.CollectionChanged += OnHorseListCollectionChanged;
-            _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate);
-            _eventAggregator.GetEvent<ProgressBarEvent>().Subscribe(ProgressBarTick);
+            HorseList.CollectionChanged += OnHorseListCollectionChanged; //prism.core?
+            _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate); //watches for update view model properties update event
+            _eventAggregator.GetEvent<ProgressBarEvent>().Subscribe(ProgressBarTick); //watches for service layer progress bar data update event
         }
 
         /// <summary>
