@@ -178,6 +178,59 @@ namespace Horse_Picker.Tests.ViewModels
                 _simulateDataMock.Object,
                 _eventAggregatorMock.Object,
                 _dictionaryServiceMock.Object);
+
+            _simulateDataMock.Setup(ds => ds.SimulateResultsAsync(0, _viewModel.Races.Count, _viewModel.Races, _viewModel.Horses, _viewModel.Jockeys, _viewModel.RaceModelProvider))
+                .Returns(Task.FromResult(new ObservableCollection<RaceDetails>
+                {
+                    new RaceDetails
+                    {
+                       HorseList = new List<HorseDataWrapper>()
+                        {
+                            new HorseDataWrapper()
+                            {
+                                HorseName = "Trim",
+                                Age = 7,
+                                Father = "Some Father 1",
+                                WinIndex = 1.1
+                            },
+                            new HorseDataWrapper()
+                            {
+                                HorseName = "Saba",
+                                Age = 8,
+                                Father = "Some Father 2",
+                                WinIndex = 2.2
+                            }
+                        },
+                        RaceCategory = "I",
+                        RaceDate = new DateTime(2018, 11, 11),
+                        RaceDistance = 1600,
+                        RaceLink = "somelink"
+                    },
+                    new RaceDetails
+                    {
+                        HorseList = new List<HorseDataWrapper>()
+                        {
+                            new HorseDataWrapper()
+                            {
+                                HorseName = "Dora",
+                                Age = 9,
+                                Father = "Some Father 3",
+                                WinIndex = 3.3
+                            },
+                            new HorseDataWrapper()
+                            {
+                                HorseName = "Bari",
+                                Age = 10,
+                                Father = "Some Father 4",
+                                WinIndex = 4.4
+                            }
+                        },
+                        RaceCategory = "II",
+                        RaceDate = new DateTime(2018, 11, 10),
+                        RaceDistance = 1400,
+                        RaceLink = "somelink2"
+                    }
+                }));
         }
 
         [Fact]
@@ -292,6 +345,11 @@ namespace Horse_Picker.Tests.ViewModels
             _viewModel.SimulateResultsCommand.Execute(null);
 
             _simulateDataMock.Verify(sd => sd.SimulateResultsAsync(0, _viewModel.Races.Count, _viewModel.Races, _viewModel.Horses, _viewModel.Jockeys, _viewModel.RaceModelProvider), Times.Once);
+
+            Assert.Equal(1.1, _viewModel.Races[0].HorseList[0].WinIndex);
+            Assert.Equal(2.2, _viewModel.Races[0].HorseList[1].WinIndex);
+            Assert.Equal(3.3, _viewModel.Races[1].HorseList[0].WinIndex);
+            Assert.Equal(4.4, _viewModel.Races[1].HorseList[1].WinIndex);
         }
 
         [Fact]
