@@ -185,13 +185,11 @@
     <Compile Include="Services\Files\FileService.cs" />
     <Compile Include="Services\Compute\IComputeService.cs" />
     <Compile Include="Services\Files\IFileService.cs" />
-    <Compile Include="Services\IRaceProvider.cs" />
     <Compile Include="Services\Parse\IParseService.cs" />
     <Compile Include="Services\Parse\ParseService.cs" />
     <Compile Include="Services\Scrap\IScrapService.cs" />
     <Compile Include="Services\Simulate\ISimulateService.cs" />
     <Compile Include="Services\Update\IUpdateService.cs" />
-    <Compile Include="Services\RaceProvider.cs" />
     <Compile Include="Services\Scrap\ScrapService.cs" />
     <Compile Include="Services\Message\IMessageService.cs" />
     <Compile Include="Services\Message\MessageService.cs" />

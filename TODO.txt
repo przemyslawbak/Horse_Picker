@@ -1,5 +1,7 @@
 
-prism.core -> event main vm?
+sib index
+progress bar dla wczytywania
+update click blokuje na chwile UI
 simulate cancel
 testy
 
@@ -24,6 +26,7 @@ czy kon zmienil ostatnio trenera - jak tak to dobrze, bedzie chcial sie wykazac
 jak klacz wystawiana vs ogierom, to pozytywnie
 nie da sie - shipping - czy kon przyjezdza?
 
+OK - wszystkie eventy do Prism
 OK - SaveRaceTestResultsAsync -> StringBuilder
 OK - async get/save pliki
 OK - async file data - zapis i odczyt - zostawiam jako CPU bound https://stackoverflow.com/a/19912382/11027921

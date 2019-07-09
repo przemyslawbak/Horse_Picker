@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Horse_Picker.Commands
 {
+    //credits: https://stackoverflow.com/a/45878669/11027921
     public class AsyncCommand : AsyncCommandBase
     {
         private readonly Func<Task> _command;
