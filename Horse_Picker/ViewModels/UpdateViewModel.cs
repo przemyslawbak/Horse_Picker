@@ -15,11 +15,11 @@ namespace Horse_Picker.ViewModels
     public class UpdateViewModel : ViewModelBase
     {
         private IEventAggregator _eventAggregator;
-        private UpdateModules _updateModulesModel;
+
         public UpdateViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            _updateModulesModel = new UpdateModules();
+            UpdateModulesModel = new UpdateModules();
 
             RunTheUpdate();
         }
@@ -27,7 +27,7 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// initializing properties and publishes update props to the event
         /// </summary>
-        private void RunTheUpdate()
+        public void RunTheUpdate()
         {
             UpdateHorsesCz = false;
             UpdateHorsesPl = false;
@@ -47,19 +47,21 @@ namespace Horse_Picker.ViewModels
             HistPlFrom = 1;
             HistPlTo = 17049;
 
-            _eventAggregator.GetEvent<DataUpdateEvent>().Publish(_updateModulesModel);
+            _eventAggregator.GetEvent<DataUpdateEvent>().Publish(UpdateModulesModel);
         }
+
+        public UpdateModules UpdateModulesModel { get; set; }
 
         //prop for scrap PL jockeys from ID int
         public int JPlFrom
         {
             get
             {
-                return _updateModulesModel.JPlFrom;
+                return UpdateModulesModel.JPlFrom;
             }
             set
             {
-                _updateModulesModel.JPlFrom = value;
+                UpdateModulesModel.JPlFrom = value;
                 OnPropertyChanged();
             }
         }
@@ -69,11 +71,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.JPlTo;
+                return UpdateModulesModel.JPlTo;
             }
             set
             {
-                _updateModulesModel.JPlTo = value;
+                UpdateModulesModel.JPlTo = value;
                 OnPropertyChanged();
             }
         }
@@ -83,11 +85,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.JCzFrom;
+                return UpdateModulesModel.JCzFrom;
             }
             set
             {
-                _updateModulesModel.JCzFrom = value;
+                UpdateModulesModel.JCzFrom = value;
                 OnPropertyChanged();
             }
         }
@@ -97,11 +99,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.JCzTo;
+                return UpdateModulesModel.JCzTo;
             }
             set
             {
-                _updateModulesModel.JCzTo = value;
+                UpdateModulesModel.JCzTo = value;
                 OnPropertyChanged();
             }
         }
@@ -111,11 +113,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.HPlFrom;
+                return UpdateModulesModel.HPlFrom;
             }
             set
             {
-                _updateModulesModel.HPlFrom = value;
+                UpdateModulesModel.HPlFrom = value;
                 OnPropertyChanged();
             }
         }
@@ -125,11 +127,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.HPlTo;
+                return UpdateModulesModel.HPlTo;
             }
             set
             {
-                _updateModulesModel.HPlTo = value;
+                UpdateModulesModel.HPlTo = value;
                 OnPropertyChanged();
             }
         }
@@ -139,11 +141,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.HCzFrom;
+                return UpdateModulesModel.HCzFrom;
             }
             set
             {
-                _updateModulesModel.HCzFrom = value;
+                UpdateModulesModel.HCzFrom = value;
                 OnPropertyChanged();
             }
         }
@@ -153,11 +155,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.HCzTo;
+                return UpdateModulesModel.HCzTo;
             }
             set
             {
-                _updateModulesModel.HCzTo = value;
+                UpdateModulesModel.HCzTo = value;
                 OnPropertyChanged();
             }
         }
@@ -167,11 +169,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.HistPlFrom;
+                return UpdateModulesModel.HistPlFrom;
             }
             set
             {
-                _updateModulesModel.HistPlFrom = value;
+                UpdateModulesModel.HistPlFrom = value;
                 OnPropertyChanged();
             }
         }
@@ -181,11 +183,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.HistPlTo;
+                return UpdateModulesModel.HistPlTo;
             }
             set
             {
-                _updateModulesModel.HistPlTo = value;
+                UpdateModulesModel.HistPlTo = value;
                 OnPropertyChanged();
             }
         }
@@ -195,11 +197,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.JockeysPl;
+                return UpdateModulesModel.JockeysPl;
             }
             set
             {
-                _updateModulesModel.JockeysPl = value;
+                UpdateModulesModel.JockeysPl = value;
                 OnPropertyChanged();
             }
         }
@@ -209,11 +211,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.JockeysCz;
+                return UpdateModulesModel.JockeysCz;
             }
             set
             {
-                _updateModulesModel.JockeysCz = value;
+                UpdateModulesModel.JockeysCz = value;
                 OnPropertyChanged();
             }
         }
@@ -223,11 +225,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.HorsesCz;
+                return UpdateModulesModel.HorsesCz;
             }
             set
             {
-                _updateModulesModel.HorsesCz = value;
+                UpdateModulesModel.HorsesCz = value;
                 OnPropertyChanged();
             }
         }
@@ -237,11 +239,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.HorsesPl;
+                return UpdateModulesModel.HorsesPl;
             }
             set
             {
-                _updateModulesModel.HorsesPl = value;
+                UpdateModulesModel.HorsesPl = value;
                 OnPropertyChanged();
             }
         }
@@ -251,11 +253,11 @@ namespace Horse_Picker.ViewModels
         {
             get
             {
-                return _updateModulesModel.RacesPl;
+                return UpdateModulesModel.RacesPl;
             }
             set
             {
-                _updateModulesModel.RacesPl = value;
+                UpdateModulesModel.RacesPl = value;
                 OnPropertyChanged();
             }
         }
