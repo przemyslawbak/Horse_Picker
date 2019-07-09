@@ -46,7 +46,6 @@ namespace Horse_Picker.Tests.ViewModels
             Name = "Some Other Jockey", Link = "https://koniewyscigowe.pl/dzokej?d=4", AllRaces = { } } };
         private HorseDataWrapper _horsePicked = new HorseDataWrapper() { Age = 7, HorseName = "Trim", Father = "Some Father" };
 
-
         public MainViewModelTests()
         {
             _eventAggregatorMock = new Mock<IEventAggregator>();
@@ -409,15 +408,15 @@ namespace Horse_Picker.Tests.ViewModels
 
             _viewModel.CommandCompletedControlsSetup();
 
-            _viewModel.UpdateStatusBar = 0;
-            _viewModel.VisibilityStatusBar = false;
-            _viewModel.ProgressDisplay = "";
-            _viewModel.WorkStatus = "";
-            _viewModel.VisibilityCancellingMsg = true;
-            _viewModel.VisibilityCancelTestingBtn = false;
-            _viewModel.VisibilityTestingBtn = true;
-            _viewModel.VisibilityCancelUpdatingBtn = false;
-            _viewModel.VisibilityUpdatingBtn = true;
+            Assert.Equal(0, _viewModel.UpdateStatusBar);
+            Assert.False(_viewModel.VisibilityStatusBar);
+            Assert.Equal("", _viewModel.ProgressDisplay);
+            Assert.Equal("", _viewModel.WorkStatus);
+            Assert.True(_viewModel.VisibilityCancellingMsg);
+            Assert.False(_viewModel.VisibilityCancelTestingBtn);
+            Assert.True(_viewModel.VisibilityTestingBtn);
+            Assert.False(_viewModel.VisibilityCancelUpdatingBtn);
+            Assert.True(_viewModel.VisibilityUpdatingBtn);
         }
 
         [Fact]
@@ -428,8 +427,8 @@ namespace Horse_Picker.Tests.ViewModels
 
             _viewModel.ResetControls();
 
-            _viewModel.AllControlsEnabled = true;
-            _viewModel.VisibilityCancellingMsg = false;
+            Assert.True(_viewModel.AllControlsEnabled);
+            Assert.False(_viewModel.VisibilityCancellingMsg);
         }
     }
 }
