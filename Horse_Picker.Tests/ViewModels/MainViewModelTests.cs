@@ -173,5 +173,20 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal(7, _viewModel.HorseWrapper.Age);
             Assert.Equal("Some Father", _viewModel.HorseWrapper.Father);
         }
+
+        [Fact]
+        public void OnUpdateDataExecuteAsync_PopulatesUpdateModulesCollection()
+        {
+            _viewModel.DataUpdateModules.JockeysPl = false;
+            _viewModel.DataUpdateModules.JockeysCz = false;
+            _viewModel.DataUpdateModules.HorsesCz = false;
+            _viewModel.DataUpdateModules.HorsesPl = false;
+            _viewModel.DataUpdateModules.RacesPl = false;
+
+            _viewModel.UpdateDataCommand.Execute(null);
+
+            Assert.Equal(5, _viewModel.UpdateModules.Count);
+        }
+
     }
 }
