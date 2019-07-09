@@ -44,6 +44,7 @@ namespace Horse_Picker.ViewModels
             LoadedHorses = new List<string>();
             LoadedJockeys = new List<string>();
             DateTimeNow = DateTime.Now;
+            DataUpdateModules = new UpdateModules();
 
             _eventAggregator = eventAggregator;
             _dictionaryService = dictionaryService;
@@ -63,6 +64,11 @@ namespace Horse_Picker.ViewModels
             SimulateResultsCommand = new AsyncCommand(async () => await OnSimulateResultsExecuteAsync());
             PickHorseDataCommand = new DelegateCommand(OnPickHorseDataExecute);
             UpdateDataCommand = new AsyncCommand(async () => await OnUpdateDataExecuteAsync());
+
+            RaceModelProvider = new RaceModel()
+            {
+
+            };
 
             //delegates and commands
             ClearDataCommand.Execute(null);
@@ -327,7 +333,7 @@ namespace Horse_Picker.ViewModels
 
         //properties
         public RaceModel RaceModelProvider { get; set; }
-        public DateTime DateTimeNow { get; set; } //was LoadDataEventHandler event called
+        public DateTime DateTimeNow { get; set; }
         public UpdateModules DataUpdateModules { get; set; }
         public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
         public List<bool> UpdateModules { get; private set; }
