@@ -38,8 +38,12 @@ namespace Horse_Picker.Tests.ViewModels
                         RaceCategory = "II", RaceDate = new DateTime(2019, 11, 10), RaceDistance = 1400, RaceLink = "somelink2" } };
         private List<LoadedHorse> _horses = new List<LoadedHorse>() { new LoadedHorse {
             Name = "Trim", Age = 7, AllChildren = { }, AllRaces = { }, Father = "Belenus", FatherLink = "https://koniewyscigowe.pl/horse/14474", Link = "https://koniewyscigowe.pl/horse/260" } };
+        private List<LoadedHorse> _horsesSimulated = new List<LoadedHorse>() { new LoadedHorse {
+            Name = "Some Other Horse", Age = 7, AllChildren = { }, AllRaces = { }, Father = "Belenus", FatherLink = "https://koniewyscigowe.pl/horse/14474", Link = "https://koniewyscigowe.pl/horse/260" } };
         private List<LoadedJockey> _jockeys = new List<LoadedJockey>() { new LoadedJockey {
             Name = "N. Hendzel", Link = "https://koniewyscigowe.pl/dzokej?d=4", AllRaces = { } } };
+        private List<LoadedJockey> _jockeysSimulated = new List<LoadedJockey>() { new LoadedJockey {
+            Name = "Some Other Jockey", Link = "https://koniewyscigowe.pl/dzokej?d=4", AllRaces = { } } };
         private HorseDataWrapper _horsePicked = new HorseDataWrapper() { Age = 7, HorseName = "Trim", Father = "Some Father" };
 
 
@@ -62,6 +66,7 @@ namespace Horse_Picker.Tests.ViewModels
               .Returns(_progressBarEvent);
             _eventAggregatorMock.Setup(ea => ea.GetEvent<LoadDataEvent>())
               .Returns(_loadDataEvent);
+
             //moq setup
             _dataServicesMock.Setup(ds => ds.GetAllHorsesAsync())
                 .ReturnsAsync(_horses);
@@ -87,6 +92,13 @@ namespace Horse_Picker.Tests.ViewModels
                 It.IsAny<RaceModel>()))
                 .Returns(_horsePicked);
 
+            _updateDataMock.Setup(ud => ud.UpdateDataAsync(It.IsAny<List<LoadedJockey>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
+                .ReturnsAsync(_jockeysSimulated);
+            _updateDataMock.Setup(ud => ud.UpdateDataAsync(It.IsAny<List<LoadedHorse>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
+                .ReturnsAsync(_horsesSimulated);
+            _updateDataMock.Setup(ud => ud.UpdateDataAsync(It.IsAny<List<RaceDetails>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
+                .ReturnsAsync(_racesSimulated);
+
             _viewModel = new MainViewModel(_dataServicesMock.Object,
                 _messageDialogServicesMock.Object,
                 _updateDataMock.Object,
@@ -96,7 +108,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void DataUpdateEventPublish_UpdatesDataUpdateModulesProperty()
+        public void DataUpdateEvent_Publish_UpdatesDataUpdateModulesProperty()
         {
             UpdateModules update = new UpdateModules()
             {
@@ -109,6 +121,41 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.True(_viewModel.DataUpdateModules.RacesPl);
             Assert.Equal(20, _viewModel.DataUpdateModules.HCzFrom);
             Assert.Equal(update, _viewModel.DataUpdateModules);
+        }
+
+        [Fact]
+        public void LoadDataEvent_Publish_LoadsData()
+        {
+            _viewModel.Horses.Clear();
+            _viewModel.Jockeys.Clear();
+            _viewModel.Races.Clear();
+
+            _loadDataEvent.Publish();
+
+            Assert.NotEmpty(_viewModel.Horses);
+            Assert.NotEmpty(_viewModel.Jockeys);
+            Assert.NotEmpty(_viewModel.Races);
+            Assert.NotEmpty(_viewModel.LoadedHorses);
+            Assert.NotEmpty(_viewModel.LoadedJockeys);
+        }
+
+        [Fact]
+        public void ProgressBarEvent_Publish_UpdatesProperties()
+        {
+            ProgressBarData bar = new ProgressBarData()
+            {
+                JobType = "unit test",
+                LoopCouner = 100,
+                FromId = 10,
+                ToId = 1010
+            };
+
+            _progressBarEvent.Publish(bar);
+
+            Assert.Equal(10, _viewModel.UpdateStatusBar);
+            Assert.Equal("unit test", _viewModel.WorkStatus);
+            Assert.Equal("100 / 1000", _viewModel.ProgressDisplay);
+
         }
 
         [Fact]
@@ -177,16 +224,43 @@ namespace Horse_Picker.Tests.ViewModels
         [Fact]
         public void OnUpdateDataExecuteAsync_PopulatesUpdateModulesCollection()
         {
-            _viewModel.DataUpdateModules.JockeysPl = false;
-            _viewModel.DataUpdateModules.JockeysCz = false;
-            _viewModel.DataUpdateModules.HorsesCz = false;
-            _viewModel.DataUpdateModules.HorsesPl = false;
-            _viewModel.DataUpdateModules.RacesPl = false;
-
             _viewModel.UpdateDataCommand.Execute(null);
 
             Assert.Equal(5, _viewModel.UpdateModules.Count);
         }
+
+        [Theory]
+        [InlineData(MessageDialogResult.Update, 1)]
+        [InlineData(MessageDialogResult.Cancel, 0)]
+        public void OnUpdateDataExecuteAsync_IfResultIsUpdate_CallsUpdateDataAsync(MessageDialogResult result, int expectedMethodCalls)
+        {
+            _messageDialogServicesMock.Setup(md => md.ShowUpdateWindow()).Returns(result);
+            _viewModel.DataUpdateModules.JockeysPl = true;
+            _viewModel.DataUpdateModules.HorsesPl = true;
+            _viewModel.DataUpdateModules.RacesPl = true;
+
+            _viewModel.UpdateDataCommand.Execute(null);
+
+            _updateDataMock.Verify(ud => ud.UpdateDataAsync(It.IsAny<List<LoadedJockey>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()), Times.Exactly(expectedMethodCalls));
+            _updateDataMock.Verify(ud => ud.UpdateDataAsync(It.IsAny<List<LoadedHorse>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()), Times.Exactly(expectedMethodCalls));
+            _updateDataMock.Verify(ud => ud.UpdateDataAsync(It.IsAny<List<RaceDetails>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()), Times.Exactly(expectedMethodCalls));
+        }
+
+        [Fact]
+        public void OnUpdateDataExecuteAsync_IfResultIsUpdate_UpdatesCollections()
+        {
+            _messageDialogServicesMock.Setup(md => md.ShowUpdateWindow()).Returns(MessageDialogResult.Update);
+            _viewModel.DataUpdateModules.JockeysPl = true;
+            _viewModel.DataUpdateModules.HorsesPl = true;
+            _viewModel.DataUpdateModules.RacesPl = true;
+
+            _viewModel.UpdateDataCommand.Execute(null);
+
+            Assert.Equal("Some Other Jockey", _viewModel.Jockeys[0].Name);
+            Assert.Equal("Some Other Horse", _viewModel.Horses[0].Name);
+            Assert.Equal(1.1, _viewModel.Races[0].HorseList[0].WinIndex);
+        }
+
 
     }
 }
