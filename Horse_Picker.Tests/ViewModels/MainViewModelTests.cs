@@ -105,6 +105,17 @@ namespace Horse_Picker.Tests.ViewModels
                 _simulateDataMock.Object,
                 _eventAggregatorMock.Object,
                 _dictionaryServiceMock.Object);
+
+            SetupRaceModelData();
+        }
+
+        private void SetupRaceModelData()
+        {
+            _viewModel.Category = "I";
+            _viewModel.City = "Wro";
+            _viewModel.Distance = "1600";
+            _viewModel.RaceNo = "1";
+            _viewModel.RaceDate = new DateTime(2019, 11, 10);
         }
 
         [Fact]
@@ -135,8 +146,6 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.NotEmpty(_viewModel.Horses);
             Assert.NotEmpty(_viewModel.Jockeys);
             Assert.NotEmpty(_viewModel.Races);
-            Assert.NotEmpty(_viewModel.LoadedHorses);
-            Assert.NotEmpty(_viewModel.LoadedJockeys);
         }
 
         [Fact]
@@ -261,6 +270,166 @@ namespace Horse_Picker.Tests.ViewModels
             Assert.Equal(1.1, _viewModel.Races[0].HorseList[0].WinIndex);
         }
 
+        [Fact]
+        public void OnClearDataExecute_ResetsRaceModelObject()
+        {
+            _viewModel.HorseWrapper = new HorseDataWrapper();
+            _viewModel.HorseList.Add(_viewModel.HorseWrapper);
 
+            _viewModel.ClearDataCommand.Execute(null);
+
+            Assert.Empty(_viewModel.HorseList);
+            Assert.Equal("fill up", _viewModel.Category);
+            Assert.Equal("0", _viewModel.Distance);
+            Assert.Equal("-", _viewModel.City);
+            Assert.Equal("0", _viewModel.RaceNo);
+            Assert.Equal(_viewModel.DateTimeNow, _viewModel.RaceDate);
+        }
+
+        [Fact]
+        public void OnNewHorseExecute_AddsHorseToHorseList()
+        {
+            _viewModel.HorseList.Clear();
+
+            _viewModel.NewHorseCommand.Execute(null);
+
+            Assert.NotEmpty(_viewModel.HorseList);
+        }
+
+        [Fact]
+        public void PopulateLists_PopulatesLists()
+        {
+            _viewModel.PopulateLists();
+
+            Assert.NotEmpty(_viewModel.LoadedHorses);
+            Assert.NotEmpty(_viewModel.LoadedJockeys);
+        }
+
+        [Theory]
+        [InlineData("--Not found--", "")]
+        [InlineData("", "")]
+        [InlineData(" ", "")]
+        [InlineData(null, "")]
+        [InlineData("hereajam666", "Hereajam666")]
+        [InlineData("hereajam", "Hereajam")]
+        [InlineData("here aj am", "Here Aj Am")]
+        [InlineData("here aj am 666", "Here Aj Am 666")]
+        [InlineData("666", "666")]
+        public void MakeTitleCase_ShouldReturnString_True(string name, string expected)
+        {
+            var result = _viewModel.MakeTitleCase(name);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void HorseListCollection_AddedItem_EnablesSaveButton()
+        {
+            _viewModel.HorseList.Clear();
+            _viewModel.IsSaveEnabled = false;
+
+            _viewModel.HorseList.Add(_viewModel.HorseWrapper);
+
+            Assert.True(_viewModel.IsSaveEnabled);
+        }
+
+        [Fact]
+        public void HorseListCollection_Clear_DisablesSaveButton()
+        {
+            _viewModel.HorseList.Add(_viewModel.HorseWrapper);
+            _viewModel.IsSaveEnabled = false;
+
+            _viewModel.HorseList.Clear();
+
+            Assert.False(_viewModel.IsSaveEnabled);
+        }
+
+        [Fact]
+        public void StartedControlsSetup_CalledByAnyCommandMethod_ChangesGeneralControlProperties()
+        {
+            _viewModel.AllControlsEnabled = true;
+            _viewModel.VisibilityStatusBar = false;
+            _viewModel.UpdateStatusBar = 1;
+
+            _viewModel.CommandStartedControlsSetup(It.IsAny<string>());
+
+            Assert.False(_viewModel.AllControlsEnabled);
+            Assert.True(_viewModel.VisibilityStatusBar);
+            Assert.Equal(0, _viewModel.UpdateStatusBar);
+        }
+
+        [Fact]
+        public void StartedControlsSetup_CalledByOnUpdateDataMethod_ChangesItsProperties()
+        {
+            _viewModel.VisibilityCancelTestingBtn = false;
+            _viewModel.VisibilityTestingBtn = true;
+
+            _viewModel.CommandStartedControlsSetup("OnSimulateResultsExecuteAsync");
+
+            Assert.False(_viewModel.VisibilityTestingBtn);
+            Assert.True(_viewModel.VisibilityCancelTestingBtn);
+        }
+
+        [Fact]
+        public void StartedControlsSetup_CalledByOnSimulateResultsMethod_ChangesItsProperties()
+        {
+            _viewModel.VisibilityCancelUpdatingBtn = false;
+            _viewModel.VisibilityUpdatingBtn = true;
+
+            _viewModel.CommandStartedControlsSetup("OnUpdateDataExecuteAsync");
+
+            Assert.False(_viewModel.VisibilityUpdatingBtn);
+            Assert.True(_viewModel.VisibilityCancelUpdatingBtn);
+        }
+
+        [Fact]
+        public void StartedControlsSetup_CalledByOnLoadAllDataMethod_ChangesItsProperties()
+        {
+            _viewModel.VisibilityCancelUpdatingBtn = true;
+            _viewModel.VisibilityUpdatingBtn = false;
+
+            _viewModel.CommandStartedControlsSetup("OnLoadAllDataAsync");
+
+            Assert.False(_viewModel.VisibilityCancelUpdatingBtn);
+            Assert.True(_viewModel.VisibilityUpdatingBtn);
+        }
+
+        [Fact]
+        public void CommandCompletedControlsSetup_Called_ResetsAllItsVisibiliProperties()
+        {
+            _viewModel.UpdateStatusBar = 1;
+            _viewModel.VisibilityStatusBar = true;
+            _viewModel.ProgressDisplay = "some txt";
+            _viewModel.WorkStatus = "some txt";
+            _viewModel.VisibilityCancellingMsg = false;
+            _viewModel.VisibilityCancelTestingBtn = true;
+            _viewModel.VisibilityTestingBtn = false;
+            _viewModel.VisibilityCancelUpdatingBtn = true;
+            _viewModel.VisibilityUpdatingBtn = false;
+
+            _viewModel.CommandCompletedControlsSetup();
+
+            _viewModel.UpdateStatusBar = 0;
+            _viewModel.VisibilityStatusBar = false;
+            _viewModel.ProgressDisplay = "";
+            _viewModel.WorkStatus = "";
+            _viewModel.VisibilityCancellingMsg = true;
+            _viewModel.VisibilityCancelTestingBtn = false;
+            _viewModel.VisibilityTestingBtn = true;
+            _viewModel.VisibilityCancelUpdatingBtn = false;
+            _viewModel.VisibilityUpdatingBtn = true;
+        }
+
+        [Fact]
+        public void ResetControls_Called_ResetsAllItsVisibiliProperties()
+        {
+            _viewModel.AllControlsEnabled = false;
+            _viewModel.VisibilityCancellingMsg = true;
+
+            _viewModel.ResetControls();
+
+            _viewModel.AllControlsEnabled = true;
+            _viewModel.VisibilityCancellingMsg = false;
+        }
     }
 }

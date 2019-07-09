@@ -704,27 +704,27 @@ namespace Horse_Picker.ViewModels
         /// <summary>
         /// changes some display props on starting long running tasks
         /// </summary>
-        /// <param name="command"></param>
-        public void CommandStartedControlsSetup(string command)
+        /// <param name="caller"></param>
+        public void CommandStartedControlsSetup(string caller)
         {
             AllControlsEnabled = false;
             ValidateButtons();
             VisibilityStatusBar = true;
             UpdateStatusBar = 0;
 
-            if (command == "OnSimulateResultsExecuteAsync")
+            if (caller == "OnSimulateResultsExecuteAsync")
             {
                 VisibilityCancelTestingBtn = true;
                 VisibilityTestingBtn = false;
             }
 
-            if (command == "OnUpdateDataExecuteAsync")
+            if (caller == "OnUpdateDataExecuteAsync")
             {
                 VisibilityCancelUpdatingBtn = true;
                 VisibilityUpdatingBtn = false;
             }
 
-            if (command == "OnLoadAllDataAsync")
+            if (caller == "OnLoadAllDataAsync")
             {
                 VisibilityCancelUpdatingBtn = false;
                 VisibilityUpdatingBtn = true;
