@@ -17,6 +17,7 @@ using Horse_Picker.Services.Simulate;
 using Horse_Picker.Services.Files;
 using Prism.Events;
 using Horse_Picker.Services.Dictionary;
+using System.Runtime.CompilerServices;
 
 namespace Horse_Picker.ViewModels
 {
@@ -40,7 +41,6 @@ namespace Horse_Picker.ViewModels
             Jockeys = new List<LoadedJockey>();
             Races = new List<RaceDetails>();
             HorseList = new ObservableCollection<HorseDataWrapper>();
-            HorseWrapper = new HorseDataWrapper();
             LoadedHorses = new List<string>();
             LoadedJockeys = new List<string>();
             DateTimeNow = DateTime.Now;
@@ -75,8 +75,8 @@ namespace Horse_Picker.ViewModels
             CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(RaceModelProvider);
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
             _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate); //watches for update view model properties update event
-            _eventAggregator.GetEvent<ProgressBarEvent>().Subscribe(ProgressBarTick); //watches for service layer progress bar data update event
-            _eventAggregator.GetEvent<LoadDataEvent>().Subscribe(LoadAllDataAsync); //watches for vm load data update event
+            _eventAggregator.GetEvent<ProgressBarEvent>().Subscribe(OnProgressBarTick); //watches for service layer progress bar data update event
+            _eventAggregator.GetEvent<LoadDataEvent>().Subscribe(OnLoadAllDataAsync); //watches for vm load data update event
             _eventAggregator.GetEvent<LoadDataEvent>().Publish(); // publish vm load data update event
         }
 
@@ -120,7 +120,8 @@ namespace Horse_Picker.ViewModels
         /// <returns></returns>
         public async Task OnSimulateResultsExecuteAsync()
         {
-            CommandStartedControlsSetup("SimulateResultsCommand"); //setup controls for job time being
+            string callersName = GetCallerName();
+            CommandStartedControlsSetup(callersName); //setup controls for job time being
 
             Races = await _simulateDataService.SimulateResultsAsync(0, Races.Count, Races, Horses, Jockeys, RaceModelProvider);
 
@@ -161,7 +162,8 @@ namespace Horse_Picker.ViewModels
 
             if (result == MessageDialogResult.Update && isAnyTrue)
             {
-                CommandStartedControlsSetup("UpdateDataCommand"); //setup controls for job time being
+                string callersName = GetCallerName();
+                CommandStartedControlsSetup(callersName); //setup controls for job time being
 
                 if (DataUpdateModules.JockeysPl)
                     Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JPlFrom, DataUpdateModules.JPlTo, "updateJockeysPl");
@@ -213,9 +215,10 @@ namespace Horse_Picker.ViewModels
         /// async void eventhandler testing credits: https://stackoverflow.com/a/19415703/11027921
         /// delegates https://docs.microsoft.com/en-us/dotnet/api/system.eventhandler?view=netframework-4.8
         /// </summary>
-        public async void LoadAllDataAsync()
+        public async void OnLoadAllDataAsync()
         {
-            CommandStartedControlsSetup("LoadDataEvent");
+            string callersName = GetCallerName();
+            CommandStartedControlsSetup(callersName);
 
             if (Horses.Count == 0 && Jockeys.Count == 0 && Races.Count == 0)
             {
@@ -674,7 +677,7 @@ namespace Horse_Picker.ViewModels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void ProgressBarTick(ProgressBarData bar)
+        public void OnProgressBarTick(ProgressBarData bar)
         {
             int divider = bar.ToId - bar.FromId;
 
@@ -709,19 +712,19 @@ namespace Horse_Picker.ViewModels
             VisibilityStatusBar = true;
             UpdateStatusBar = 0;
 
-            if (command == "SimulateResultsCommand")
+            if (command == "OnSimulateResultsExecuteAsync")
             {
                 VisibilityCancelTestingBtn = true;
                 VisibilityTestingBtn = false;
             }
 
-            if (command == "UpdateDataCommand")
+            if (command == "OnUpdateDataExecuteAsync")
             {
                 VisibilityCancelUpdatingBtn = true;
                 VisibilityUpdatingBtn = false;
             }
 
-            if (command == "LoadDataEvent")
+            if (command == "OnLoadAllDataAsync")
             {
                 VisibilityCancelUpdatingBtn = false;
                 VisibilityUpdatingBtn = true;
@@ -753,6 +756,16 @@ namespace Horse_Picker.ViewModels
             CommandCompletedControlsSetup();
             AllControlsEnabled = true;
             VisibilityCancellingMsg = false;
+        }
+
+        /// <summary>
+        /// Gets the name of the caller
+        /// </summary>
+        /// <param name="caller"></param>
+        /// <returns></returns>
+        public static string GetCallerName([CallerMemberName] string caller = null)
+        {
+            return caller;
         }
     }
 }
