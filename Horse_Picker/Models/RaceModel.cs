@@ -13,6 +13,5 @@ namespace Horse_Picker.Models
         public string City { get; set; } //
         public string Category { get; set; } //
         public string Distance { get; set; } //
-        public bool IsButtonVisible { get; set; } //
     }
 }

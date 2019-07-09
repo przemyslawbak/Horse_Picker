@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Horse_Picker.Events;
@@ -8,12 +9,12 @@ namespace Horse_Picker.Services.Simulate
 {
     public interface ISimulateService
     {
-        Task<ObservableCollection<RaceDetails>> SimulateResultsAsync(int fromId,
+        Task<List<RaceDetails>> SimulateResultsAsync(int fromId,
             int toId,
-            ObservableCollection<RaceDetails> races,
-            ObservableCollection<LoadedHorse> horses,
-            ObservableCollection<LoadedJockey> jockeys,
-            IRaceProvider _raceModelProvider);
+            List<RaceDetails> races,
+            List<LoadedHorse> horses,
+            List<LoadedJockey> jockeys,
+            RaceModel raceModelProvider);
         void CancelSimulation();
     }
 }

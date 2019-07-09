@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Horse_Picker.Models;
+using System.Collections.Generic;
 
 namespace Horse_Picker.Services.Dictionary
 {
@@ -16,7 +17,7 @@ namespace Horse_Picker.Services.Dictionary
 
         Dictionary<string, int> GetMonthDictionary();
 
-        Dictionary<string, int> GetRaceCategoryDictionary(IRaceProvider raceModelProvider);
+        Dictionary<string, int> GetRaceCategoryDictionary(RaceModel raceModelProvider);
 
 
     }

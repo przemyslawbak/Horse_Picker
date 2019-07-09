@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Horse_Picker.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -89,7 +90,7 @@ namespace Horse_Picker.Services.Dictionary
             return monthDict;
         }
 
-        public Dictionary<string, int> GetRaceCategoryDictionary(IRaceProvider raceModelProvider)
+        public Dictionary<string, int> GetRaceCategoryDictionary(RaceModel raceModelProvider)
         {
             Dictionary<string, int> categoryFactorDict = new Dictionary<string, int>();
 

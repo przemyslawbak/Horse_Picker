@@ -69,7 +69,7 @@ namespace Horse_Picker.Services.Compute
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns CI</returns>
-        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, IRaceProvider raceModelProvider, Dictionary<string, int> raceCategoryDictionary)
+        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, RaceModel raceModelProvider, Dictionary<string, int> raceCategoryDictionary)
         {
             Dictionary<string, int> raceDictionary = raceCategoryDictionary;
 
@@ -251,15 +251,15 @@ namespace Horse_Picker.Services.Compute
         /// <returns>returns SI</returns>
         public double ComputeSiblingsIndex(LoadedHorse fatherFromList,
             DateTime date,
-            IRaceProvider raceModelProvider,
-            ObservableCollection<LoadedHorse> horses,
+            RaceModel raceModelProvider,
+            List<LoadedHorse> horses,
             Dictionary<string, int> raceCategoryDictionary)
         {
             ResetComputeVariables();
 
             for (int i = 0; i < fatherFromList.AllChildren.Count; i++)
             {
-                horses = new ObservableCollection<LoadedHorse>(horses.OrderBy(l => l.Age)); //from smallest to biggest
+                horses = new List<LoadedHorse>(horses.OrderBy(l => l.Age)); //from smallest to biggest
                 HorseChildDetails child = fatherFromList.AllChildren[i];
 
                 if (child.ChildAge == 0)
@@ -356,7 +356,7 @@ namespace Horse_Picker.Services.Compute
         /// <returns>returns WI</returns>
         public double ComputeWinIndex(LoadedHorse horseFromList,
             DateTime date, LoadedJockey jockeyFromList,
-            IRaceProvider raceModelProvider,
+            RaceModel raceModelProvider,
             Dictionary<string, int> raceCategoryDictionary)
         {
             Dictionary<string, int> raceDictionary = raceCategoryDictionary;

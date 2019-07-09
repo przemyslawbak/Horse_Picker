@@ -53,14 +53,14 @@ namespace Horse_Picker.Services.Update
             _scrapDataService = scrapDataService;
             _computeDataService = computeDataService;
 
-            Horses = new ObservableCollection<LoadedHorse>();
-            Jockeys = new ObservableCollection<LoadedJockey>();
-            Races = new ObservableCollection<RaceDetails>();
+            Horses = new List<LoadedHorse>();
+            Jockeys = new List<LoadedJockey>();
+            Races = new List<RaceDetails>();
         }
 
-        public ObservableCollection<LoadedHorse> Horses { get; private set; }
-        public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
-        public ObservableCollection<RaceDetails> Races { get; private set; }
+        public List<LoadedHorse> Horses { get; private set; }
+        public List<LoadedJockey> Jockeys { get; private set; }
+        public List<RaceDetails> Races { get; private set; }
         public CancellationTokenSource TokenSource { get; set; }
         public CancellationToken CancellationToken { get; set; }
 
@@ -80,7 +80,7 @@ namespace Horse_Picker.Services.Update
         /// <param name="idTo">object id limitation</param>
         /// <param name="jobType">type of scrapping</param>
         /// <returns></returns>
-        public async Task<ObservableCollection<T>> UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int idFrom, int idTo, string jobType)
+        public async Task<List<T>> UpdateDataAsync<T>(List<T> genericCollection, int idFrom, int idTo, string jobType)
         {
             ProgressBarData progressBar;
             int loopCounterProgressBar = 0;
@@ -89,17 +89,17 @@ namespace Horse_Picker.Services.Update
             //parse collections, display job
             if (typeof(T) == typeof(LoadedHorse))
             {
-                Horses = new ObservableCollection<LoadedHorse>(genericCollection.Cast<LoadedHorse>());
+                Horses = new List<LoadedHorse>(genericCollection.Cast<LoadedHorse>());
                 jobTypeProgressBar = "Updating horse data";
             }
             else if (typeof(T) == typeof(LoadedJockey))
             {
-                Jockeys = new ObservableCollection<LoadedJockey>(genericCollection.Cast<LoadedJockey>());
+                Jockeys = new List<LoadedJockey>(genericCollection.Cast<LoadedJockey>());
                 jobTypeProgressBar = "Updating jockey data";
             }
             else if (typeof(T) == typeof(RaceDetails))
             {
-                Races = new ObservableCollection<RaceDetails>(genericCollection.Cast<RaceDetails>());
+                Races = new List<RaceDetails>(genericCollection.Cast<RaceDetails>());
                 jobTypeProgressBar = "Updating historic data";
             }
 
@@ -198,15 +198,15 @@ namespace Horse_Picker.Services.Update
 
             if (typeof(T) == typeof(LoadedHorse))
             {
-                return (ObservableCollection<T>)Convert.ChangeType(Horses, typeof(ObservableCollection<T>));
+                return (List<T>)Convert.ChangeType(Horses, typeof(List<T>));
             }
             else if (typeof(T) == typeof(LoadedJockey))
             {
-                return (ObservableCollection<T>)Convert.ChangeType(Jockeys, typeof(ObservableCollection<T>));
+                return (List<T>)Convert.ChangeType(Jockeys, typeof(List<T>));
             }
             else if (typeof(T) == typeof(RaceDetails))
             {
-                return (ObservableCollection<T>)Convert.ChangeType(Races, typeof(ObservableCollection<T>));
+                return (List<T>)Convert.ChangeType(Races, typeof(List<T>));
             }
             else { throw new ArgumentException(); }
         }
@@ -361,9 +361,9 @@ namespace Horse_Picker.Services.Update
         /// <param name="date">day of the race</param>
         /// <returns></returns>
         public HorseDataWrapper GetParsedHorseData(HorseDataWrapper horseWrapper,
-            DateTime date, ObservableCollection<LoadedHorse> horses,
-            ObservableCollection<LoadedJockey> jockeys,
-            IRaceProvider raceModelProvider)
+            DateTime date, List<LoadedHorse> horses,
+            List<LoadedJockey> jockeys,
+            RaceModel raceModelProvider)
         {
             Dictionary<string, int> raceCategoryDictionary = _dictionaryService.GetRaceCategoryDictionary(raceModelProvider);
             LoadedJockey jockeyFromList = new LoadedJockey();
@@ -373,7 +373,7 @@ namespace Horse_Picker.Services.Update
             //if name is entered
             if (!string.IsNullOrEmpty(horseWrapper.HorseName))
             {
-                horses = new ObservableCollection<LoadedHorse>(horses.OrderBy(l => l.Age)); //from smallest to biggest
+                horses = new List<LoadedHorse>(horses.OrderBy(l => l.Age)); //from smallest to biggest
 
                 //if age is from AutoCompleteBox
                 if (horseWrapper.HorseName.Contains(", "))
@@ -419,7 +419,7 @@ namespace Horse_Picker.Services.Update
                     .FirstOrDefault();
                 }
 
-                horses = new ObservableCollection<LoadedHorse>(horses.OrderByDescending(l => l.Age)); //from biggest to smallest
+                horses = new List<LoadedHorse>(horses.OrderByDescending(l => l.Age)); //from biggest to smallest
 
                 //jockey index
                 if (!string.IsNullOrEmpty(horseWrapper.Jockey))

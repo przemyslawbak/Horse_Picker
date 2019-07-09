@@ -11,13 +11,13 @@ namespace Horse_Picker.Services.Update
     public interface IUpdateService
     {
         HorseDataWrapper GetParsedHorseData(HorseDataWrapper horseWrapper,
-            DateTime date, ObservableCollection<LoadedHorse> horses,
-            ObservableCollection<LoadedJockey> jockeys,
-            IRaceProvider raceModelProvider);
+            DateTime date, List<LoadedHorse> horses,
+            List<LoadedJockey> jockeys,
+            RaceModel raceModelProvider);
 
         void CancelUpdates();
 
-        Task<ObservableCollection<T>> UpdateDataAsync<T>(ObservableCollection<T> genericCollection, int jPlFrom, int jPlTo, string v);
+        Task<List<T>> UpdateDataAsync<T>(List<T> genericCollection, int jPlFrom, int jPlTo, string v);
 
     }
 }

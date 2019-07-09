@@ -31,26 +31,25 @@ namespace Horse_Picker.ViewModels
 
         public MainViewModel(IFileService dataServices,
             IMessageService messageDialogServices,
-            IRaceProvider raceServices,
             IUpdateService updateDataService,
             ISimulateService simulateDataService,
             IEventAggregator eventAggregator,
             IDictionariesService dictionaryService)
         {
-            Horses = new ObservableCollection<LoadedHorse>();
-            Jockeys = new ObservableCollection<LoadedJockey>();
-            Races = new ObservableCollection<RaceDetails>();
+            Horses = new List<LoadedHorse>();
+            Jockeys = new List<LoadedJockey>();
+            Races = new List<RaceDetails>();
             HorseList = new ObservableCollection<HorseDataWrapper>();
+            HorseWrapper = new HorseDataWrapper();
             LoadedHorses = new List<string>();
             LoadedJockeys = new List<string>();
-            DateTimeNow = DateTimeNow;
+            DateTimeNow = DateTime.Now;
 
             _eventAggregator = eventAggregator;
             _dictionaryService = dictionaryService;
             _dataServices = dataServices;
             _updateDataService = updateDataService;
             _simulateDataService = simulateDataService;
-            RaceModelProvider = raceServices;
             _messageDialogService = messageDialogServices;
 
             AllControlsEnabled = true;
@@ -131,7 +130,7 @@ namespace Horse_Picker.ViewModels
         public void OnPickHorseDataExecute(object obj)
         {
             HorseWrapper = (HorseDataWrapper)obj;
-            Task.Run(() => HorseWrapper = _updateDataService.GetParsedHorseData(HorseWrapper, DateTimeNow, Horses, Jockeys, RaceModelProvider)); //consumes time
+            HorseWrapper = _updateDataService.GetParsedHorseData(HorseWrapper, DateTimeNow, Horses, Jockeys, RaceModelProvider); //consumes time
         }
 
         /// <summary>
@@ -143,7 +142,7 @@ namespace Horse_Picker.ViewModels
         {
             var result = _messageDialogService.ShowUpdateWindow();
 
-            UpdateModules = new ObservableCollection<bool>
+            UpdateModules = new List<bool>
             {
                 DataUpdateModules.JockeysPl,
                 DataUpdateModules.JockeysCz,
@@ -188,7 +187,7 @@ namespace Horse_Picker.ViewModels
             City = "-";
             Distance = "0";
             RaceNo = "0";
-            RaceDate = DateTime.Now;
+            RaceDate = DateTimeNow;
         }
 
         /// <summary>
@@ -210,6 +209,8 @@ namespace Horse_Picker.ViewModels
         /// </summary>
         public async void LoadAllDataAsync()
         {
+            CommandStartedControlsSetup("LoadDataEvent");
+
             if (Horses.Count == 0 && Jockeys.Count == 0 && Races.Count == 0)
             {
                 List<LoadedHorse> horses = await _dataServices.GetAllHorsesAsync();
@@ -254,6 +255,9 @@ namespace Horse_Picker.ViewModels
             }
 
             PopulateLists();
+
+            CommandCompletedControlsSetup();
+            ResetControls();
         }
 
         /// <summary>
@@ -322,18 +326,18 @@ namespace Horse_Picker.ViewModels
         public ICommand PickHorseDataCommand { get; private set; }
 
         //properties
+        public RaceModel RaceModelProvider { get; set; }
         public DateTime DateTimeNow { get; set; } //was LoadDataEventHandler event called
         public UpdateModules DataUpdateModules { get; set; }
         public ObservableCollection<HorseDataWrapper> HorseList { get; set; }
-        public ObservableCollection<bool> UpdateModules { get; private set; }
-        public HorseDataWrapper HorseWrapper { get; private set; }
-        public ObservableCollection<LoadedHorse> Horses { get; private set; }
-        public ObservableCollection<LoadedJockey> Jockeys { get; private set; }
-        public ObservableCollection<RaceDetails> Races { get; private set; }
+        public List<bool> UpdateModules { get; private set; }
+        public HorseDataWrapper HorseWrapper { get; set; }
+        public List<LoadedHorse> Horses { get; set; }
+        public List<LoadedJockey> Jockeys { get; set; }
+        public List<RaceDetails> Races { get; set; }
         public List<string> LoadedHorses { get; }
         public List<string> LoadedJockeys { get; }
         public Dictionary<string, int> CategoryFactorDict { get; set; }
-        public IRaceProvider RaceModelProvider { get; set; }
 
         //prop race distance
         public string Distance
@@ -702,13 +706,19 @@ namespace Horse_Picker.ViewModels
             if (command == "SimulateResultsCommand")
             {
                 VisibilityCancelTestingBtn = true;
-                VisibilityTestingBtn = true;
+                VisibilityTestingBtn = false;
             }
 
             if (command == "UpdateDataCommand")
             {
                 VisibilityCancelUpdatingBtn = true;
                 VisibilityUpdatingBtn = false;
+            }
+
+            if (command == "LoadDataEvent")
+            {
+                VisibilityCancelUpdatingBtn = false;
+                VisibilityUpdatingBtn = true;
             }
         }
 
@@ -717,7 +727,6 @@ namespace Horse_Picker.ViewModels
         /// </summary>
         public void CommandCompletedControlsSetup()
         {
-            //TokenSource.Dispose();
             UpdateStatusBar = 0;
             VisibilityStatusBar = false;
             ValidateButtons();

@@ -47,12 +47,12 @@ namespace Horse_Picker.Services.Simulate
         /// <param name="jockeys">collection of jockey</param>
         /// <param name="raceModelProvider">race data</param>
         /// <returns></returns>
-        public async Task<ObservableCollection<RaceDetails>> SimulateResultsAsync(int idFrom,
+        public async Task<List<RaceDetails>> SimulateResultsAsync(int idFrom,
             int idTo,
-            ObservableCollection<RaceDetails> races,
-            ObservableCollection<LoadedHorse> horses,
-            ObservableCollection<LoadedJockey> jockeys,
-            IRaceProvider raceModelProvider)
+            List<RaceDetails> races,
+            List<LoadedHorse> horses,
+            List<LoadedJockey> jockeys,
+            RaceModel raceModelProvider)
         {
             //variables
             SemaphoreSlim throttler = new SemaphoreSlim(_degreeOfParallelism);

@@ -39,9 +39,6 @@ namespace Horse_Picker.Startup
             builder.RegisterType<UpdateService>()
               .As<IUpdateService>().SingleInstance();
 
-            builder.RegisterType<RaceProvider>()
-              .As<IRaceProvider>().SingleInstance();
-
             builder.RegisterType<FileService>()
               .As<IFileService>().SingleInstance();
 
