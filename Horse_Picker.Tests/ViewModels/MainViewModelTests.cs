@@ -118,7 +118,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void DataUpdateEvent_Publish_UpdatesDataUpdateModulesProperty()
+        public void DataUpdateEvent_Published_UpdatesDataUpdateModulesProperty()
         {
             UpdateModules update = new UpdateModules()
             {
@@ -134,7 +134,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void LoadDataEvent_Publish_LoadsData()
+        public void LoadDataEvent_Published_PopulatedDataCollections()
         {
             _viewModel.Horses.Clear();
             _viewModel.Jockeys.Clear();
@@ -148,7 +148,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void ProgressBarEvent_Publish_UpdatesProperties()
+        public void ProgressBarEvent_Published_UpdatesProgressBarPropertiess()
         {
             ProgressBarData bar = new ProgressBarData()
             {
@@ -167,7 +167,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void OnSimulateCancellationExecute_CallsCancelSimulation()
+        public void OnSimulateCancellationExecute_CommandExecute_CallsCancelSimulationOnce()
         {
             _viewModel.SimulateCancellationCommand.Execute(null);
 
@@ -175,7 +175,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void OnUpdateCancellationExecute_CallsCancelUpdates()
+        public void OnUpdateCancellationExecute_CommandCall_CallsCancelUpdatesOnce()
         {
             _viewModel.UpdateCancellationCommand.Execute(null);
 
@@ -183,7 +183,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public async Task OnSimulateResultsExecuteAsync_CallsSimulateResultsAsync()
+        public async Task OnSimulateResultsExecuteAsync_CommandExecute_CallsSimulateResultsAsyncOnce()
         {
             await _viewModel.SimulateResultsCommand.ExecuteAsync(null);
 
@@ -196,7 +196,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public async Task OnSimulateResultsExecuteAsync_UpdatesRacesCollection()
+        public async Task OnSimulateResultsExecuteAsync_CommandCall_UpdatesRacesCollectionWithIndexes()
         {
             await _viewModel.SimulateResultsCommand.ExecuteAsync(null);
 
@@ -204,7 +204,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void OnPickHorseDataExecute_CallsGetParsedHorseData()
+        public void OnPickHorseDataExecute_CommandExecuteWithParameter_CallsGetParsedHorseData()
         {
             HorseDataWrapper horse = new HorseDataWrapper();
 
@@ -218,7 +218,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void OnPickHorseDataExecute_UpdatesHorseObject()
+        public void OnPickHorseDataExecute_CommandExecuteWithParameter_UpdatesHorseObjectWithIndexes()
         {
             HorseDataWrapper horse = new HorseDataWrapper();
 
@@ -230,7 +230,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void OnUpdateDataExecuteAsync_PopulatesUpdateModulesCollection()
+        public void OnUpdateDataExecuteAsync_CommandExecute_PopulatesUpdateModulesCollection()
         {
             _viewModel.UpdateDataCommand.Execute(null);
 
@@ -240,7 +240,7 @@ namespace Horse_Picker.Tests.ViewModels
         [Theory]
         [InlineData(MessageDialogResult.Update, 1)]
         [InlineData(MessageDialogResult.Cancel, 0)]
-        public void OnUpdateDataExecuteAsync_IfResultIsUpdate_CallsUpdateDataAsync(MessageDialogResult result, int expectedMethodCalls)
+        public void OnUpdateDataExecuteAsync_ReceivesDialogResult_CallsUpdateDataAsyncOrNot(MessageDialogResult result, int expectedMethodCalls)
         {
             _messageDialogServicesMock.Setup(md => md.ShowUpdateWindow()).Returns(result);
             _viewModel.DataUpdateModules.JockeysPl = true;
@@ -255,7 +255,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void OnUpdateDataExecuteAsync_IfResultIsUpdate_UpdatesCollections()
+        public void OnUpdateDataExecuteAsync_ReceivesDialogResultUpdate_UpdatesDataCollections()
         {
             _messageDialogServicesMock.Setup(md => md.ShowUpdateWindow()).Returns(MessageDialogResult.Update);
             _viewModel.DataUpdateModules.JockeysPl = true;
@@ -270,7 +270,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void OnClearDataExecute_ResetsRaceModelObject()
+        public void OnClearDataExecute_CommandExecute_ResetsPropertiesOfRaceModelObject()
         {
             _viewModel.HorseWrapper = new HorseDataWrapper();
             _viewModel.HorseList.Add(_viewModel.HorseWrapper);
@@ -286,7 +286,7 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void OnNewHorseExecute_AddsHorseToHorseList()
+        public void OnNewHorseExecute_CommandExecute_AddsNewHorseToHorseList()
         {
             _viewModel.HorseList.Clear();
 
@@ -296,8 +296,11 @@ namespace Horse_Picker.Tests.ViewModels
         }
 
         [Fact]
-        public void PopulateLists_PopulatesLists()
+        public void PopulateLists_Called_PopulatesLoadedHorsesAndLoadedJockeysCollections()
         {
+            _viewModel.LoadedHorses.Clear();
+            _viewModel.LoadedJockeys.Clear();
+
             _viewModel.PopulateLists();
 
             Assert.NotEmpty(_viewModel.LoadedHorses);
@@ -314,7 +317,7 @@ namespace Horse_Picker.Tests.ViewModels
         [InlineData("here aj am", "Here Aj Am")]
         [InlineData("here aj am 666", "Here Aj Am 666")]
         [InlineData("666", "666")]
-        public void MakeTitleCase_ShouldReturnString_True(string name, string expected)
+        public void MakeTitleCase_CalledWithParameter_ShouldReturnString(string name, string expected)
         {
             var result = _viewModel.MakeTitleCase(name);
 
