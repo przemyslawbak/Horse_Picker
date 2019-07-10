@@ -8,34 +8,40 @@ namespace Horse_Picker.Services.Compute
 {
     public class ComputeService : IComputeService
     {
-        //compute fields
-        private int _dictValue;
-        private double _finalResult;
-        private double _result;
-        private double _siblingIndex;
-        private int _counter;
-        private LoadedHorse _childFromList = new LoadedHorse();
+        //compute props
+        public int Counter { get; set; }
+        public int DictValue { get; set; }
+        public double FinalResult { get; set; }
+        public double Result { get; set; }
+        public double SiblingIndex { get; set; }
+        public LoadedHorse ChildFromList { get; set; }
 
         //compute loop fields
-        private double _placeFactor = 0;
-        private double _distRaceIndex = 0;
-        private double _distFactor = 0;
+        public double PlaceFactor { get; set; }
+        public double DistanceRaceIndex { get; set; }
+        public double DistanceFactor { get; set; }
 
+        /// <summary>
+        /// resets properties used in various methods
+        /// </summary>
         private void ResetComputeVariables()
         {
-            _dictValue = 1;
-            _finalResult = 0;
-            _result = 0;
-            _siblingIndex = 0;
-            _counter = 0;
-            _childFromList = new LoadedHorse();
+            DictValue = 1;
+            FinalResult = 0;
+            Result = 0;
+            SiblingIndex = 0;
+            Counter = 0;
+            ChildFromList = new LoadedHorse();
         }
 
+        /// <summary>
+        /// resets properties used in various loops
+        /// </summary>
         private void ResetLoopVariables()
         {
-            _placeFactor = 0;
-            _distRaceIndex = 0;
-            _distFactor = 0;
+            PlaceFactor = 0;
+            DistanceRaceIndex = 0;
+            DistanceFactor = 0;
         }
 
         /// <summary>
@@ -83,12 +89,12 @@ namespace Horse_Picker.Services.Compute
 
                     if (horseFromList.AllRaces[i].WonPlace > 0 && horseFromList.AllRaces[i].RaceDate < date)
                     {
-                        _placeFactor = (double)horseFromList.AllRaces[i].WonPlace / horseFromList.AllRaces[i].RaceCompetition * 10;
+                        PlaceFactor = (double)horseFromList.AllRaces[i].WonPlace / horseFromList.AllRaces[i].RaceCompetition * 10;
 
                         //increase factor for races over 12 horses and place between 1-4
                         if (horseFromList.AllRaces[i].RaceCompetition > 12 && horseFromList.AllRaces[i].WonPlace < 5)
                         {
-                            _placeFactor = _placeFactor * 1.5;
+                            PlaceFactor = PlaceFactor * 1.5;
                         }
 
                         bool foundKey = raceDictionary.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
@@ -97,25 +103,25 @@ namespace Horse_Picker.Services.Compute
 
                         if (foundKey)
                         {
-                            _dictValue = raceDictionary[horseFromList.AllRaces[i].RaceCategory];
+                            DictValue = raceDictionary[horseFromList.AllRaces[i].RaceCategory];
                         }
                         else
                         {
-                            _dictValue = 5;
+                            DictValue = 5;
                         }
 
-                        _distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(raceModelProvider.Distance)) / 10000 * _dictValue;
-                        _distFactor = Math.Abs(_distFactor);
+                        DistanceFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(raceModelProvider.Distance)) / 10000 * DictValue;
+                        DistanceFactor = Math.Abs(DistanceFactor);
 
-                        _distRaceIndex = _placeFactor * _dictValue / 10;
+                        DistanceRaceIndex = PlaceFactor * DictValue / 10;
 
-                        _result = _result + _distRaceIndex - _distFactor;
+                        Result = Result + DistanceRaceIndex - DistanceFactor;
                     }
                 }
 
-                _finalResult = _result / horseFromList.AllRaces.Count;
+                FinalResult = Result / horseFromList.AllRaces.Count;
 
-                return _finalResult;
+                return FinalResult;
             }
             else
             {
@@ -142,19 +148,19 @@ namespace Horse_Picker.Services.Compute
                     if (jockeyFromList.AllRaces[i].WonPlace > 0 && jockeyFromList.AllRaces[i].RaceDate < date)
                     {
                         if (jockeyFromList.AllRaces[i].WonPlace == 1)
-                            _placeFactor = 1;
+                            PlaceFactor = 1;
                         if (jockeyFromList.AllRaces[i].WonPlace == 2)
-                            _placeFactor = 0.7;
+                            PlaceFactor = 0.7;
 
-                        _distRaceIndex = _placeFactor * jockeyFromList.AllRaces[i].RaceCompetition / 10;
+                        DistanceRaceIndex = PlaceFactor * jockeyFromList.AllRaces[i].RaceCompetition / 10;
 
-                        _result = _result + _distRaceIndex;
+                        Result = Result + DistanceRaceIndex;
                     }
                 }
 
-                _finalResult = _result / jockeyFromList.AllRaces.Count;
+                FinalResult = Result / jockeyFromList.AllRaces.Count;
 
-                return _finalResult;
+                return FinalResult;
             }
             else
             {
@@ -179,22 +185,22 @@ namespace Horse_Picker.Services.Compute
                 {
                     if (horseFromList.AllRaces[i].WonPlace == 1 && horseFromList.AllRaces[i].RaceDate < date)
                     {
-                        _result++;
+                        Result++;
                     }
                 }
 
-                double percentage = (double)_result / horseFromList.AllRaces.Count * 100;
+                double percentage = (double)Result / horseFromList.AllRaces.Count * 100;
 
                 if (percentage > 20)
                 {
-                    _finalResult = 1 + (percentage - 20) * 0.1;
+                    FinalResult = 1 + (percentage - 20) * 0.1;
                 }
                 else
                 {
-                    _finalResult = 1;
+                    FinalResult = 1;
                 }
 
-                return _finalResult;
+                return FinalResult;
             }
             else
             {
@@ -220,22 +226,22 @@ namespace Horse_Picker.Services.Compute
                 if (horseFromList.AllRaces.Count == 0)
                     return 1;
 
-                _result = (date - horseFromList.AllRaces[0].RaceDate).TotalDays;
+                Result = (date - horseFromList.AllRaces[0].RaceDate).TotalDays;
 
-                if (_result > 90)
+                if (Result > 90)
                 {
-                    _finalResult = 1 + (_result - 90) / 100;
+                    FinalResult = 1 + (Result - 90) / 100;
                 }
-                else if (_result < 60)
+                else if (Result < 60)
                 {
-                    _finalResult = 1 + _result / 50;
+                    FinalResult = 1 + Result / 50;
                 }
                 else
                 {
-                    _finalResult = 1;
+                    FinalResult = 1;
                 }
 
-                return _finalResult;
+                return FinalResult;
             }
             else
             {
@@ -264,42 +270,42 @@ namespace Horse_Picker.Services.Compute
 
                 if (child.ChildAge == 0)
                 {
-                    _childFromList = horses
+                    ChildFromList = horses
                                 .Where(h => h.Name.ToLower() == child
                                 .ChildName.ToLower())
                                 .FirstOrDefault();
                 }
                 else
                 {
-                    _childFromList = horses
+                    ChildFromList = horses
                                 .Where(h => h.Name.ToLower() == child.ChildName.ToLower())
                                 .Where(h => h.Age == child.ChildAge)
                                 .FirstOrDefault();
                 }
 
-                if (_childFromList != null && _childFromList.AllRaces.Count > 0)
+                if (ChildFromList != null && ChildFromList.AllRaces.Count > 0)
                 {
-                    _siblingIndex = ComputeWinIndex(_childFromList, date, null, raceModelProvider, raceCategoryDictionary);
-                    _counter++;
+                    SiblingIndex = ComputeWinIndex(ChildFromList, date, null, raceModelProvider, raceCategoryDictionary);
+                    Counter++;
                 }
                 else
                 {
-                    _siblingIndex = 0;
+                    SiblingIndex = 0;
                 }
 
-                _result = _result + _siblingIndex;
+                Result = Result + SiblingIndex;
             }
 
-            if (_counter != 0)
+            if (Counter != 0)
             {
-                _finalResult = _result / _counter;
+                FinalResult = Result / Counter;
             }
             else
             {
-                _finalResult = 0;
+                FinalResult = 0;
             }
 
-            return _finalResult;
+            return FinalResult;
         }
 
         /// <summary>
@@ -327,20 +333,20 @@ namespace Horse_Picker.Services.Compute
                     //for all races 2 years back from this race
                     if (horseFromList.AllRaces[i].RaceDate < date && horseFromList.AllRaces[i].RaceDate > twoYearsBack)
                     {
-                        _counter++;
+                        Counter++;
                     }
                 }
 
-                if (_counter > 12)
+                if (Counter > 12)
                 {
-                    _finalResult = 1 + (_counter - 12) * 0.1;
+                    FinalResult = 1 + (Counter - 12) * 0.1;
                 }
                 else
                 {
                     return 1;
                 }
 
-                return _finalResult;
+                return FinalResult;
             }
             else
             {
@@ -379,9 +385,9 @@ namespace Horse_Picker.Services.Compute
                     if (horseFromList.AllRaces[i].WonPlace < 3 && horseFromList.AllRaces[i].WonPlace > 0 && horseFromList.AllRaces[i].RaceDate < date)
                     {
                         if (horseFromList.AllRaces[i].WonPlace == 1)
-                            _placeFactor = 1;
+                            PlaceFactor = 1;
                         if (horseFromList.AllRaces[i].WonPlace == 2)
-                            _placeFactor = 0.7;
+                            PlaceFactor = 0.7;
 
                         if (jockeyFromList != null)
                         {
@@ -389,20 +395,20 @@ namespace Horse_Picker.Services.Compute
                             if (!string.IsNullOrEmpty(jockeyFromList.Name) && !string.IsNullOrEmpty(horseFromList.AllRaces[i].RacersName))
                             {
                                 if (horseFromList.AllRaces[i].RacersName.Contains(jockeyFromList.Name))
-                                    _placeFactor = _placeFactor * 1.5;
+                                    PlaceFactor = PlaceFactor * 1.5;
                             }
                         }
 
                         //bonus for place factor if won race in last 3 races
                         if (i < 3)
                         {
-                            _placeFactor = _placeFactor * 1.5;
+                            PlaceFactor = PlaceFactor * 1.5;
                         }
 
                         //increase factor for races over 12 horses and place between 1-4
                         if (horseFromList.AllRaces[i].RaceCompetition > 12 && horseFromList.AllRaces[i].WonPlace < 5)
                         {
-                            _placeFactor = _placeFactor * 1.5;
+                            PlaceFactor = PlaceFactor * 1.5;
                         }
 
                         bool foundKey = raceDictionary.Keys.Any(k => k.Equals(horseFromList.AllRaces[i].RaceCategory,
@@ -411,25 +417,25 @@ namespace Horse_Picker.Services.Compute
 
                         if (foundKey)
                         {
-                            _dictValue = raceDictionary[horseFromList.AllRaces[i].RaceCategory];
+                            DictValue = raceDictionary[horseFromList.AllRaces[i].RaceCategory];
                         }
                         else
                         {
-                            _dictValue = 5;
+                            DictValue = 5;
                         }
 
-                        _distFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(raceModelProvider.Distance)) / 10000 * _dictValue;
-                        _distFactor = Math.Abs(_distFactor);
+                        DistanceFactor = (double)(horseFromList.AllRaces[i].RaceDistance - int.Parse(raceModelProvider.Distance)) / 10000 * DictValue;
+                        DistanceFactor = Math.Abs(DistanceFactor);
 
-                        _distRaceIndex = _placeFactor * horseFromList.AllRaces[i].RaceCompetition * _dictValue / 10;
+                        DistanceRaceIndex = PlaceFactor * horseFromList.AllRaces[i].RaceCompetition * DictValue / 10;
 
-                        _result = _result + _distRaceIndex - _distFactor;
+                        Result = Result + DistanceRaceIndex - DistanceFactor;
                     }
                 }
 
-                _finalResult = _result / horseFromList.AllRaces.Count;
+                FinalResult = Result / horseFromList.AllRaces.Count;
 
-                return _finalResult;
+                return FinalResult;
             }
             else
             {
