@@ -53,7 +53,6 @@ namespace Horse_Picker.Tests.ViewModels
             _dataServicesMock = new Mock<IFileService>();
             _updateDataMock = new Mock<IUpdateService>();
             _simulateDataMock = new Mock<ISimulateService>();
-            _dictionaryServiceMock = new Mock<IDictionariesService>();
 
             _dataUpdateEvent = new DataUpdateEvent();
             _progressBarEvent = new ProgressBarEvent();
