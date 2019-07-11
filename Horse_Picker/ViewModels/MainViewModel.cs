@@ -45,6 +45,7 @@ namespace Horse_Picker.ViewModels
             LoadedJockeys = new List<string>();
             DateTimeNow = DateTime.Now;
             DataUpdateModules = new UpdateModules();
+            RaceModelProvider = new RaceModel();
 
             _eventAggregator = eventAggregator;
             _dictionaryService = dictionaryService;
@@ -64,11 +65,6 @@ namespace Horse_Picker.ViewModels
             SimulateResultsCommand = new AsyncCommand(async () => await OnSimulateResultsExecuteAsync());
             PickHorseDataCommand = new DelegateCommand(OnPickHorseDataExecute);
             UpdateDataCommand = new AsyncCommand(async () => await OnUpdateDataExecuteAsync());
-
-            RaceModelProvider = new RaceModel()
-            {
-
-            };
 
             //delegates and commands
             ClearDataCommand.Execute(null);
@@ -166,15 +162,15 @@ namespace Horse_Picker.ViewModels
                 CommandStartedControlsSetup(callersName); //setup controls for job time being
 
                 if (DataUpdateModules.JockeysPl)
-                    Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JPlFrom, DataUpdateModules.JPlTo, "updateJockeysPl");
+                    Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JPlFrom, DataUpdateModules.JPlTo, "updateJockeysPl", RaceModelProvider);
                 if (DataUpdateModules.JockeysCz)
-                    Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JCzFrom, DataUpdateModules.JCzTo, "updateJockeysCz");
+                    Jockeys = await _updateDataService.UpdateDataAsync(Jockeys, DataUpdateModules.JCzFrom, DataUpdateModules.JCzTo, "updateJockeysCz", RaceModelProvider);
                 if (DataUpdateModules.HorsesPl)
-                    Horses = await _updateDataService.UpdateDataAsync(Horses, DataUpdateModules.HPlFrom, DataUpdateModules.HPlTo, "updateHorsesPl");
+                    Horses = await _updateDataService.UpdateDataAsync(Horses, DataUpdateModules.HPlFrom, DataUpdateModules.HPlTo, "updateHorsesPl", RaceModelProvider);
                 if (DataUpdateModules.HorsesCz)
-                    Horses = await _updateDataService.UpdateDataAsync(Horses, DataUpdateModules.HCzFrom, DataUpdateModules.HCzTo, "updateHorsesCz");
+                    Horses = await _updateDataService.UpdateDataAsync(Horses, DataUpdateModules.HCzFrom, DataUpdateModules.HCzTo, "updateHorsesCz", RaceModelProvider);
                 if (DataUpdateModules.RacesPl)
-                    Races = await _updateDataService.UpdateDataAsync(Races, DataUpdateModules.HistPlFrom, DataUpdateModules.HistPlTo, "updateHistoricPl");
+                    Races = await _updateDataService.UpdateDataAsync(Races, DataUpdateModules.HistPlFrom, DataUpdateModules.HistPlTo, "updateHistoricPl", RaceModelProvider);
 
                 ResetControls(); //reset controlls after job done
 

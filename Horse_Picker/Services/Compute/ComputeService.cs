@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Horse_Picker.Models;
+using Horse_Picker.Services.Dictionary;
+using Horse_Picker.Services.Scrap;
 
 namespace Horse_Picker.Services.Compute
 {
     public class ComputeService : IComputeService
     {
+        private IDictionariesService _dictionaryService;
+
+        public ComputeService(IDictionariesService dictionaryService)
+        {
+            _dictionaryService = dictionaryService;
+
+            Dictionary<string, int> RaceCategoryDictionary = _dictionaryService.GetRaceCategoryDictionary(RaceModelProvider);
+        }
         //compute props
         public int Counter { get; set; }
         public int DictValue { get; set; }
@@ -21,10 +31,13 @@ namespace Horse_Picker.Services.Compute
         public double DistanceRaceIndex { get; set; }
         public double DistanceFactor { get; set; }
 
+        public Dictionary<string, int> RaceCategoryDictionary { get; set; }
+        public RaceModel RaceModelProvider { get; set; }
+
         /// <summary>
         /// resets properties used in various methods
         /// </summary>
-        private void ResetComputeVariables()
+        public void ResetComputeVariables()
         {
             DictValue = 1;
             FinalResult = 0;
@@ -37,7 +50,7 @@ namespace Horse_Picker.Services.Compute
         /// <summary>
         /// resets properties used in various loops
         /// </summary>
-        private void ResetLoopVariables()
+        public void ResetLoopVariables()
         {
             PlaceFactor = 0;
             DistanceRaceIndex = 0;
@@ -45,7 +58,7 @@ namespace Horse_Picker.Services.Compute
         }
 
         /// <summary>
-        /// calculated AI factor
+        /// calculated AgeIndex factor
         /// </summary>
         /// <param name="horseFromList"></param>
         /// <param name="date"></param>
@@ -59,7 +72,7 @@ namespace Horse_Picker.Services.Compute
             if (horsesRaceAge > 5)
             {
                 int multiplier = horsesRaceAge - 4;
-                double result = 1 + 0.3 * multiplier;
+                double result = 1.3 * multiplier;
                 return result;
             }
             else
@@ -75,9 +88,10 @@ namespace Horse_Picker.Services.Compute
         /// <param name="horseFromList">horse data</param>
         /// <param name="date">day of the race</param>
         /// <returns>returns CI</returns>
-        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, RaceModel raceModelProvider, Dictionary<string, int> raceCategoryDictionary)
+        public double ComputeCategoryIndex(LoadedHorse horseFromList, DateTime date, RaceModel raceModelProvider)
         {
-            Dictionary<string, int> raceDictionary = raceCategoryDictionary;
+            RaceModelProvider = raceModelProvider;
+            Dictionary<string, int> raceDictionary = RaceCategoryDictionary;
 
             ResetComputeVariables();
 
@@ -258,8 +272,7 @@ namespace Horse_Picker.Services.Compute
         public double ComputeSiblingsIndex(LoadedHorse fatherFromList,
             DateTime date,
             RaceModel raceModelProvider,
-            List<LoadedHorse> horses,
-            Dictionary<string, int> raceCategoryDictionary)
+            List<LoadedHorse> horses)
         {
             ResetComputeVariables();
 
@@ -285,7 +298,7 @@ namespace Horse_Picker.Services.Compute
 
                 if (ChildFromList != null && ChildFromList.AllRaces.Count > 0)
                 {
-                    SiblingIndex = ComputeWinIndex(ChildFromList, date, null, raceModelProvider, raceCategoryDictionary);
+                    SiblingIndex = ComputeWinIndex(ChildFromList, date, null, raceModelProvider);
                     Counter++;
                 }
                 else
@@ -362,10 +375,10 @@ namespace Horse_Picker.Services.Compute
         /// <returns>returns WI</returns>
         public double ComputeWinIndex(LoadedHorse horseFromList,
             DateTime date, LoadedJockey jockeyFromList,
-            RaceModel raceModelProvider,
-            Dictionary<string, int> raceCategoryDictionary)
+            RaceModel raceModelProvider)
         {
-            Dictionary<string, int> raceDictionary = raceCategoryDictionary;
+            RaceModelProvider = raceModelProvider;
+            Dictionary<string, int> raceDictionary = RaceCategoryDictionary;
 
             ResetComputeVariables();
 

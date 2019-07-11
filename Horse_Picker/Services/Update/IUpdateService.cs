@@ -17,7 +17,7 @@ namespace Horse_Picker.Services.Update
 
         void CancelUpdates();
 
-        Task<List<T>> UpdateDataAsync<T>(List<T> genericCollection, int jPlFrom, int jPlTo, string v);
+        Task<List<T>> UpdateDataAsync<T>(List<T> genericCollection, int jPlFrom, int jPlTo, string v, RaceModel raceModel);
 
     }
 }

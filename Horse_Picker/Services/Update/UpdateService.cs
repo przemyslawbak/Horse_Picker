@@ -80,7 +80,7 @@ namespace Horse_Picker.Services.Update
         /// <param name="idTo">object id limitation</param>
         /// <param name="jobType">type of scrapping</param>
         /// <returns></returns>
-        public async Task<List<T>> UpdateDataAsync<T>(List<T> genericCollection, int idFrom, int idTo, string jobType)
+        public async Task<List<T>> UpdateDataAsync<T>(List<T> genericCollection, int idFrom, int idTo, string jobType, RaceModel raceModel)
         {
             ProgressBarData progressBar;
             int loopCounterProgressBar = 0;
@@ -365,7 +365,6 @@ namespace Horse_Picker.Services.Update
             List<LoadedJockey> jockeys,
             RaceModel raceModelProvider)
         {
-            Dictionary<string, int> raceCategoryDictionary = _dictionaryService.GetRaceCategoryDictionary(raceModelProvider);
             LoadedJockey jockeyFromList = new LoadedJockey();
             LoadedHorse horseFromList = new LoadedHorse();
             LoadedHorse fatherFromList = new LoadedHorse();
@@ -450,12 +449,12 @@ namespace Horse_Picker.Services.Update
 
                     //win index
                     if (jockeyFromList != null)
-                        horseWrapper.WinIndex = _computeDataService.ComputeWinIndex(horseFromList, date, jockeyFromList, raceModelProvider, raceCategoryDictionary);
+                        horseWrapper.WinIndex = _computeDataService.ComputeWinIndex(horseFromList, date, jockeyFromList, raceModelProvider);
                     else
-                        horseWrapper.WinIndex = _computeDataService.ComputeWinIndex(horseFromList, date, null, raceModelProvider, raceCategoryDictionary);
+                        horseWrapper.WinIndex = _computeDataService.ComputeWinIndex(horseFromList, date, null, raceModelProvider);
 
                     //category index
-                    horseWrapper.CategoryIndex = _computeDataService.ComputeCategoryIndex(horseFromList, date, raceModelProvider, raceCategoryDictionary);
+                    horseWrapper.CategoryIndex = _computeDataService.ComputeCategoryIndex(horseFromList, date, raceModelProvider);
 
                     //age index
                     horseWrapper.AgeIndex = _computeDataService.ComputeAgeIndex(horseFromList, date);
@@ -485,7 +484,7 @@ namespace Horse_Picker.Services.Update
 
                     if (fatherFromList != null)
                     {
-                        horseWrapper.SiblingsIndex = _computeDataService.ComputeSiblingsIndex(fatherFromList, date, raceModelProvider, horses, raceCategoryDictionary);
+                        horseWrapper.SiblingsIndex = _computeDataService.ComputeSiblingsIndex(fatherFromList, date, raceModelProvider, horses);
                     }
                     else
                     {
