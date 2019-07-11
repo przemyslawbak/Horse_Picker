@@ -23,7 +23,6 @@ namespace Horse_Picker.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private IDictionariesService _dictionaryService;
         private IEventAggregator _eventAggregator;
         private IMessageService _messageDialogService;
         private IUpdateService _updateDataService;
@@ -34,8 +33,7 @@ namespace Horse_Picker.ViewModels
             IMessageService messageDialogServices,
             IUpdateService updateDataService,
             ISimulateService simulateDataService,
-            IEventAggregator eventAggregator,
-            IDictionariesService dictionaryService)
+            IEventAggregator eventAggregator)
         {
             Horses = new List<LoadedHorse>();
             Jockeys = new List<LoadedJockey>();
@@ -47,7 +45,6 @@ namespace Horse_Picker.ViewModels
             DataUpdateModules = new UpdateModules();
 
             _eventAggregator = eventAggregator;
-            _dictionaryService = dictionaryService;
             _dataServices = dataServices;
             _updateDataService = updateDataService;
             _simulateDataService = simulateDataService;
@@ -72,7 +69,6 @@ namespace Horse_Picker.ViewModels
 
             //delegates and commands
             ClearDataCommand.Execute(null);
-            CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(RaceModelProvider);
             HorseList.CollectionChanged += OnHorseListCollectionChanged;
             _eventAggregator.GetEvent<DataUpdateEvent>().Subscribe(OnDataUpdate); //watches for update view model properties update event
             _eventAggregator.GetEvent<ProgressBarEvent>().Subscribe(OnProgressBarTick); //watches for service layer progress bar data update event

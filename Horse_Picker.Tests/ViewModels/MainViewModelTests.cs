@@ -24,7 +24,6 @@ namespace Horse_Picker.Tests.ViewModels
         private Mock<IFileService> _dataServicesMock;
         private Mock<IUpdateService> _updateDataMock;
         private Mock<ISimulateService> _simulateDataMock;
-        private Mock<IDictionariesService> _dictionaryServiceMock;
 
         private DataUpdateEvent _dataUpdateEvent; //for subscriber
         private ProgressBarEvent _progressBarEvent; //for subscriber
@@ -101,8 +100,7 @@ namespace Horse_Picker.Tests.ViewModels
                 _messageDialogServicesMock.Object,
                 _updateDataMock.Object,
                 _simulateDataMock.Object,
-                _eventAggregatorMock.Object,
-                _dictionaryServiceMock.Object);
+                _eventAggregatorMock.Object);
 
             SetupRaceModelData();
         }
