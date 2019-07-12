@@ -1,6 +1,6 @@
 ## Purpose
 
-General purpose of the application is to compute potentially best horse in a horse racing competition based on historic data available in subject related web services, and compare it with other horses starting in the race. The application is ceated for personal use and for educational purposes to practice different frameworks and approaches, and should not be use by ANYONE for making any betting decisions based on this application output.
+General purpose of the application is to compute potentially best horse in a horse racing competition based on historic data available in subject related web services, and compare it with other horses starting in the race. The application is created for personal use and for educational purposes to practice different frameworks and approaches, and should not be use by ANYONE for making any betting decisions based on this application output.
 
 ## Features
 
