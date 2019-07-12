@@ -13,6 +13,8 @@ namespace Horse_Picker.Services.Compute
         public int DictValue { get; set; }
         public double FinalResult { get; set; }
         public double Result { get; set; }
+        public double WinResult { get; set; }
+        public double FinalWinResult { get; set; }
         public double SiblingIndex { get; set; }
         public LoadedHorse ChildFromList { get; set; }
 
@@ -42,6 +44,15 @@ namespace Horse_Picker.Services.Compute
             PlaceFactor = 0;
             DistanceRaceIndex = 0;
             DistanceFactor = 0;
+        }
+
+        /// <summary>
+        /// resets winindex properties
+        /// </summary>
+        public void ResetWinComputeVariables()
+        {
+            WinResult = 0;
+            FinalWinResult = 0;
         }
 
         /// <summary>
@@ -262,10 +273,10 @@ namespace Horse_Picker.Services.Compute
             Dictionary<string, int> raceCategoryDictionary)
         {
             ResetComputeVariables();
+            horses = new List<LoadedHorse>(horses.OrderBy(l => l.Age)); //from smallest to biggest
 
             for (int i = 0; i < fatherFromList.AllChildren.Count; i++)
             {
-                horses = new List<LoadedHorse>(horses.OrderBy(l => l.Age)); //from smallest to biggest
                 HorseChildDetails child = fatherFromList.AllChildren[i];
 
                 if (child.ChildAge == 0)
@@ -367,7 +378,7 @@ namespace Horse_Picker.Services.Compute
         {
             Dictionary<string, int> raceDictionary = raceCategoryDictionary;
 
-            ResetComputeVariables();
+            ResetWinComputeVariables();
 
             if (horseFromList.AllRaces.Count > 0)
             {
@@ -429,13 +440,13 @@ namespace Horse_Picker.Services.Compute
 
                         DistanceRaceIndex = PlaceFactor * horseFromList.AllRaces[i].RaceCompetition * DictValue / 10;
 
-                        Result = Result + DistanceRaceIndex - DistanceFactor;
+                        WinResult = WinResult + DistanceRaceIndex - DistanceFactor;
                     }
                 }
 
-                FinalResult = Result / horseFromList.AllRaces.Count;
+                FinalWinResult = WinResult / horseFromList.AllRaces.Count;
 
-                return FinalResult;
+                return FinalWinResult;
             }
             else
             {

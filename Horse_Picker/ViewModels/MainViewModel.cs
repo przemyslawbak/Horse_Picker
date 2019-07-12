@@ -28,12 +28,14 @@ namespace Horse_Picker.ViewModels
         private IUpdateService _updateDataService;
         private ISimulateService _simulateDataService;
         private IFileService _dataServices;
+        private IDictionariesService _dictionaryService;
 
         public MainViewModel(IFileService dataServices,
             IMessageService messageDialogServices,
             IUpdateService updateDataService,
             ISimulateService simulateDataService,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IDictionariesService dictionaryService)
         {
             Horses = new List<LoadedHorse>();
             Jockeys = new List<LoadedJockey>();
@@ -49,6 +51,7 @@ namespace Horse_Picker.ViewModels
             _updateDataService = updateDataService;
             _simulateDataService = simulateDataService;
             _messageDialogService = messageDialogServices;
+            _dictionaryService = dictionaryService;
 
             AllControlsEnabled = true;
             VisibilityUpdatingBtn = true;
@@ -62,10 +65,8 @@ namespace Horse_Picker.ViewModels
             PickHorseDataCommand = new DelegateCommand(OnPickHorseDataExecute);
             UpdateDataCommand = new AsyncCommand(async () => await OnUpdateDataExecuteAsync());
 
-            RaceModelProvider = new RaceModel()
-            {
-
-            };
+            RaceModelProvider = new RaceModel();
+            CategoryFactorDict = _dictionaryService.GetRaceCategoryDictionary(RaceModelProvider);
 
             //delegates and commands
             ClearDataCommand.Execute(null);
@@ -235,6 +236,8 @@ namespace Horse_Picker.ViewModels
                         FatherLink = horse.FatherLink
                     });
                 }
+
+                Horses = Horses.OrderBy(o => o.Age).ToList();
 
                 foreach (var jockey in jockeys)
                 {

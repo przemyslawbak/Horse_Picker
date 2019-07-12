@@ -1,11 +1,7 @@
 
-sib index
-progress bar dla wczytywania
-update click blokuje na chwile UI
-simulate cancel
-testy
-
 NA PRZYSZLOSC:
+update click blokuje na chwile UI
+progress bar dla wczytywania
 VerifyNodeCondition - slownik?
 walidacja input update dla INT oraz from < to - validacja - zmiana i do serwisu
 RaceDataProvider?
@@ -26,6 +22,7 @@ czy kon zmienil ostatnio trenera - jak tak to dobrze, bedzie chcial sie wykazac
 jak klacz wystawiana vs ogierom, to pozytywnie
 nie da sie - shipping - czy kon przyjezdza?
 
+OK - sib index
 OK - wszystkie eventy do Prism
 OK - SaveRaceTestResultsAsync -> StringBuilder
 OK - async get/save pliki
