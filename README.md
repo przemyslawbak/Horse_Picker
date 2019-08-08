@@ -17,7 +17,7 @@ General purpose of the solution is to compute potentially best horse in a horse 
 5. Covering view models with unit tests.
 
 
-# Technology
+## Technology
 
 1. Approaches:
   - MVVM pattern,
