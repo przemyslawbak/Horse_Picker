@@ -4,31 +4,33 @@ General purpose of the solution is to compute potentially best horse in a horse 
 
 ## Features
 
+1. Data for computations is provided by parsing HTML documents.
+2. Parsed data collections are saved in JSON format files.
+3. Horse_Picker computes several factors of the horse performance in the past:
+  - factor based on horses age,
+  - jockeys previous races,
+  - win index computed on horse wins in the past
+  - index of siblings based on their win indexes,
+  - results of the horse other than wins,
+  - indexes based on horses rest time after last race and how often was racing.
+4. The application allows to simulate all factors for horses in historic races and compare them with their results in the past.
 
-* Data for computations is provided by parsing HTML documents.
-* Parsed data collections are saved in JSON format files.
-* Horse_Picker computes several factors of the horse performance in the past:
-- factor based on horses age,
-- jockeys previous races,
-- win index computed on horse wins in the past
-- index of siblings based on their win indexes,
-- results of the horse other than wins,
-- indexes based on horses rest time after last race and how often was racing.
-* The application allows to simulate all factors for horses in historic races and compare them with their results in the past.
+# Technology
 
-## Technology
-
-# Approaches:
-- Async commands
-- Events (prism and event handlers)
-- IoC (autofac)
-- resolving view models in ViewModelLocator class
-- model wrapper
-- generic service methods for various data types
-# Application is using:
-- Autofac
-- DotNetProjects.Wpf.Toolkit
-- HtmlAgilityPack
-- Newtonsoft.Json
-- Prism.Core
-- System.Windows.Interactivity.WPF
+1. Approaches:
+  - MVVM pattern
+  - async commands
+  - events (Prism and event handlers)
+  - IoC (Autofac)
+  - esolving view models in ViewModelLocator class
+  - model wrapper
+  - generic service methods for various data types
+  - async methods
+  - parallel tasks triggering with using of SemaphoreSlim
+2. Application is using:
+  - Autofac
+  - DotNetProjects.Wpf.Toolkit
+  - HtmlAgilityPack
+  - Newtonsoft.Json
+  - Prism.Core
+  - System.Windows.Interactivity.WPF
