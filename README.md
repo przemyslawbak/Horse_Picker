@@ -22,8 +22,8 @@ General purpose of the solution is to compute potentially best horse in a horse 
   - async commands
   - events (Prism and event handlers)
   - IoC (Autofac)
-  - esolving view models in ViewModelLocator class
-  - model wrapper
+  - resolving view models in ViewModelLocator class
+  - model data wrapper
   - generic service methods for various data types
   - async methods
   - parallel tasks triggering with using of SemaphoreSlim
