@@ -28,6 +28,7 @@ General purpose of the solution is to compute potentially best horse in a horse 
   - async methods
   - parallel tasks triggering with using of SemaphoreSlim
 2. Application is using:
+  - C#, WPF
   - Autofac
   - DotNetProjects.Wpf.Toolkit
   - HtmlAgilityPack
