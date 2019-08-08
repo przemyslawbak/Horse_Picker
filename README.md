@@ -21,6 +21,7 @@ General purpose of the solution is to compute potentially best horse in a horse 
 
 1. Approaches:
   - MVVM pattern,
+  - service layer in separate directory,
   - async commands,
   - events (Prism and event handlers),
   - IoC (Autofac),
@@ -28,7 +29,7 @@ General purpose of the solution is to compute potentially best horse in a horse 
   - model data wrapper,
   - generic service methods for various data types,
   - async methods,
-  - parallel tasks triggering with using of SemaphoreSlim,
+  - parallel tasks triggering with using of SemaphoreSlim.
 2. Application is using:
   - C#, WPF,
   - Autofac,
@@ -36,4 +37,4 @@ General purpose of the solution is to compute potentially best horse in a horse 
   - HtmlAgilityPack,
   - Newtonsoft.Json,
   - Prism.Core,
-  - System.Windows.Interactivity.WPF
+  - System.Windows.Interactivity.WPF.
