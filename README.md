@@ -31,6 +31,7 @@ General purpose of the solution is to compute potentially best horse in a horse 
   - model data wrapper,
   - generic service methods for various data types,
   - async methods,
+  - task cancellation for all tasks,
   - parallel tasks triggering with using of SemaphoreSlim.
 2. Application is using:
   - C#, WPF,
